@@ -1,0 +1,116 @@
+" Vim UI {
+
+    set nofoldenable        " Disable auto fold code
+    set nu                  " Enable line numbering
+    "set colorcolumn=80      " Enable colored column delimiter
+    set tabstop=2           " Set tab width to 2
+    set shiftwidth=2        " Set indents width to 2
+    set softtabstop=2       " Set the number of columns for a TAB
+    set smarttab
+    set expandtab           " Expand TABs to spaces
+
+    "highlight ColorColumn ctermbg=233
+
+" }
+
+" Plugins {
+
+    let g:acp_enableAtStartup = 1                           " Disable AutoComplPop
+    let g:neocomplcache_enable_at_startup = 1               " Use neocomplcache
+    let g:neocomplcache_enable_auto_select = 1              " AutoComplPop like behavior
+    let g:neocomplcache_enable_smart_case = 1               " Use smartcase
+    let g:neocomplcache_enable_camel_case_completion = 1    " Use camel case completion
+    let g:neocomplcache_enable_underbar_completion = 1      " Use underbar completion
+    let g:autoclose_loaded = 1
+    let g:PIVAutoClose = 1
+
+    UnBundle 'myusuf3/numbers.vim'
+    UnBundle 'amirh/HTML-AutoCloseTag'
+
+" }
+
+" Key Remapping {
+
+    " Fast saving
+    noremap <C-Z> :update<CR>
+    vnoremap <C-Z> <C-C> :update<CR>
+    inoremap <C-Z> <C-O> :update<CR>
+
+    " Fast quiting
+    noremap <Leader>e :quit<CR>     " Quit current window
+    noremap <Leader>E :qa!<CR>      " Quit all window
+
+    " Remove highlight of last search
+    noremap <C-H> :nohl<CR>
+    vnoremap <C-H> :nohl<CR>
+    inoremap <C-H> :nohl<CR>
+
+    " Quickly open a buffer for scribble
+    map <Leader>q :e ~/buffer<CR>
+
+    " Closing buffers
+    map <Leader>bd :Bclose<CR>      " Close the current buffer
+    map <Leader>ba :1,1000 bd!<CR>  " Close all buffers
+
+    " Useful mappings for managing tabs
+    map <Leader>tn :tabnew<CR>
+    map <Leader>to :tabonly<CR>
+    map <Leader>tc :tabclose<CR>
+    map <Leader>tm :tabmove<CR>
+    map <Leader>te :tabedit<C-R>=expand("%:p:h")<CR>/ " open new tab with current buffer's path
+
+    " Easier moving between tabs
+    map <Leader>n <Esc>:tabprevious<CR>
+    map <Leader>m <Esc>:tabnext<CR>
+
+    " Sort
+    vmap <Leader>s :sort<CR>
+    nmap <Leader>s :sort<CR>
+
+    " Easier formating of paragraphs
+    vmap <Leader>q gq
+    nmap <Leader>q gqap
+
+    " Spell checking
+    map <Leader>ss :setlocal spell!<CR>  " toggle spell checking
+    map <Leader>sn ]s
+    map <Leader>sp [s
+    map <Leader>sa zg
+    map <Leader>s? z=
+
+    " Remove Windows ^M - when the encoding gets messed up
+    noremap <Leader>w mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
+    " GREP searching anf COPE display
+    map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>  " Open vimgrep and put the cursor in the right position
+    map <leader><space> :vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>  " vimgrep in the current file
+    vnoremap <silent> <leader>y :call VisualSelection('replace')<CR>  " Search and replace the selected text
+    map <leader>cc :botright cope<cr>  " Display the results in cope
+    map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
+
+    " Move a line of text using ALT+[jk] or Command+[jk] on mac
+    nmap <M-j> mz:m+<CR>`z
+    nmap <M-k> mz:m-2<CR>`z
+    vmap <M-j> :m'>+<CR>`<my`>mzgv`yo`z
+    vmap <M-k> :m'<-2<CR>`>my`<mzgv`yo`z
+
+    if has("mac") || has("macunix")
+        nmap <D-j> <M-j>
+        nmap <D-k> <M-k>
+        vmap <D-j> <M-j>
+        vmap <D-j> <M-k>
+    endif
+
+    " neocomplcache
+    inoremap <expr><C-Space> pumvisible()?"\<C-Space>":"<C-n>"
+    inoremap <C-k> <Plug>(neocomplcache_snippets_expand)
+    smap <C-k> <Plug>(neocomplcache_snippets_expand)
+    inoremap <expr><C-g> neocomplcache#undo_completion()
+    inoremap <expr><C-l> neocomplcache#complete_common_string()
+    inoremap <expr><CR> neocomplcache#smart_close_popup()."\<CR>"
+    inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+    inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+    inoremap <expr><C-y> neocomplcache#close_popup()
+    inoremap <expr><C-e> neocomplcache#cancel_popup()
+
+" }

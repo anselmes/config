@@ -1,0 +1,20 @@
+#!/bin/bash
+cd "$(dirname "$0")"
+git pull
+function doIt() {
+	rsync --exclude ".git/" --exclude "bin/" --exclude "SpotifyControl/" --exclude "VLCControl/" --exclude "z/" --exclude ".DS_Store" --exclude "brew.sh" --exclude "brew-optional.sh" --exclude "install-deps.sh" --exclude "sync.sh" --exclude "README.md" --exclude "LICENSE.txt" -av . ~
+}
+if [ "$1" == "--force" -o "$1" == "-f" ]; then
+	doIt
+else
+	read -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " -n 1
+	echo
+	if [[ $REPLY =~ ^[Yy]$ ]]; then
+		doIt
+	fi
+fi
+unset doIt
+source ~/.bash_profile
+bash /usr/local/code/spf13-vim.sh
+cp -Rf /usr/local/code/.vimrc.local ~/
+vim +BundleClean +qall -y
