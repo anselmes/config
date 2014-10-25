@@ -74,5 +74,5 @@ git clone https://github.com/sanselme/dotfiles.git && cd dotfiles && ./sync.sh
 To update later on, just run the sync again.
 
 License
--------
+*******
 See LICENSE.txt file for more information

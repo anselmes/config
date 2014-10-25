@@ -34,6 +34,7 @@ git clone git://github.com/jeroenbegyn/VLCControl.git
 
 # gems
 gem install cocoapods
+gem install iesd
 
 # for the c alias (syntax highlighted cat)
 pip install Pygments
