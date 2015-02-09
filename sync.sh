@@ -2,7 +2,7 @@
 cd "$(dirname "$0")"
 git pull
 function doIt() {
-	rsync --exclude ".git/" --exclude "bin/" --exclude "SpotifyControl/" --exclude "VLCControl/" --exclude "z/" --exclude ".DS_Store" --exclude "brew.sh" --exclude "brew-optional.sh" --exclude "install-deps.sh" --exclude "sync.sh" --exclude "README.md" --exclude "LICENSE.txt" -av . ~
+	rsync --exclude ".git/" --exclude "bin/" --exclude "z/" --exclude ".DS_Store" --exclude "profile" --exclude "spf13-vim.sh" --exclude "brew.sh" --exclude "install-deps.sh" --exclude "sync.sh" --exclude "README.md" --exclude "LICENSE.txt" -av . ~
 }
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 	doIt
@@ -14,7 +14,7 @@ else
 	fi
 fi
 unset doIt
-source ~/.bash_profile
+source /etc/profile
 bash /usr/local/code/spf13-vim.sh
 cp -Rf /usr/local/code/.vimrc.local ~/
 vim +BundleClean +qall -y

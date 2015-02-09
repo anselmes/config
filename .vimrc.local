@@ -2,14 +2,14 @@
 
     set nofoldenable        " Disable auto fold code
     set nu                  " Enable line numbering
-    "set colorcolumn=80      " Enable colored column delimiter
+    set colorcolumn=115      " Enable colored column delimiter
     set tabstop=2           " Set tab width to 2
     set shiftwidth=2        " Set indents width to 2
     set softtabstop=2       " Set the number of columns for a TAB
     set smarttab
     set expandtab           " Expand TABs to spaces
 
-    "highlight ColorColumn ctermbg=233
+    highlight ColorColumn ctermbg=233
 
 " }
 

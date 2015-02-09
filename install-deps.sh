@@ -1,8 +1,5 @@
 # up to you (me) if you want to run this as a file or copy paste at your leisure
 
-# add global path
-sudo /bin/sh -c "echo 'export PATH=/usr/local/bin:/usr/local/sbin:$PATH' >> /etc/profile"
-
 # homebrew!
 # you need the code CLI tools YOU FOOL.
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -20,20 +17,9 @@ chmod +x /usr/local/code/z/z.sh
 # also consider moving over your current .z file if possible. it's painful to rebuild :)
 # z binary is already referenced from .bash_profile
 
-
-# https://github.com/dronir/SpotifyControl
-# Spotify Controll Script
-cd /usr/local/code
-git clone git://github.com/dronir/SpotifyControl.git
-
-# https://github.com/jeroenbegyn/VLCControl
-# VLC Controll Script
-cd /usr/local/code
-git clone git://github.com/jeroenbegyn/VLCControl.git
-
-
 # gems
 gem install cocoapods
+gem install iesd
 
 # for the c alias (syntax highlighted cat)
 pip install Pygments
@@ -45,3 +31,6 @@ npm install -g nave
 npm install -g yo
 npm install -g bower
 npm install -g gulp
+
+sudo cp -f ./profile /etc/profile
+sudo chmod 444 /etc/profile

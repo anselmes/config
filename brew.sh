@@ -13,9 +13,10 @@ echo "Don’t forget to add $(brew --prefix coreutils)/libexec/gnubin to \$PATH.
 brew install findutils
 # Install Bash 4
 brew install bash
+brew install bash-completion
 
 # Install wget with IRI support
-brew install wget --enable-iri
+brew install wget --with-iri
 
 # Install more recent versions of some OS X tools
 brew tap homebrew/dupes
