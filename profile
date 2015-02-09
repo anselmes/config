@@ -8,6 +8,52 @@ if [ "${BASH-no}" != "no" ]; then
   [ -r /etc/bashrc ] && . /etc/bashrc
 fi
 
+function gitinfo() {
+  # check if we're in a git repo
+  git rev-parse --is-inside-work-tree &>/dev/null || return
+
+  # quickest check for what branch we're on
+  branch=$(git symbolic-ref -q HEAD | sed -e 's|^refs/heads/||')
+
+  # check if it's dirty (via github.com/sindresorhus/pure)
+  dirty=$(git diff --quiet --ignore-submodules HEAD &>/dev/null; [ $? -eq 1 ]&& echo -e "*")
+
+  echo $WHITE" on "$PURPLE$branch$dirty
+}
+
+# Only show username/host if not default
+function usernamehost() {
+  if [ $USER != "$default_username" ]; then echo "${MAGENTA}$USER ${WHITE}at ${ORANGE}$HOSTNAME $WHITEin "; fi
+  }
+
+  # git log with per-commit cmd-clickable GitHub URLs (iTerm)
+  function gf() {
+    local remote="$(git remote -v | awk '/^origin.*\(push\)$/ {print $2}')"
+    [[ "$remote" ]] || return
+    local user_repo="$(echo "$remote" | perl -pe 's/.*://;s/\.git$//')"
+    git log $* --name-status --color | awk "$(cat << AWK
+    /^.*commit [0-9a-f]{40}/ {sha=substr(\$2,1,7)}
+    /^[MA]\t/ {printf "%s\thttps://github.com/$user_repo/blob/%s/%s\n", \$1, sha, \$2; next}
+    /.*/ {print \$0}
+    AWK
+    )" | less -F
+  }
+
+# Func to gen PS1 after CMDs
+function __prompt_command() {
+  local EXIT="$?"             # This needs to be first
+  MYPS1="\[\e[32;1m\](<textcolor>Last:$EXIT\[\e[32;1m\])-\[\e[32;1m\](<textcolor>jobs:\j\[\e[32;1m\])-(<textcolor>\w\[\e[32;1m\])\n\[\e[32;1m\](<textcolor>\$\[\e[32;1m\]) \[\e[0m\]"
+
+  if [ $(id -u) -eq 0 ];
+    then # you are root, set red text colour
+    textcolor="\[\e[1;31m\]"
+  else # yellow
+    textcolor="\[\e[1;33m\]"
+  fi
+  PS1=${MYPS1//<textcolor>/$textcolor}
+  # PS1="\[\e]2;$PWD\[\a\]\[\e]1;\]$(basename "$(dirname "$PWD")")/\W\[\a\]${BOLD}\$(usernamehost)\[$GREEN\]\w\$(gitinfo)\[$WHITE\]\n\$ \[$RESET\]"
+}
+
 #  ---------------------------------------------------------------------------
 #
 #  Description:  This file holds all my BASH configurations and aliases
@@ -35,20 +81,11 @@ export PATH=/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sb
 # Change prompt for all users
 export PROMPT_COMMAND=__prompt_command
 
-# Func to gen PS1 after CMDs
-function __prompt_command() {
-  local EXIT="$?"             # This needs to be first
-  MYPS1="\[\e[32;1m\](<textcolor>Last:$EXIT\[\e[32;1m\])-\[\e[32;1m\](<textcolor>jobs:\j\[\e[32;1m\])-(<textcolor>\w\[\e[32;1m\])\n\[\e[32;1m\](<textcolor>\$\[\e[32;1m\]) \[\e[0m\]"
+# init z   https://github.com/rupa/z
+. /usr/local/code/z/z.sh
 
-  if [ $(id -u) -eq 0 ];
-    then # you are root, set red text colour
-    textcolor="\[\e[1;31m\]"
-  else # yellow
-    textcolor="\[\e[1;33m\]"
-  fi
-  PS1=${MYPS1//<textcolor>/$textcolor}
-  #PS1="\[\e]2;$PWD\[\a\]\[\e]1;\]$(basename "$(dirname "$PWD")")/\W\[\a\]${BOLD}\$(usernamehost)\[$GREEN\]\w\$(gitinfo)\[$WHITE\]\n\$ \[$RESET\]"
-}
+# Case-insensitive globbing (used in pathname expansion)
+shopt -s nocaseglob
 
 # Prefer US English and use UTF-8
 export LC_ALL="en_US.UTF-8"
@@ -81,16 +118,11 @@ export HISTIGNORE="ls:ls *:cd:cd -:pwd;exit:date:* --help"
 
 #   Set Default Editor(change 'Nano' to the editor of your choice)
 #   ------------------------------------------------------------
-export EDITOR=$(which vi)
+export EDITOR=/usr/local/bin/vi
 
 #   -----------------------------
 #   2.  MAKE TERMINAL BETTER
 #   -----------------------------
-
-cdl() { builtin cd "$@"; ll; }               # Always list directory contents upon 'cd'
-md() { mkdir -p "$1" && cd "$1"; }        # mcd:          Makes new Dir and jumps inside
-trash() { command mv "$@" ~/.Trash ; }     # trash:        Moves a file to the MacOS trash
-ql() { qlmanage -p "$*" >& /dev/null; }    # ql:           Opens any file in MacOS Quicklook Preview
 
 alias cp='cp -iv'                           # Preferred 'cp' implementation
 alias mv='mv -iv'                           # Preferred 'mv' implementation
@@ -290,43 +322,13 @@ alias cleanupls="/System/Library/Frameworks/CoreServices.framework/Frameworks/La
 #   -----------------------------------------------------------------------------------
 alias screensaverdesktop='/System/Library/Frameworks/ScreenSaver.framework/Resources/ScreenSaverEngine.app/Contents/MacOS/ScreenSaverEngine -background'
 
-function gitinfo() {
-  # check if we're in a git repo
-  git rev-parse --is-inside-work-tree &>/dev/null || return
-
-  # quickest check for what branch we're on
-  branch=$(git symbolic-ref -q HEAD | sed -e 's|^refs/heads/||')
-
-  # check if it's dirty (via github.com/sindresorhus/pure)
-  dirty=$(git diff --quiet --ignore-submodules HEAD &>/dev/null; [ $? -eq 1 ]&& echo -e "*")
-
-  echo $WHITE" on "$PURPLE$branch$dirty
-}
-
-# Only show username/host if not default
-function usernamehost() {
-  if [ $USER != "$default_username" ]; then echo "${MAGENTA}$USER ${WHITE}at ${ORANGE}$HOSTNAME $WHITEin "; fi
-}
-
-# git log with per-commit cmd-clickable GitHub URLs (iTerm)
-function gf() {
-  local remote="$(git remote -v | awk '/^origin.*\(push\)$/ {print $2}')"
-  [[ "$remote" ]] || return
-  local user_repo="$(echo "$remote" | perl -pe 's/.*://;s/\.git$//')"
-  git log $* --name-status --color | awk "$(cat << AWK
-    /^.*commit [0-9a-f]{40}/ {sha=substr(\$2,1,7)}
-    /^[MA]\t/ {printf "%s\thttps://github.com/$user_repo/blob/%s/%s\n", \$1, sha, \$2; next}
-    /.*/ {print \$0}
-  AWK
-  )" | less -F
-}
 
 # Keep-alive: update existing `sudo` time stamp until `.osx` has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Reveal IP address, hostname, OS version, etc. when clicking the clock
 # in the login window
-sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
+#sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName
 
 # Restart automatically if the computer freezes
 # systemsetup -setrestartfreeze on

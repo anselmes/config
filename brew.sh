@@ -16,7 +16,11 @@ brew install bash
 brew install bash-completion
 
 # Install wget with IRI support
+<<<<<<< HEAD
 brew install wget --with-iri
+=======
+brew install wget —-with-iri
+>>>>>>> 42a02b534255d376bd958c792c6c35087ec1babd
 
 # Install more recent versions of some OS X tools
 brew tap homebrew/dupes
