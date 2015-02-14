@@ -16,5 +16,6 @@ fi
 unset doIt
 source /etc/profile
 bash /usr/local/code/spf13-vim.sh
-cp -Rf /usr/local/code/.vimrc.local ~/
+cp -rf /usr/local/code/.vimrc.local ~/
 vim +BundleClean +qall -y
+rm -f ~/spf13-vim.sh

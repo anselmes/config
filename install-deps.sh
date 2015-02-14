@@ -33,4 +33,5 @@ npm install -g bower
 npm install -g gulp
 
 sudo cp -f ./profile /etc/profile
-sudo chmod 444 /etc/profile
+sudo cp -rf ./profile.d /etc/profile.d
+sudo chmod -r 444 /etc/profile /etc/profile.d
