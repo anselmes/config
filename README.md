@@ -4,7 +4,7 @@
 
 ## install the necessary apps
 
-My basic setup is captured in `install-deps.sh` which adds homebrew, z, nave, etc.
+My basic setup is captured in `install-deps.sh` (`install-deps-el.sh` for EL) which adds homebrew (OS X only), z, nave, etc.
 
 ## private config
 
@@ -38,37 +38,34 @@ I recommend getting a [`.jshintrc`](https://github.com/jshint/node-jshint/blob/m
 ####  Automatic config
 * `.ackrc` - for ack (better than grep)
 * `.vimrc`, `.vim` - vim config, obv.
-* `brew.sh` - homebrew initialization
+* `brew.sh` - homebrew initialization (OS X only)
 * `spf13-vim.sh` - vim spf13
 
 #### shell environment
-* `.aliases`
-* `.bash_profile`
-* `.bash_prompt`
 * `.bashrc`
-* `.exports`
-* `.functions`
 * `.extra` - not included, explained above
 * `.vimrc.local` - local vimcr
+* `.profile`
+* `profile`
+* `profile-el`
+* `profile.d`
 
 #### manual run
-* `install-deps.sh` - random apps i need installed
-* `brew-optional.sh` - homebrew packages
-* `.osx` - run on a fresh osx machine
+* `install-deps.sh` - random apps I need installed (OS X)
+* `install-deps-el.sh` - random apps I need installed (EL)
+* `.osx` - run on a fresh OS X machine
 
 #### git, brah
 * `.git`
-* `.gitattributes`
 * `.gitconfig`
 * `.gitignore`
-
 * `.inputrc` - config for bash readline
 
 
 ## Installation
 
 ```bash
-git clone https://github.com/sanselme/dotfiles.git && cd dotfiles && ./sync.sh
+git clone https://github.com/sanselme/dotfiles.git && cd dotfiles && ./install-deps (./install-deps-el for EL) && ./sync.sh
 ```
 
 To update later on, just run the sync again.

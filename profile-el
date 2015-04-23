@@ -1,0 +1,95 @@
+# /etc/profile
+
+# System wide environment and startup programs, for login setup
+# Functions and aliases go in /etc/bashrc
+
+# It's NOT a good idea to change this file unless you know what you
+# are doing. It's much better to create a custom.sh shell script in
+# /etc/profile.d/ to make custom changes to your environment, as this
+# will prevent the need for merging in future updates.
+
+pathmunge() {
+    case ":${PATH}:" in
+        *:"$1":*)
+            ;;
+        *)
+            if [ "$2" = "after" ] ; then
+                PATH=$PATH:$1
+            else
+                PATH=$1:$PATH
+            fi
+    esac
+}
+
+
+if [ -x /usr/bin/id ]; then
+    if [ -z "$EUID" ]; then
+        # ksh workaround
+        EUID=`id -u`
+        UID=`id -ru`
+    fi
+    USER="`id -un`"
+    LOGNAME=$USER
+    MAIL="/var/spool/mail/$USER"
+fi
+
+# Path manipulation
+if [ "$EUID" = "0" ]; then
+    pathmunge /usr/sbin
+    pathmunge /usr/local/sbin
+else
+    pathmunge /usr/local/sbin after
+    pathmunge /usr/sbin after
+fi
+
+HOSTNAME=`/usr/bin/hostname 2>/dev/null`
+HISTSIZE=1000
+if [ "$HISTCONTROL" = "ignorespace" ] ; then
+    export HISTCONTROL=ignoreboth
+else
+    export HISTCONTROL=ignoredups
+fi
+
+PATH=/opt/Qt5.4.1/5.4/gcc_64/bin:$PATH
+export PATH USER LOGNAME MAIL HOSTNAME HISTSIZE HISTCONTROL
+
+# By default, we want umask to get set. This sets it for login shell
+# Current threshold for system reserved uid/gids is 200
+# You could check uidgid reservation validity in
+# /usr/share/doc/setup-*/uidgid file
+if [ $UID -gt 199 ] && [ "`id -gn`" = "`id -un`" ]; then
+    umask 002
+else
+    umask 022
+fi
+
+for i in /etc/profile.d/*.sh ; do
+    if [ -r "$i" ]; then
+        if [ "${-#*i}" != "$-" ]; then
+            . "$i"
+        else
+            . "$i" >/dev/null
+        fi
+    fi
+done
+
+# Func to gen PS1 after CMDs
+__prompt_command() {
+	local EXIT="$?"	# this needs to be first
+	MYPS1="\[\e[32;1m\](<textcolor>Last:$EXIT\[\e[32;1m\])-\[\e[32;1m\](<textcolor>jobs:\j\[\e[32;1m\])-(<textcolor>\w\[\e[32;1m\])\n\[\e[32;1m\](<textcolor>\$\[\e[32;1m\]) \[\e[0m\]"
+
+	if [ $(id -u) -eq 0 ]; then	# you are root, set red text color
+		textcolor="\[\e[1;31m\]"
+	else	# yellow
+		textcolor="\[\e[1;33m\]"
+	fi
+
+	# PS1=${MYPS1//<textcolor>/$textcolor}
+	PS1="\[\e]2;$PWD\[\a\]\[\e]1;\]$(basename "$(dirname "$PWD")")/\w\[\a\]${BOLD}\$(usernamehost)\[$GREEN\]\w\$(gitinfo)\[$WHITE\]\n\$ \[$RESET\]"
+}
+
+# Change prompt for all users
+export PROMPT_COMMAND=__prompt_command
+
+unset i
+unset -f pathmunge

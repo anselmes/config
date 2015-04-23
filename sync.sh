@@ -1,8 +1,8 @@
 #!/bin/bash
 cd "$(dirname "$0")"
 git pull
-function doIt() {
-	rsync --exclude ".git/" --exclude "bin/" --exclude "z/" --exclude ".DS_Store" --exclude "profile" --exclude "spf13-vim.sh" --exclude "brew.sh" --exclude "install-deps.sh" --exclude "sync.sh" --exclude "README.md" --exclude "LICENSE.txt" -av . ~
+doIt() {
+	rsync --exclude ".git/" --exclude "bin/" --exclude "profile.d/" --exclude "z/" --exclude ".DS_Store" --exclude "profile" --exclude "profile-el" --exclude "spf13-vim.sh" --exclude "brew.sh" --exclude "install-deps.sh" --exclude "install-deps-el.sh" --exclude "sync.sh" --exclude "README.md" --exclude "LICENSE.txt" -av . ~
 }
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 	doIt

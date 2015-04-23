@@ -17,6 +17,9 @@ if [ -d /etc/profile.d ]; then
   unset i
 fi
 
+# Path
+export PATH=/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:$PATH
+
 # Func to gen PS1 after CMDs
 function __prompt_command() {
   local EXIT="$?"             # This needs to be first
@@ -34,6 +37,3 @@ function __prompt_command() {
 
 # Change prompt for all users
 export PROMPT_COMMAND=__prompt_command
-
-# Path
-export PATH=/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:$PATH

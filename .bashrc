@@ -109,3 +109,13 @@ fi
 #if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 #    . /etc/bash_completion
 #fi
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# Load system profile
+if [ -f /etc/profile ]; then
+  . /etc/profile
+fi
