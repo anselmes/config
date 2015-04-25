@@ -1,9 +1,11 @@
 
 # color-grep initialization
 
-/usr/libexec/grepconf.sh -c
-if ( $status == 1 ) then
-    exit
+if [[ -f /usr/libexec/grepconf.sh ]]; then
+  /usr/libexec/grepconf.sh -c
+  if ( $status == 1 ) then
+      exit
+  endif
 endif
 
 alias grep 'grep --color=auto'

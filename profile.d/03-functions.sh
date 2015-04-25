@@ -1,20 +1,20 @@
 #   cdf:  'Cd's to frontmost window of MacOS Finder
 #   ------------------------------------------------------
-# cdf() {
-#   currFolderPath=$( /usr/bin/osascript << EOT
-#   tell application "Finder"
-#   try
-#   set currFolder to(folder of the front window as alias)
-#   on error
-#   set currFolder to(path to desktop folder as alias)
-#   end try
-#   POSIX path of currFolder
-#   end tell
-#   EOT
-#   )
-#   echo "cd to \"$currFolderPath\""
-#   cd "$currFolderPath"
-# }
+cdf() {
+  currFolderPath=$( /usr/bin/osascript << EOT
+  tell application "Finder"
+  try
+  set currFolder to(folder of the front window as alias)
+  on error
+  set currFolder to(path to desktop folder as alias)
+  end try
+  POSIX path of currFolder
+  end tell
+  EOT
+  )
+  echo "cd to \"$currFolderPath\""
+  cd "$currFolderPath"
+}
 
 #   extract:  Extract most know archives with one command
 #   ---------------------------------------------------------
@@ -32,7 +32,7 @@ extract() {
       *.zip)       unzip $1       ;;
       *.Z)         uncompress $1  ;;
       *.7z)        7z x $1        ;;
-      *)     echo "'$1' cannot be extracted via extract" ;;
+      *)     echo "'$1' cannot be extracted via extract()" ;;
     esac
   else
     echo "'$1' is not a valid file"
@@ -48,17 +48,17 @@ extract() {
 findpid() { lsof -t -c "$@" ; }
 
 # git log with per-commit cmd-clickable GitHub URLs (iTerm)
-# gf() {
-#   local remote="$(git remote -v | awk '/^origin.*\(push\)$/ {print $2}')"
-#   [[ "$remote" ]] || return
-#   local user_repo="$(echo "$remote" | perl -pe 's/.*://;s/\.git$//')"
-#   git log $* --name-status --color | awk "$(cat << AWK
-#   /^.*commit [0-9a-f]{40}/ {sha=substr(\$2,1,7)}
-#   /^[MA]\t/ {printf "%s\thttps://github.com/$user_repo/blob/%s/%s\n", \$1, sha, \$2; next}
-#   /.*/ {print \$0}
-#   AWK
-#   )" | less -F
-# }
+gf() {
+  local remote="$(git remote -v | awk '/^origin.*\(push\)$/ {print $2}')"
+  [[ "$remote" ]] || return
+  local user_repo="$(echo "$remote" | perl -pe 's/.*://;s/\.git$//')"
+  git log $* --name-status --color | awk "$(cat << AWK
+  /^.*commit [0-9a-f]{40}/ {sha=substr(\$2,1,7)}
+  /^[MA]\t/ {printf "%s\thttps://github.com/$user_repo/blob/%s/%s\n", \$1, sha, \$2; next}
+  /.*/ {print \$0}
+  AWK
+  )" | less -F
+}
 
 gitinfo() {
   # check if we're in a git repo

@@ -1,6 +1,8 @@
 # color-grep initialization
 
-/usr/libexec/grepconf.sh -c || return
+if [[ -f /usr/libexec/grepconf.sh ]]; then
+  /usr/libexec/grepconf.sh -c || return
+fi
 
 alias grep='grep --color=auto' 2>/dev/null
 alias egrep='egrep --color=auto' 2>/dev/null
