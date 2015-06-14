@@ -2,7 +2,7 @@
 
 # https://github.com/jamiew/git-friendly
 # the `push` command which copies the github compare URL to my clipboard is heaven
-bash < <( curl https://raw.github.com/jamiew/git-friendly/master/install.sh)
+curl https://raw.github.com/jamiew/git-friendly/master/install.sh | bash
 
 # https://github.com/rupa/z
 # z, oh how i love you
@@ -19,9 +19,9 @@ pip install Pygments
 # needs npm, obviously.
 # TODO: I think i'd rather curl down the nave.sh, symlink it into /bin and use that for initial node install.
 npm install -g nave
-npm install -g yo
-npm install -g bower
-npm install -g gulp
+#npm install -g yo
+#npm install -g bower
+#npm install -g gulp
 
 sudo cp -f ./profile-el /etc/profile
 sudo cp -f ./profile.d/* /etc/profile.d/

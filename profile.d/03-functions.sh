@@ -1,17 +1,7 @@
 #   cdf:  'Cd's to frontmost window of MacOS Finder
 #   ------------------------------------------------------
 cdf() {
-  currFolderPath=$( /usr/bin/osascript << EOT
-  tell application "Finder"
-  try
-  set currFolder to(folder of the front window as alias)
-  on error
-  set currFolder to(path to desktop folder as alias)
-  end try
-  POSIX path of currFolder
-  end tell
-  EOT
-  )
+  currFolderPath=$( /usr/bin/osascript << tell application "Finder" try set currFolder to(folder of the front window as alias) on error set currFolder to(path to desktop folder as alias) end try POSIX path of currFolder end tell)
   echo "cd to \"$currFolderPath\""
   cd "$currFolderPath"
 }
@@ -52,12 +42,7 @@ gf() {
   local remote="$(git remote -v | awk '/^origin.*\(push\)$/ {print $2}')"
   [[ "$remote" ]] || return
   local user_repo="$(echo "$remote" | perl -pe 's/.*://;s/\.git$//')"
-  git log $* --name-status --color | awk "$(cat << AWK
-  /^.*commit [0-9a-f]{40}/ {sha=substr(\$2,1,7)}
-  /^[MA]\t/ {printf "%s\thttps://github.com/$user_repo/blob/%s/%s\n", \$1, sha, \$2; next}
-  /.*/ {print \$0}
-  AWK
-  )" | less -F
+  git log $* --name-status --color | awk "$(cat << /^.*commit [0-9a-f]{40}/ {sha=substr(\$2,1,7)}/^[MA]\t/ {printf "%s\thttps://github.com/$user_repo/blob/%s/%s\n", \$1, sha, \$2; next}/.*/ {print \$0})" | less -F
 }
 
 gitinfo() {

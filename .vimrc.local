@@ -16,14 +16,15 @@
 " Plugins {
 
     let g:acp_enableAtStartup = 1                           " Disable AutoComplPop
-    let g:neocomplcache_enable_at_startup = 1               " Use neocomplcache
-    let g:neocomplcache_enable_auto_select = 1              " AutoComplPop like behavior
-    let g:neocomplcache_enable_smart_case = 1               " Use smartcase
-    let g:neocomplcache_enable_camel_case_completion = 1    " Use camel case completion
-    let g:neocomplcache_enable_underbar_completion = 1      " Use underbar completion
+    let g:neocomplete#enable_at_startup = 0               " Use neocomplcache
+    let g:neocomplete#enable_auto_select = 1              " AutoComplPop like behavior
+    let g:neocomplete#enable_smart_case = 1               " Use smartcase
+    let g:neocomplete#enable_camel_case_completion = 1    " Use camel case completion
+    let g:neocomplete#enable_underbar_completion = 1      " Use underbar completion
     let g:autoclose_loaded = 1
     let g:PIVAutoClose = 1
 
+    Bundle 'shougo/neocomplcache'
     UnBundle 'myusuf3/numbers.vim'
     UnBundle 'amirh/HTML-AutoCloseTag'
 
