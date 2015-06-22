@@ -25,4 +25,7 @@ npm install -g nave
 
 sudo cp -f ./profile-el /etc/profile
 sudo cp -f ./profile.d/* /etc/profile.d/
-sudo chmod -R 644 /etc/profile /etc/profile.d/*
+sudo chmod -R 644 /etc/profile
+sudo chmod -R 755 /etc/profile.d
+
+. /etc/profile

@@ -34,5 +34,7 @@ npm install -g gulp
 
 sudo cp -f ./profile /etc/profile
 sudo cp -Rf ./profile.d /etc/profile.d
-sudo chmod -f 755 /etc/profile.d
-sudo chmod -R 644 /etc/profile /etc/profile.d
+sudo chmod -R 644 /etc/profile
+sudo chmod -R 755 /etc/profile.d
+
+. /etc/profile
