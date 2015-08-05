@@ -94,4 +94,3 @@ export PROMPT_COMMAND=__prompt_command
 unset i
 unset -f pathmunge
 
-source /usr/local/code/z/z.sh

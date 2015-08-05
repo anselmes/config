@@ -39,4 +39,3 @@ function __prompt_command() {
 # Change prompt for all users
 export PROMPT_COMMAND=__prompt_command
 
-. /usr/local/code/z/z.sh

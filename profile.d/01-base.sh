@@ -33,4 +33,4 @@ fi
 complete -W "NSGlobalDomain" defaults
 
 # init z   https://github.com/rupa/z
-. /usr/local/code/z/z.sh
+source /usr/local/code/z/z.sh
