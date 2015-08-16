@@ -13,7 +13,7 @@ chmod +x /usr/local/code/z/z.sh
 # z binary is already referenced from .bash_profile
 
 # for the c alias (syntax highlighted cat)
-pip install Pygments
+pip install -U Pygments
 
 # https://github.com/isaacs/nave
 # needs npm, obviously.

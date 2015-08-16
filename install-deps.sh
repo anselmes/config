@@ -22,7 +22,7 @@ gem install cocoapods
 gem install iesd
 
 # for the c alias (syntax highlighted cat)
-pip install Pygments
+pip install -U Pygments
 
 # https://github.com/isaacs/nave
 # needs npm, obviously.
