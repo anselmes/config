@@ -13,5 +13,8 @@ Thumbs.db
 .Spotlight-V100
 .Trashes
 
+# Log files
+*lo[g|gs]
+
 # Miscellaneous
 z/
