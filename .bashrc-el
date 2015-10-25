@@ -91,7 +91,7 @@ fi
 
 # some more ls aliases
 alias ll='ls -alF  --color=auto'
-alias la='ls -A  --color=auto'
+alias la='ls -Al  --color=auto'
 alias l='ls -CF  --color=auto'
 
 # Alias definitions.
