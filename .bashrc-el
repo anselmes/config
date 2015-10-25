@@ -118,3 +118,8 @@ fi
 if [ -f /etc/profile ]; then
   . /etc/profile
 fi
+
+# init z   https://github.com/rupa/z
+if [ -f /usr/local/code/z/z.sh ]; then
+  . /usr/local/code/z/z.sh
+fi

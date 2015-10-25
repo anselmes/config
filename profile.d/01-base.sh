@@ -31,6 +31,3 @@ fi
 # Add tab completion for `defaults read|write NSGlobalDomain`
 # You could just use `-g` instead, but I like being explicit
 complete -W "NSGlobalDomain" defaults
-
-# init z   https://github.com/rupa/z
-source /usr/local/code/z/z.sh
