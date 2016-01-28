@@ -20,10 +20,13 @@ brew install wget --with-iri
 
 # Install more recent versions of some OS X tools
 brew tap homebrew/dupes
-brew install homebrew/dupes/grep
+brew tap caskroom/unofficial
 brew tap homebrew/versions
+brew tap caskroom/fonts
+brew tap caskroom/cask
 brew tap homebrew/homebrew-php
 brew tap josegonzalez/homebrew-php
+brew install homebrew/dupes/grep
 
 # Install everything else
 brew install ack
@@ -46,3 +49,8 @@ brew cleanup
 
 # link apps
 brew linkapps
+
+# Brew Cask
+brew cask update
+brew cask upgrade
+brew cask cleanup
