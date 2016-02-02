@@ -12,32 +12,41 @@ echo "Don’t forget to add $(brew --prefix coreutils)/libexec/gnubin to \$PATH.
 # Install GNU `find`, `locate`, `updatedb`, and `xargs`, g-prefixed
 brew install findutils
 # Install Bash 4
-brew install bash
-brew install bash-completion
+brew install bash bash-completion
 
 # Install wget with IRI support
 brew install wget --with-iri
 
 # Install more recent versions of some OS X tools
-brew tap homebrew/dupes
-brew tap caskroom/unofficial
-brew tap homebrew/versions
-brew tap caskroom/fonts
-brew tap caskroom/cask
-brew tap homebrew/homebrew-php
-brew tap josegonzalez/homebrew-php
+brew tap homebrew/dupes\
+  caskroom/unofficial\
+  homebrew/versions\
+  caskroom/fonts\
+  caskroom/cask\
+  homebrew/homebrew-php\
+  josegonzalez/homebrew-php
 brew install homebrew/dupes/grep
 
 # Install everything else
-brew install ack
-brew install git
-brew install rename
-brew install tree
-brew install python
-brew install python3
-brew install ruby
-brew install node
-brew install vim
+brew install ack\
+  git\
+  rename\
+  tree\
+  python\
+  python3\
+  ruby\
+  node\
+  vim\
+  swift\
+  ssh-copy-id
+
+# Cask
+brew cask install flash
+  java9-beta\
+  silverlight\
+  xquartz-beta
+# brew cask install java
+# brew cask install xquartz
 
 # update setuptools, pip and pip3
 pip install --upgrade setuptools
@@ -52,5 +61,4 @@ brew linkapps
 
 # Brew Cask
 brew cask update
-brew cask upgrade
 brew cask cleanup

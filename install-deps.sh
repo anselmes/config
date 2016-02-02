@@ -28,9 +28,9 @@ pip install -U Pygments
 # needs npm, obviously.
 # TODO: I think i'd rather curl down the nave.sh, symlink it into /bin and use that for initial node install.
 npm install -g nave
-npm install -g yo
-npm install -g bower
-npm install -g gulp
+# npm install -g yo
+# npm install -g bower
+# npm install -g gulp
 
 sudo cp -f ./profile /etc/profile
 sudo cp -Rf ./profile.d /etc/profile.d
