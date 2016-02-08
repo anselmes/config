@@ -1,9 +1,12 @@
+#!/usr/bin/env bash
 # up to you (me) if you want to run this as a file or copy paste at your leisure
 
 # homebrew!
 # you need the code CLI tools YOU FOOL.
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 bash /usr/local/code/brew.sh
+# bash /usr/local/code/brew-add.sh
+# bash /usr/local/code/osx.sh
 
 # https://github.com/jamiew/git-friendly
 # the `push` command which copies the github compare URL to my clipboard is heaven

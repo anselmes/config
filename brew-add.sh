@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 # Docker
 brew install xhyve docker\
   docker-swarm\

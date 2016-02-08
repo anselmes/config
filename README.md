@@ -21,6 +21,8 @@ I recommend getting a [`.jshintrc`](https://github.com/jshint/node-jshint/blob/m
 * `.ackrc` - for ack (better than grep)
 * `.vimrc`, `.vim` - vim config
 * `brew.sh` - homebrew initialization (OS X only)
+* `brew-add.sh` - additional brews (OS X only)
+* `osx.sh` - some OS X settings (OS X only)
 * `spf13-vim.sh` - vim spf13
 
 #### Shell environment
@@ -34,6 +36,8 @@ I recommend getting a [`.jshintrc`](https://github.com/jshint/node-jshint/blob/m
 
 #### Manual run
 * `install-deps.sh` - random apps I need installed (OS X)
+* `brew-add.sh` - additional brews (Optional - OS X)
+* `osx.sh` - OS X settings (Optional - OS X)
 * `install-deps-el.sh` - random apps I need installed (EL)
 
 #### Git
@@ -45,7 +49,7 @@ I recommend getting a [`.jshintrc`](https://github.com/jshint/node-jshint/blob/m
 ## Installation
 
 ```bash
-git clone https://github.com/sanselme/dotfiles.git && cd dotfiles && ./install-deps (./install-deps-el for EL) && ./sync.sh
+git clone https://github.com/sanselme/dotfiles.git && cd dotfiles && ./install-deps (./install-deps-el for EL) && ./sync.sh (./sync.sh for EL)
 ```
 
 To update later on, just run the sync again.
