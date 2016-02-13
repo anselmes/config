@@ -54,6 +54,8 @@ docker-build() {
   fi
 }
 
-if [[ $(docker-machine status) == 'Running' ]]; then
-  eval $(docker-machine env)
+if [[ $(which docker-machine) ]]; then
+  if [[ $(docker-machine status) == 'Running' ]]; then
+    eval $(docker-machine env)
+  fi
 fi
