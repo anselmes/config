@@ -88,3 +88,8 @@ defaults write com.apple.dock wvous-bl-modifier -int 0
 
 # Prevents Safari from opening files automatically after downloading
 defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+
+# Configure XQuartz to accept network connections
+# and not to open XTerm every time
+defaults write org.macosforge.xquartz.X11 nolisten_tcp 0
+defaults write org.macosforge.xquartz.X11 app_to_run /usr/bin/true
