@@ -53,3 +53,7 @@ docker-build() {
     echo "$LOG" | less
   fi
 }
+
+if [[ $(docker-machine status) == 'Running' ]]; then
+  eval $(docker-machine env)
+fi
