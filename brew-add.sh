@@ -35,11 +35,11 @@ brew cask\
   skype\
   slack\
   teamviewer\
-  transmit\
   tranmission-nightly\
   virtualbox\
   virtualbox-extension-pack\
   vmware-fusion\
+  wireshark\
   wwdc
 brew cask install atom-beta
 brew cask install vlc-nightly
