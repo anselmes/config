@@ -33,7 +33,6 @@ brew cask\
   megasync\
   private-internet-access\
   skype\
-  slack\
   teamviewer\
   tranmission-nightly\
   virtualbox\
