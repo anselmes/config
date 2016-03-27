@@ -7,7 +7,7 @@ brew upgrade
 
 # Install GNU core utilities (those that come with OS X are outdated)
 brew install coreutils
-echo "Don’t forget to add $(brew --prefix coreutils)/libexec/gnubin to \$PATH."
+echo "Don’t forget to add $(brew --prefix coreutils)/libexec/gnubin to  \$PATH."
 # Install GNU `find`, `locate`, `updatedb`, and `xargs`, g-prefixed
 brew install findutils
 # Install Bash 4
@@ -17,35 +17,33 @@ brew install bash bash-completion
 brew install wget --with-iri
 
 # Install more recent versions of some OS X tools
-brew tap homebrew/dupes\
-  caskroom/unofficial\
-  homebrew/versions\
-  caskroom/fonts\
-  caskroom/cask\
-  homebrew/homebrew-php\
+brew tap homebrew/dupes \
+  caskroom/unofficial \
+  homebrew/versions \
+  caskroom/fonts \
+  caskroom/cask \
+  homebrew/homebrew-php \
   josegonzalez/homebrew-php
 brew install homebrew/dupes/grep
 
 # Install everything else
-brew install ack\
-  git\
-  rename\
-  tree\
-  python\
-  python3\
-  ruby\
-  node\
-  vim\
-  swift\
+brew install ack \
+  git \
+  rename \
+  tree \
+  python \
+  python3 \
+  ruby \
+  node \
+  vim \
+  swift \
   ssh-copy-id
 
 # Cask
 brew cask install flash
-  java9-beta\
-  silverlight\
-  xquartz-beta
-# brew cask install java
-# brew cask install xquartz
+  java \
+  silverlight \
+  xquartz
 
 # update setuptools, pip and pip3
 pip install --upgrade setuptools
