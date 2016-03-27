@@ -32,10 +32,9 @@ function __prompt_command() {
   else # yellow
     textcolor="\[\e[1;33m\]"
   fi
-  # PS1=${MYPS1//<textcolor>/$textcolor}
+  #PS1=${MYPS1//<textcolor>/$textcolor}
   PS1="\[\e]2;$PWD\[\a\]\[\e]1;\]$(basename "$(dirname "$PWD")")/\W\[\a\]${BOLD}\$(usernamehost)\[$GREEN\]\w\$(gitinfo)\[$WHITE\]\n\$ \[$RESET\]"
 }
 
 # Change prompt for all users
 export PROMPT_COMMAND=__prompt_command
-

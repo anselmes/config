@@ -10,8 +10,8 @@ if ( $?USER_LS_COLORS ) then
   endif
 endif
 
-alias ll 'ls -l'
-alias l. 'ls -d .*'
+#alias ll 'ls -l'
+#alias l. 'ls -d .*'
 set COLORS=/etc/DIR_COLORS
 
 if ($?TERM) then
@@ -55,6 +55,6 @@ unset INCLUDE
 unset COLORS
 
 finish:
-alias ll 'ls -l --color=auto'
-alias l. 'ls -d .* --color=auto'
-alias ls 'ls --color=auto'
+#alias ll 'ls -l --color=auto'
+#alias l. 'ls -d .* --color=auto'
+#alias ls 'ls --color=auto'

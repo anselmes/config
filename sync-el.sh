@@ -2,7 +2,7 @@
 cd "$(dirname "$0")"
 git pull
 doIt() {
-	rsync --exclude ".git/" --exclude "bin/" --exclude "profile.d/" --exclude "z/" --exclude ".DS_Store" --exclude ".bashrc" --exclude "profile" --exclude "profile-el" --exclude "spf13-vim.sh" --exclude "brew.sh" --exclude "install-deps.sh" --exclude "install-deps-el.sh" --exclude "sync.sh" --exclude "README.md" --exclude "LICENSE.txt" -av . ~
+	rsync --exclude ".git/" --exclude "bin/" --exclude "profile.d/" --exclude "z/" --exclude ".DS_Store" --exclude ".bashrc" --exclude "profile" --exclude "profile-el" --exclude "spf13-vim.sh" --exclude "brew.sh" --exclude "brew-add.sh" --exclude "osx.sh" --exclude "install-deps.sh" --exclude "install-deps-el.sh" --exclude "sync.sh" --exclude "README.md" --exclude "LICENSE.txt" -av . ~
   mv ~/.bashrc-el ~/.bashrc
 }
 if [ "$1" == "--force" -o "$1" == "-f" ]; then

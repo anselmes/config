@@ -97,7 +97,7 @@ spotlight() { mdfind "kMDItemDisplayName == '$@'wc"; }
 
 # Only show username/host if not default
 usernamehost() {
-  if [ $USER != "$default_username" ]; then echo "${MAGENTA}$USER ${WHITE}at ${ORANGE}$HOSTNAME $WHITEin "; fi
+  if [ $USER != "$default_username" ]; then echo "${MAGENTA}$USER${WHITE}@${ORANGE}$HOSTNAME${WHITE}in "; fi
 }
 
 cdl() { builtin cd "$@"; ll; }  # Always list directory contents upon 'cd'
