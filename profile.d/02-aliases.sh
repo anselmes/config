@@ -29,8 +29,8 @@ alias cleanupds="find . -type f -name '*.DS_Store' -ls -delete"
 #   finderShowHidden:   Show hidden files in Finder
 #   finderHideHidden:   Hide hidden files in Finder
 #   -------------------------------------------------------------------
-alias findershowhidden='defaults write com.apple.finder ShowAllFiles TRUE'
-alias finderhidehidden='defaults write com.apple.finder ShowAllFiles FALSE'
+alias findershowhidden='defaults write com.apple.finder AppleShowAllFiles TRUE; killall Finder'
+alias finderhidehidden='defaults write com.apple.finder AppleShowAllFiles FALSE; killall Finder'
 
 #   cleanupLS:  Clean up LaunchServices to remove duplicates in the "Open With" menu
 #   -----------------------------------------------------------------------------------
