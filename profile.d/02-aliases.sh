@@ -43,8 +43,8 @@ alias screensaverdesktop='/System/Library/Frameworks/ScreenSaver.framework/Resou
 alias cp='cp -iv'                           # Preferred 'cp' implementation
 alias mv='mv -iv'                           # Preferred 'mv' implementation
 alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
-alias ll='ls -Fl  --color=auto'            # Preferred 'ls' implementation
-alias la='ls -Al  --color=auto'
+alias ll='ls -Flh  --color=auto'            # Preferred 'ls' implementation
+alias la='ls -Alh  --color=auto'
 alias l='ls -CF  --color=auto'
 alias lsd='ls -l | grep "^d"'               # List only directories
 alias less='less -FSRXc'                    # Preferred 'less' implementation
@@ -63,7 +63,8 @@ alias fix_stty='stty sane'                  # fix_stty:     Restore terminal set
 alias cic='set completion-ignore-case On'   # cic:          Make tab-completion case-insensitive
 alias DT='tee ~/Desktop/terminalOut.txt'    # DT:           Pipe content to file on MacOS Desktop
 alias sshkey="cat ~/.ssh/id_rsa.pub | pbcopy && echo 'Copied to clipboard.'"
-alias c='pygmentize -O style=monokai -f console256 -g'alias which='type -all'                     # which:        Find executables
+alias c='pygmentize -O style=monokai -f console256 -g'
+# alias which='type -all'                     # which:        Find executables
 alias numFiles='echo $(ls -1 | wc -l)'      # numFiles:     Count of non-hidden files in current dir
 alias make1mb='mkfile 1m ./1MB.dat'         # make1mb:      Creates a file of 1mb size(all zeros)
 alias make5mb='mkfile 5m ./5MB.dat'         # make5mb:      Creates a file of 5mb size(all zeros)

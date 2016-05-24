@@ -18,8 +18,9 @@ if [ -d /etc/profile.d ]; then
 fi
 
 # Path
-export PATH=/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:$PATH
-export MANPATH=/usr/local/opt/coreutils/libexec/gnuman:$MANPATH
+export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:/opt/X11/bin:$PATH
+# export PATH=/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:/opt/X11/bin:$PATH
+# export MANPATH=/usr/local/opt/coreutils/libexec/gnuman:$MANPATH
 
 # Func to gen PS1 after CMDs
 function __prompt_command() {
