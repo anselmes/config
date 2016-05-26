@@ -15,8 +15,8 @@
 
 " Plugins {
 
-    let g:acp_enableAtStartup = 1                           " Disable AutoComplPop
-    let g:neocomplete#enable_at_startup = 0               " Use neocomplcache
+    let g:acp_enableAtStartup = 1                         " Disable AutoComplPop
+    let g:neocomplete#enable_at_startup = 1               " Use neocomplcache
     let g:neocomplete#enable_auto_select = 1              " AutoComplPop like behavior
     let g:neocomplete#enable_smart_case = 1               " Use smartcase
     let g:neocomplete#enable_camel_case_completion = 1    " Use camel case completion
@@ -24,7 +24,7 @@
     let g:autoclose_loaded = 1
     let g:PIVAutoClose = 1
 
-    Bundle 'shougo/neocomplcache'
+    Bundle 'Swift-ATE-Syntax'
     UnBundle 'myusuf3/numbers.vim'
     UnBundle 'amirh/HTML-AutoCloseTag'
 
@@ -101,17 +101,5 @@
         vmap <D-j> <M-j>
         vmap <D-j> <M-k>
     endif
-
-    " neocomplcache
-    inoremap <expr><C-Space> pumvisible()?"\<C-Space>":"<C-n>"
-    inoremap <C-k> <Plug>(neocomplcache_snippets_expand)
-    smap <C-k> <Plug>(neocomplcache_snippets_expand)
-    inoremap <expr><C-g> neocomplcache#undo_completion()
-    inoremap <expr><C-l> neocomplcache#complete_common_string()
-    inoremap <expr><CR> neocomplcache#smart_close_popup()."\<CR>"
-    inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-    inoremap <expr><C-y> neocomplcache#close_popup()
-    inoremap <expr><C-e> neocomplcache#cancel_popup()
 
 " }
