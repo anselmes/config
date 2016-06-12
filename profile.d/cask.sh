@@ -9,7 +9,7 @@ action() {
     if [[ -n ${apptocheck} ]]; then
       case $1 in
         outdated) echo ${app};;
-        update)brew cask install --force ${app};;
+        update)brew cask uninstall ${app} && brew cask install --force ${app};;
         *) break;;
       esac
     fi
