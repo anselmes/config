@@ -21,7 +21,7 @@ chmod +x /usr/local/code/z/z.sh
 # z binary is already referenced from .bash_profile
 
 # gems
-gem install cocoapods
+#gem install cocoapods
 gem install iesd
 
 # for the c alias (syntax highlighted cat)
@@ -30,7 +30,7 @@ pip install -U Pygments
 # https://github.com/isaacs/nave
 # needs npm, obviously.
 # TODO: I think i'd rather curl down the nave.sh, symlink it into /bin and use that for initial node install.
-npm install -g nave
+#npm install -g nave
 # npm install -g yo
 # npm install -g bower
 # npm install -g gulp

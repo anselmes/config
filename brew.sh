@@ -6,37 +6,40 @@ brew update
 brew upgrade
 
 # Install GNU core utilities (those that come with OS X are outdated)
-brew install coreutils
-echo "Don’t forget to add $(brew --prefix coreutils)/libexec/gnubin to  \$PATH."
+#brew install coreutils
+#echo "Don’t forget to add $(brew --prefix coreutils)/libexec/gnubin to  \$PATH."
 # Install GNU `find`, `locate`, `updatedb`, and `xargs`, g-prefixed
-brew install findutils
+#brew install findutils
 # Install Bash 4
-brew install bash bash-completion
+brew install \
+#  bash \
+  bash-completion
 
 # Install wget with IRI support
 brew install wget --with-iri
 
 # Install more recent versions of some OS X tools
 brew tap homebrew/dupes \
-  caskroom/unofficial \
+  alehouse/homebrew-unofficial \
   homebrew/versions \
   caskroom/fonts \
   caskroom/cask \
   homebrew/homebrew-php \
   josegonzalez/homebrew-php
-brew install homebrew/dupes/grep
+#brew install homebrew/dupes/grep
 
 # Install everything else
-brew install ack \
-  git \
-  rename \
-  tree \
-  python \
-  python3 \
-  ruby \
-  node \
-  vim \
-  swift \
+brew install \
+#  ack \
+#  git \
+#  rename \
+#  tree \
+#  python \
+#  python3 \
+#  ruby \
+#  node \
+#  vim \
+#  swift \
   ssh-copy-id
 
 # Cask
@@ -48,7 +51,7 @@ brew cask install flash
 # update setuptools, pip and pip3
 pip install --upgrade setuptools
 pip install --upgrade pip
-pip3 install --upgrade pip
+#pip3 install --upgrade pip
 
 # Remove outdated versions from the cellar
 brew cleanup

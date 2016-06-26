@@ -43,9 +43,9 @@ alias screensaverdesktop='/System/Library/Frameworks/ScreenSaver.framework/Resou
 alias cp='cp -iv'                           # Preferred 'cp' implementation
 alias mv='mv -iv'                           # Preferred 'mv' implementation
 alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
-alias ll='ls -Flh  --color=auto'            # Preferred 'ls' implementation
-alias la='ls -Alh  --color=auto'
-alias l='ls -CF  --color=auto'
+alias ll='ls -FlhG'            # Preferred 'ls' implementation
+alias la='ls -AlhG'
+alias l='ls -CFG'
 alias lsd='ls -l | grep "^d"'               # List only directories
 alias less='less -FSRXc'                    # Preferred 'less' implementation
 alias cd..='cd ../'                         # Go back 1 directory level(for fast typers)
