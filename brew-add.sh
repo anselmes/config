@@ -18,8 +18,7 @@ brew install apm-bash-completion \
 #  ruby-completion
 
 # Cask apps
-brew cask \
-  install \
+brew cask install \
   anylist \
   appcleaner \
   atom \
@@ -36,7 +35,8 @@ brew cask \
   skype \
   teamviewer \
   tranmission \
-  vlc \
+  mplayerx
+#  vlc \
 #  virtualbox \
 #  virtualbox-extension-pack \
   vmware-fusion \
