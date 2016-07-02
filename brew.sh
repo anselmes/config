@@ -12,8 +12,8 @@ brew upgrade
 #brew install findutils
 # Install Bash 4
 brew install \
-#  bash \
-  bash-completion
+ bash \
+ bash-completion
 
 # Install wget with IRI support
 brew install wget --with-iri
@@ -30,17 +30,17 @@ brew tap homebrew/dupes \
 
 # Install everything else
 brew install \
+  ssh-copy-id
+  git --with-brewed-openssl \
+  tree \
 #  ack \
-#  git \
 #  rename \
-#  tree \
 #  python \
 #  python3 \
 #  ruby \
 #  node \
 #  vim \
 #  swift \
-  ssh-copy-id
 
 # Cask
 brew cask install flash

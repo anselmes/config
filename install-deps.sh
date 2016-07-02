@@ -6,7 +6,7 @@
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 bash /usr/local/code/brew.sh
 # bash /usr/local/code/brew-add.sh
-# bash /usr/local/code/osx.sh
+# bash /usr/local/code/macos.sh
 
 # https://github.com/jamiew/git-friendly
 # the `push` command which copies the github compare URL to my clipboard is heaven

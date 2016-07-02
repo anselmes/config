@@ -7,13 +7,16 @@
 #  docker-machine-driver-xhyve
 
 # Bash Completion
-brew install apm-bash-completion \
+brew install \
+  apm-bash-completion \
   bash-completion \
   brew-cask-completion \
+  launchctl-completion \
+  open-completion \
+  pip-completion \
 #  docker-completion \
 #  docker-machine-completion \
 #  gem-completion \
-#  pip-completion \
 #  ruby-completion \
 #  ruby-completion
 
@@ -27,21 +30,21 @@ brew cask install \
   firefox \
   flux \
   google-drive \
-#  google-earth-web-plugin \
   hosts \
-#  kodi \
   megasync \
-#  private-internet-access \
   skype \
   teamviewer \
   tranmission \
   mplayerx
-#  vlc \
-#  virtualbox \
-#  virtualbox-extension-pack \
   vmware-fusion \
   wireshark \
   wwdc
+#  google-earth-web-plugin \
+#  kodi \
+#  private-internet-access \
+#  vlc \
+#  virtualbox \
+#  virtualbox-extension-pack \
 
 # Brew Cask
 brew cask update

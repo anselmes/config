@@ -22,7 +22,7 @@ I recommend getting a [`.jshintrc`](https://github.com/jshint/node-jshint/blob/m
 * `.vimrc`, `.vim` - vim config
 * `brew.sh` - homebrew initialization (OS X only)
 * `brew-add.sh` - additional brews (OS X only)
-* `osx.sh` - some OS X settings (OS X only)
+* `macos.sh` - some OS X settings (OS X only)
 * `spf13-vim.sh` - vim spf13
 
 #### Shell environment
@@ -37,7 +37,7 @@ I recommend getting a [`.jshintrc`](https://github.com/jshint/node-jshint/blob/m
 #### Manual run
 * `install-deps.sh` - random apps I need installed (OS X)
 * `brew-add.sh` - additional brews (Optional - OS X)
-* `osx.sh` - OS X settings (Optional - OS X)
+* `macos.sh` - OS X settings (Optional - OS X)
 * `install-deps-el.sh` - random apps I need installed (EL)
 
 #### Git
