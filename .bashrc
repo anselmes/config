@@ -75,14 +75,14 @@ if [ -f $(brew --prefix)/etc/bash_completion ]; then
     . $(brew --prefix)/etc/bash_completion
 fi
 
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
-fi
-
 # Load system profile
 if [ -f /etc/profile ]; then
   . /etc/profile
+fi
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
 fi
 
 # init z   https://github.com/rupa/z
