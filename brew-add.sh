@@ -1,10 +1,4 @@
 #!/usr/bin/env bash
-# Docker
-#brew install xhyve docker \
-#  docker-swarm \
-#  docker-machine \
-#  docker-compose \
-#  docker-machine-driver-xhyve
 
 # Bash Completion
 brew install \
@@ -14,8 +8,6 @@ brew install \
   launchctl-completion \
   open-completion \
   pip-completion \
-#  docker-completion \
-#  docker-machine-completion \
 #  gem-completion \
 #  ruby-completion \
 #  ruby-completion
@@ -29,22 +21,23 @@ brew cask install \
   dropbox \
   firefox \
   flux \
+  gitkraken \
   google-drive \
+  hirundo \
   hosts \
+  kitematic \
+  kodi \
   megasync \
+  pgadmin3 \
+  robomongo \
+  sequel-pro \
   skype \
   teamviewer \
   tranmission \
-  mplayerx
+  vlc \
   vmware-fusion \
   wireshark \
   wwdc
-#  google-earth-web-plugin \
-#  kodi \
-#  private-internet-access \
-#  vlc \
-#  virtualbox \
-#  virtualbox-extension-pack \
 
 # Brew Cask
 brew cask update
