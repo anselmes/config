@@ -1,6 +1,32 @@
-#!/usr/bin/env bash
-apm install unity-ui
+#!/usr/env/bin bash
 
+# install deps
+brew install sourcekitten watchman
+pip install flake8 yapf
+
+# install nuclide
+apm install nuclide
+
+# install themes
+apm install \
+  genesis-ui \
+  unity-ui
+
+# install packages
+apm install \
+  haskell-grammar \
+  highlight-selected \
+  language-babel \
+  language-ini \
+  language-ocaml \
+  language-swift \
+  language-thrift \
+  merge-conflicts \
+  nuclide-format-js \
+  sort-lines \
+  tool-bar
+
+# extra packages
 apm install \
   advanced-open-file \
   atom-beautify \
@@ -8,36 +34,34 @@ apm install \
   color-picker \
   docblockr \
   emmet \
-  expose \
   file-icons \
   git-plus \
-  gitignore-snippets \
-  hex \
   language-docker \
   language-ignore \
-  language-swift \
+  language-pug \
   language-vue \
-  linter \
+  linter-csslint \
   linter-docker \
-  linter-golinter \
+  linter-golint \
+  linter-htmlhint \
   linter-js-yaml \
   linter-jscs \
   linter-jsonlint \
   linter-markdown \
-  linter-pylint \
+  linter-pug \
   linter-ruby \
   linter-scss-lint \
   linter-swiftc \
-  linter-tidy \
-  open-in-browser \
   pigments \
   python-isort \
-  react \
   regex-railroad-diagram \
-  sort-lines \
-  terminal-plus \
+  tidy-markdown \
   todo-show \
-  tool-bar \
-  tool-bar-atom \
-  travis-ci-status \
-  tree-view-git-status \
+  tree-view-git-status
+
+# installing custom packages
+apm install \
+  https://github.com/sanselme/snips
+
+# copying config and keymap
+cp -f ./*.cson ~/.atom/
