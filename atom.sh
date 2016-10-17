@@ -38,6 +38,7 @@ apm install \
   git-plus \
   language-docker \
   language-ignore \
+  language-protobuf \
   language-pug \
   language-vue \
   linter-csslint \
