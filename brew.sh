@@ -20,27 +20,27 @@ brew install wget --with-iri
 
 # Install more recent versions of some OS X tools
 brew tap \
-  homebrew/dupes \
   alehouse/homebrew-unofficial \
-  homebrew/versions \
-  caskroom/fonts \
   caskroom/cask \
+  caskroom/fonts \
+  homebrew/dupes \
   homebrew/homebrew-php \
+  homebrew/versions \
   josegonzalez/homebrew-php
 #brew install homebrew/dupes/grep
 
 # Install everything else
 brew install \
-  ssh-copy-id \
   git --with-brewed-openssl \
+  ssh-copy-id \
   tree \
+  node --with-{debug,full-icu,openssl} \
+  python --with-{berkely-db4,poll,tcl-tk,sphinx-doc} \
+  python3 --with-{tcl-tk,sphinx-doc} \
+  ruby --with-{doc,gdbm,libffi,tcltk} \
+  vim
 #  ack \
 #  rename \
- python --with-{berkely-db4,poll,tcl-tk,sphinx-doc} \
- python3 --with-{tcl-tk,sphinx-doc} \
- ruby --with-{doc,gdbm,libffi,tcltk} \
- node --with-{debug,full-icu,openssl} \
- vim \
 #  swift \
 
 # Cask

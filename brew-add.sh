@@ -3,7 +3,6 @@
 # Bash Completion
 brew install \
   apm-bash-completion \
-  bash-completion \
   brew-cask-completion \
   launchctl-completion \
   open-completion \
@@ -18,17 +17,19 @@ brew cask install \
   appcleaner \
   atom \
   batchmod \
+  # docker \
   dropbox \
   firefox \
   flux \
-  gitkraken \
   google-drive \
   hirundo \
   hosts \
   kitematic \
   kodi \
   megasync \
+  owncloud \
   pgadmin3 \
+  protobuf-swift \
   robomongo \
   sequel-pro \
   skype \
