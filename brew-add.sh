@@ -17,7 +17,7 @@ brew cask install \
   appcleaner \
   atom \
   batchmod \
-  # docker \
+  docker \
   dropbox \
   firefox \
   flux \
@@ -28,7 +28,7 @@ brew cask install \
   kodi \
   megasync \
   owncloud \
-  pgadmin3 \
+  pgadmin4 \
   protobuf-swift \
   robomongo \
   sequel-pro \

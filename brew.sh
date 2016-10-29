@@ -6,17 +6,17 @@ brew update
 brew upgrade
 
 # Install GNU core utilities (those that come with OS X are outdated)
-#brew install coreutils
+brew install coreutils --with-gmp
 #echo "Don’t forget to add $(brew --prefix coreutils)/libexec/gnubin to  \$PATH."
-# Install GNU `find`, `locate`, `updatedb`, and `xargs`, g-prefixed
-#brew install findutils
+# Install GNU `find`, `locate`, `updatedb`, and `xargs`
+brew install findutils --with-default-names
 # Install Bash 4
 brew install \
  bash \
  bash-completion
 
 # Install wget with IRI support
-brew install wget --with-iri
+brew install wget --with-{iri,libmetalink,pcre}
 
 # Install more recent versions of some OS X tools
 brew tap \
@@ -38,14 +38,14 @@ brew install \
   python --with-{berkely-db4,poll,tcl-tk,sphinx-doc} \
   python3 --with-{tcl-tk,sphinx-doc} \
   ruby --with-{doc,gdbm,libffi,tcltk} \
-  vim
-#  ack \
-#  rename \
+  vim --with-{lua,python3,tcl}
+  ack \
+  rename \
 #  swift \
 
 # Cask
 brew cask install \
-  flash \
+  flash-npapi \
   java \
   silverlight \
   xquartz

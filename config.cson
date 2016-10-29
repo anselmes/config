@@ -155,12 +155,27 @@
     installRecommendedPackages: true
     "nuclide-code-format":
       formatOnSave: true
+    "nuclide-debugger-native":
+      pythonBinaryPath: "/usr/local/bin/python3"
     "nuclide-health":
       toolbarJewel: "None"
     "nuclide-home":
       showHome: false
+    "nuclide-objc":
+      enableAutomaticSquareBracketInsertion: true
     "nuclide-python":
       includeOptionalArguments: true
+      pathToPython: "python3"
+    "nuclide-working-sets":
+      workingSets: [
+        {
+          name: "src"
+          active: false
+          uris: [
+            "/Users/sanselme/Developer/guesswho/Sources"
+          ]
+        }
+      ]
   "nuclide-format-js":
     reprint: true
     runOnSave: true
@@ -258,6 +273,9 @@
 ".ocamllex.source":
   editor:
     preferredLineLength: 150
+".protobuf.source":
+  editor:
+    preferredLineLength: 250
 ".pug.source":
   editor:
     preferredLineLength: 250
