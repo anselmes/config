@@ -31,16 +31,17 @@ brew tap \
 
 # Install everything else
 brew install \
+  ack \
   git --with-brewed-openssl \
-  ssh-copy-id \
-  tree \
   node --with-{debug,full-icu,openssl} \
+  p7zip \
   python --with-{berkely-db4,poll,tcl-tk,sphinx-doc} \
   python3 --with-{tcl-tk,sphinx-doc} \
-  ruby --with-{doc,gdbm,libffi,tcltk} \
-  vim --with-{lua,python3,tcl}
-  ack \
   rename \
+  ruby --with-{doc,gdbm,libffi,tcltk} \
+  ssh-copy-id \
+  tree \
+  vim --with-{lua,python3,tcl}
 #  swift \
 
 # Cask
