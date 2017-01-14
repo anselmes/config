@@ -1,5 +1,9 @@
 ".platform-darwin atom-workspace":
   "alt-cmd-n": "advanced-open-file:toggle"
+  "alt-shift-m": "markdown-preview:toggle"
+  "cmd-\\": "tree-view:toggle"
 
 ".platform-win32 atom-workspace, .platform-linux atom-workspace":
   "alt-ctrl-n": "advanced-open-file:toggle"
+  "alt-shift-m": "markdown-preview:toggle"
+  "ctrl-\\": "tree-view:toggle"

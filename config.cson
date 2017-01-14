@@ -45,6 +45,7 @@
       beautify_on_save: true
       break_chained_methods: true
       default_beautifier: "Pretty Diff"
+      end_with_newline: true
       indent_size: 2
     jsx:
       beautify_on_save: true
@@ -114,8 +115,8 @@
         "BUCK"
       ]
     disabledPackages: [
-      "tree-view"
       "linter"
+      "atom-beautify"
     ]
     openEmptyEditorOnStart: false
     projectHome: "/Users/sanselme/Developer"
@@ -142,12 +143,19 @@
   "git-diff":
     showIconsInEditorGutter: true
   "git-plus":
-    experimental: true
+    general:
+      _analyticsUserId: "173f978c-889c-42d9-8ea1-22447cd353cb"
+  gitlab:
+    privateToken: "YBxZsKzJmxzggNdd44kx"
+    serverUrl: "https://git.interactive-fx.com"
   "language-babel":
     allowLocalOverride: true
   "linter-jscs":
     fixOnSave: true
     preset: "google"
+  "linter-pug":
+    executablePath: "/usr/local/bin/pug-lint"
+    onlyRunWhenConfig: true
   "markdown-preview":
     breakOnSingleNewline: true
     useGitHubStyle: true
@@ -180,10 +188,13 @@
     reprint: true
     runOnSave: true
     saveAfterRun: true
+  "svg-preview":
+    openPreviewAutomatically: true
   "todo-show":
     statusBarIndicator: true
   "tool-bar":
     iconSize: "16px"
+  "tree-view": {}
   "unity-ui":
     colorStatusIndicatorsInTreeView: true
     showIcons: true
