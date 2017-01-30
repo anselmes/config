@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 cd "$(dirname "$0")"
+
 git pull
+
 doIt() {
-	rsync --exclude ".git/" --exclude "bin/" --exclude "profile.d/" --exclude "z/" --exclude ".DS_Store" --exclude ".bashrc-el" --exclude "profile" --exclude "profile-el" --exclude "spf13-vim.sh" --exclude "brew.sh" --exclude "brew-add.sh" --exclude "osx.sh" --exclude "install-deps.sh" --exclude "install-deps-el.sh" --exclude "sync.sh" --exclude "sync-el.sh" --exclude "README.md" --exclude "LICENSE.txt" -av . ~
+	rsync --exclude ".git/" --exclude "bin/" --exclude "profile.d/" --exclude "z/" --exclude ".DS_Store" --exclude ".bashrc-el" --exclude "profile" --exclude "profile-el" --exclude "spf13-vim.sh" --exclude "brew.sh" --exclude "brew-add.sh" --exclude "macos.sh" --exclude "install-deps.sh" --exclude "install-deps-el.sh" --exclude "sync.sh" --exclude "sync-el.sh" --exclude "README.md" --exclude "LICENSE.txt" -av . ~
 }
+
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
 	doIt
 else
@@ -13,8 +16,10 @@ else
 		doIt
 	fi
 fi
+
 unset doIt
 source /etc/profile
+
 bash /usr/local/code/spf13-vim.sh
 cp -rf /usr/local/code/.vimrc.local ~/
 vim +BundleClean +qall -y

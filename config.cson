@@ -92,6 +92,22 @@
       beautify_on_save: true
       indent_inner_html: true
       indent_size: 2
+  "atom-material-ui":
+    colors:
+      abaseColor: "#7e7e7e"
+      genAccent: true
+      paintCursor: true
+      predefinedColor: "Grey"
+    tabs:
+      compactTabs: true
+      noTabMinWidth: true
+      tintedTabBar: true
+    treeView:
+      blendTabs: true
+      compactList: true
+    ui:
+      panelContrast: true
+      panelShadows: true
   "autocomplete-plus":
     backspaceTriggersAutocomplete: true
     confirmCompletion: "enter"
@@ -117,13 +133,14 @@
     disabledPackages: [
       "linter"
       "atom-beautify"
+      "regex-railroad-diagram"
     ]
     openEmptyEditorOnStart: false
     projectHome: "/Users/sanselme/Developer"
     telemetryConsent: "no"
     themes: [
-      "unity-ui"
-      "one-dark-syntax"
+      "nord-atom-ui"
+      "nord-atom-syntax"
     ]
     useCustomTitleBar: true
   docblockr:
@@ -131,6 +148,7 @@
     deep_indent: true
     development_mode: true
   editor:
+    fontSize: 13
     preferredLineLength: 250
   "exception-reporting":
     userId: "b269f2a1-4abc-b814-10bf-6ec32350e1b9"
@@ -159,12 +177,18 @@
   "markdown-preview":
     breakOnSingleNewline: true
     useGitHubStyle: true
+  "nord-atom-ui": {}
   nuclide:
     installRecommendedPackages: true
     "nuclide-code-format":
       formatOnSave: true
     "nuclide-debugger-native":
       pythonBinaryPath: "/usr/local/bin/python3"
+    "nuclide-distraction-free-mode": {}
+    "nuclide-file-tree":
+      revealFileOnSwitch: true
+      showOpenFiles: false
+      showUncommittedChanges: false
     "nuclide-health":
       toolbarJewel: "None"
     "nuclide-home":
@@ -174,6 +198,8 @@
     "nuclide-python":
       includeOptionalArguments: true
       pathToPython: "python3"
+    "nuclide-source-control-side-bar":
+      createStacked: true
     "nuclide-working-sets":
       workingSets: [
         {
