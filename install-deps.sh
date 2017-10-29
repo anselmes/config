@@ -3,8 +3,8 @@
 
 # homebrew!
 # you need the code CLI tools YOU FOOL.
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-bash /usr/local/code/brew.sh
+# ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+# bash /usr/local/code/brew.sh
 # bash /usr/local/code/brew-add.sh
 # bash /usr/local/code/macos.sh
 
@@ -14,27 +14,28 @@ bash < <( curl https://raw.github.com/jamiew/git-friendly/master/install.sh)
 
 # https://github.com/rupa/z
 # z, oh how i love you
-cd /usr/local/code
-git clone https://github.com/rupa/z.git
-chmod +x /usr/local/code/z/z.sh
+# cd /usr/local/code
+# git clone https://github.com/rupa/z.git
+# chmod +x /usr/local/code/z/z.sh
 # also consider moving over your current .z file if possible. it's painful to rebuild :)
 # z binary is already referenced from .bash_profile
 
 # gems
 #gem install cocoapods
-gem install iesd
+# gem install iesd
 
 # for the c alias (syntax highlighted cat)
-pip install -U Pygments
+# pip install -U Pygments
 
 # https://github.com/isaacs/nave
 # needs npm, obviously.
 # TODO: I think i'd rather curl down the nave.sh, symlink it into /bin and use that for initial node install.
-npm install -g nave
+# npm install -g nave
 # npm install -g yo
 # npm install -g bower
 # npm install -g gulp
 
+sudo cp -f ./bin/* /usr/local/bin/
 sudo cp -f ./profile /etc/profile
 sudo cp -Rf ./profile.d /etc/profile.d
 sudo chmod -R 644 /etc/profile

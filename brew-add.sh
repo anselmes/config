@@ -19,15 +19,15 @@ brew cask install \
   batchmod \
   docker \
   dropbox \
-  firefox \
-  flux \
+  # firefox \
+  # flux \
   google-drive \
   hirundo \
   hosts \
-  kitematic \
+  # kitematic \
   kodi \
   megasync \
-  owncloud \
+  # owncloud \
   pgadmin4 \
   protobuf-swift \
   robomongo \
@@ -36,7 +36,7 @@ brew cask install \
   teamviewer \
   tranmission \
   vlc \
-  vmware-fusion \
+  # vmware-fusion \
   wireshark \
   wwdc
 
