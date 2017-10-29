@@ -52,6 +52,7 @@ esac
 # Enable tmux
 if command -v tmux>/dev/null; then
     [[ ! $TERM =~ screen ]] && [ -z $TMUX ] && { tmux attach || tmux new-session; }
+    tmux set -g mouse on
 fi
 
 # enable color support of ls and also add handy aliases
