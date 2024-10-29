@@ -1,0 +1,7 @@
+{
+  "name": "devcontainer",
+  "dockerComposeFile": ["${localWorkspaceFolder}/compose-dev.yaml"],
+  "service": "devcontainer",
+  "workspaceFolder": "/workspace",
+  "postCreateCommand": "${containerWorkspaceFolder}/scripts/configure.sh"
+}
