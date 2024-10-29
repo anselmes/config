@@ -1,74 +1,31 @@
-# Schubert's dotfiles (inspired by Paul Irish's dotfiles)
+# dotfiles
 
-[mathias's readme](https://github.com/mathiasbynens/dotfiles/) is awesome. go read it.
+---
 
-## Install the necessary apps
+[![OpenSSF Scorecard][ossf-score-badge]][ossf-score-link]
+[![Contiuos Integration][ci-badge]][ci-link]
+[![Review][review-badge]][review-link]
 
-My basic setup is captured in `install-deps.sh` (`install-deps-el.sh` for EL) which adds homebrew (OS X only), z, nave, etc.
+[ossf-score-badge]: https://api.securityscorecards.dev/projects/github.com/anselmes/dotfiles/badge
+[ossf-score-link]: https://securityscorecards.dev/viewer/?uri=github.com/anselmes/dotfiles
+[ci-badge]: https://github.com/anselmes/dotfiles/actions/workflows/cicd.yml/badge.svg
+[ci-link]: https://github.com/anselmes/dotfiles/actions/workflows/cicd.yml
+[review-badge]: https://github.com/anselmes/dotfiles/actions/workflows/required/anselmes/cicd/.github/workflows/review.yml/badge.svg
+[review-link]: https://github.com/anselmes/dotfiles/actions/workflows/required/anselmes/cicd/.github/workflows/review.yml
 
-## Private config
+---
 
-Toss it into a file called `.extra` which you do not commit to this repo and just keep in your `~/`
+Copyright (c) Schubert Anselme <schubert@anselm.es>
 
-## Syntax highlighting
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-...is really important. even for these files. Install [Dotfiles Syntax Highlighting](https://github.com/mattbanks/dotfiles-syntax-highlighting-st2) via [Sublime Text 2 Package Control](http://wbond.net/sublime_packages/package_control)
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-## Similar projects
-
-I recommend getting a [`.jshintrc`](https://github.com/jshint/node-jshint/blob/master/.jshintrc) and [`.editorconfig`](http://editorconfig.org/) defined for all your projects.
-
-## Overview of files
-
-### Automatic config
-
-- `.ackrc` - for ack (better than grep)
-- `.vimrc`, `.vim` - vim config
-- `brew.sh` - homebrew initialization (OS X only)
-- `brew-add.sh` - additional brews (OS X only)
-- `macos.sh` - some OS X settings (OS X only)
-- `spf13-vim.sh` - vim spf13
-
-### Shell environment
-
-- `.bashrc`
-- `.extra` - not included, explained above
-- `.vimrc.local` - local vimrc
-- `.profile`
-- `profile`
-- `profile-el`
-- `profile.d`
-
-### Manual run
-
-- `install-deps.sh` - random apps I need installed (OS X)
-- `brew-add.sh` - additional brews (Optional - OS X)
-- `macos.sh` - OS X settings (Optional - OS X)
-- `install-deps-el.sh` - random apps I need installed (EL)
-
-### Git
-
-- `.git`
-- `.gitconfig`
-- `.gitignore`
-- `.inputrc` - config for bash readline
-
-## Installation
-
-```bash
-git clone https://github.com/sanselme/dotfiles.git && cd dotfiles && ./install-deps (./install-deps-el for EL) && ./sync.sh (./sync.sh for EL)
-```
-
-To update later on, just run the sync again.
-
---------------------------------------------------------------------------------
-
-The MIT License (MIT)
-
-Copyright (c) 2015 Schubert Anselme
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
