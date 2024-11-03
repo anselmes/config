@@ -6,9 +6,9 @@ services:
     stdin_open: true
     tty: true
     user: root # note: required for /sbin/init
-    working_dir: /workspace
+    working_dir: /home/devcontainer
     volumes:
-      - .:/workspace
+      - .:/home/devcontainer
     ports: []
     # - 10022:22
     # - 10080:80
@@ -16,6 +16,6 @@ services:
     # - 15900:5900
     # - 16443:6443
     networks:
-      devcontainer:
+      devcontainer: {}
 networks:
   devcontainer: {}
