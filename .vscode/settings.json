@@ -20,8 +20,6 @@
   "github.copilot.editor.enableAutoCompletions": false,
   "git.autofetch": true,
   "githubPullRequests.pullBranch": "always",
-  // "code-runner.clearPreviousOutput": true,
-  // "code-runner.runInTerminal": true,
   "git.enableCommitSigning": true,
   "git.enableSmartCommit": true,
   "git.timeline.showUncommitted": true,
@@ -39,18 +37,9 @@
   "[gitignore]": {
     "editor.defaultFormatter": "trunk.io"
   },
-  // "[rust]": {
-  //   "editor.defaultFormatter": "rust-lang.rust-analyzer"
-  // },
   "[toml]": {
     "editor.defaultFormatter": "trunk.io"
   },
-  // "rust-analyzer.restartServerOnConfigChange": true,
-  // "rust-analyzer.testExplorer": true,
-  // "rust-analyzer.server.extraEnv": {
-  //   "CARGO_HOME": "/usr/local/rust/cargo",
-  //   "RUSTUP_HOME": "/usr/local/rust/rustup"
-  // },
   "yaml.schemas": {
     "https://json.schemastore.org/yamllint.json": "*.yaml"
   }
