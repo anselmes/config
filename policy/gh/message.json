@@ -1,0 +1,45 @@
+{
+  "id": 1176986,
+  "name": "message",
+  "target": "branch",
+  "source_type": "Organization",
+  "source": "anselmes",
+  "enforcement": "active",
+  "conditions": {
+    "repository_name": {
+      "exclude": [],
+      "include": [
+        "~ALL"
+      ]
+    },
+    "ref_name": {
+      "exclude": [],
+      "include": [
+        "~ALL"
+      ]
+    }
+  },
+  "rules": [
+    {
+      "type": "commit_message_pattern",
+      "parameters": {
+        "operator": "regex",
+        "pattern": "^\\w+:.*",
+        "negate": false,
+        "name": ""
+      }
+    }
+  ],
+  "bypass_actors": [
+    {
+      "actor_id": 5,
+      "actor_type": "RepositoryRole",
+      "bypass_mode": "always"
+    },
+    {
+      "actor_id": 1,
+      "actor_type": "OrganizationAdmin",
+      "bypass_mode": "always"
+    }
+  ]
+}
