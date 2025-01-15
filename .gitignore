@@ -158,4 +158,4 @@ fabric.properties
 
 # Project files
 .env
-!example.env
+!.env.example

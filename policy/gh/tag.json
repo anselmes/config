@@ -8,16 +8,12 @@
   "conditions": {
     "repository_name": {
       "exclude": [],
-      "include": [
-        "~ALL"
-      ],
+      "include": ["~ALL"],
       "protected": true
     },
     "ref_name": {
       "exclude": [],
-      "include": [
-        "~ALL"
-      ]
+      "include": ["~ALL"]
     }
   },
   "rules": [

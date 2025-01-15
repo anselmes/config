@@ -1,18 +1,13 @@
 heat_template_version: 2017-02-24
-
 description: >
-
   Template is creating an instance with cinder volume and two NICs.
-
 parameters:
   public_key_name:
     type: string
     description: ssh public key name
-
   public_key:
     type: string
     description: ssh public key
-
   image:
     type: string
     description: Name of image to use for servers
@@ -28,7 +23,6 @@ parameters:
   dns_nameservers:
     type: comma_delimited_list
     description: DNS nameservers for the subnet
-
   # e2e scenario parameters
   # affinity policies
   affinity_policies:
@@ -37,40 +31,33 @@ parameters:
     constraints:
       - allowed_values:
           ["anti-affinity", "affinity", "soft-anti-affinity", "soft-affinity"]
-
   # security group
   secgroup_tcp_ports:
     type: comma_delimited_list
     description: TCP ports to be opened by security group
-
   # cinder volume
   cinder_volume_size:
     type: string
     description: Cinder volume size
     default: 20
-
   ram_size:
     type: string
     description: RAM size
     default: 4096
-
   instance_vcpus:
     type: number
     description: VCPUs for WordPress server
     default: 2
-
   #availability zone
   azone:
     type: string
     description: Availability zone name
-
 resources:
   key_pair:
     type: OS::Nova::KeyPair
     properties:
       name: { get_param: public_key_name }
       public_key: { get_param: public_key }
-
   nova_flavor:
     type: OS::Nova::Flavor
     properties:
@@ -80,13 +67,11 @@ resources:
       is_public: true
       ram: { get_param: ram_size }
       vcpus: { get_param: instance_vcpus }
-
   cinder_volume1:
     type: OS::Cinder::Volume
     properties:
       size: { get_param: cinder_volume_size }
       image: { get_param: image }
-
   tcp_secgroup:
     type: OS::Neutron::SecurityGroup
     properties:
@@ -99,7 +84,6 @@ resources:
             protocol: tcp
             port_range_min: <%port%>
             port_range_max: <%port%>
-
   # creating two(2) vms, each vm has three(3) ports and they are linked with SRIOVs and external network.
   vm1:
     type: OS::Nova::Server
@@ -329,53 +313,7 @@ resources:
             owner: root
             content: |
               PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
-          - path: "/home/{ get_param: username }/.zshrc"
-            permissions: 0644
-            owner: { get_param: username }
-            content: |
-              export ZSH="${HOME}/.oh-my-zsh"
-
-              ZSH_THEME="ys"
-              DISABLE_UPDATE_PROMPT="true"
-
-              plugins=(
-                alias-finder
-                colorize
-                common-aliases
-                docker
-                dotenv
-                encode64
-                git
-                git-extras
-                gitignore
-                git-lfs
-                helm
-                jsontools
-                kubectl
-                sudo
-                vscode
-                z
-              )
-
-              source "${ZSH}/oh-my-zsh.sh"
-              source /etc/profile
-
-              export GPG_TTY="$(tty)"
-              export KREW_ROOT="${HOME}/.krew"
-              export LANG=en_US.UTF-8
-              if [[ -n "${SSH_CONNECTION}" ]]; then
-                export EDITOR="vim"
-              else
-                export EDITOR="mvim"
-              fi
-
-              alias zshconfig="code ~/.zshrc"
-              alias ohmyzsh="code ~/.oh-my-zsh"
-              alias k="kubectl"
-              alias h="helm"
-
-              zstyle :omz:plugins:ssh-agent agent-forwarding on
-              zstyle :omz:plugins:ssh-agent ssh-add-args -A
+              EDITOR="vim"
         runcmd:
           - python -m pip install --upgrade setuptools
           - python -m venv /home/{ get_param: username }
@@ -387,19 +325,16 @@ resources:
       parts:
         - config: { get_resource: sre_init1 }
         - config: { get_resource: sre_init2 }
-
   ext_port:
     type: OS::Neutron::Port
     properties:
       network_id: { get_param: external_net }
       security_groups:
         - { get_resource: tcp_secgroup }
-
   int_port:
     type: OS::Neutron::Port
     properties:
       network_id: { get_param: internal_net }
-
 outputs:
   srevm1_instance_name:
     value: { get_attr: [vm1, instance_name] }

@@ -8,15 +8,11 @@
   "conditions": {
     "repository_name": {
       "exclude": [],
-      "include": [
-        "~ALL"
-      ]
+      "include": ["~ALL"]
     },
     "ref_name": {
       "exclude": [],
-      "include": [
-        "~ALL"
-      ]
+      "include": ["~ALL"]
     }
   },
   "rules": [

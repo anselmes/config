@@ -1,5 +1,4 @@
 parameters:
-
   # this test supports the following custom parameters, user can change it as per their's need.
   # basic parameters
   image: ubuntu-focal-24.04
