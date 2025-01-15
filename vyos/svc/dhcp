@@ -1,0 +1,79 @@
+dynamic-dns-update
+shared-network-name guest {
+    authoritative
+    option {
+        name-server 1.1.1.1
+        name-server 9.9.9.9
+        time-server 155.138.150.39
+        time-server 216.232.132.102
+        time-server 149.56.19.163
+        time-server 162.159.200.123
+        time-zone America/Toronto
+    }
+    subnet 192.168.254.0/24 {
+        description guest
+        option {
+            default-router 192.168.254.1
+            domain-name guest.local
+            domain-search guest.local
+        }
+        range all {
+            start 192.168.254.2
+            stop 192.168.254.254
+        }
+        subnet-id 254
+    }
+}
+shared-network-name home {
+    authoritative
+    option {
+        name-server 172.16.0.1
+        ntp-server 172.16.0.1
+        time-server 172.16.0.1
+        time-zone America/Toronto
+    }
+    subnet 192.168.11.0/24 {
+        description user
+        lease 86400
+        option {
+            default-router 192.168.11.1
+            domain-name user.home.local
+            domain-search local
+            domain-search user.home.local
+        }
+        range all {
+            start 192.168.11.2
+            stop 192.168.11.254
+        }
+        subnet-id 11
+    }
+    subnet 192.168.22.0/24 {
+        description iot
+        lease 86400
+        option {
+            default-router 192.168.22.1
+            domain-name iot.home.local
+            domain-search iot.local
+            domain-search iot.home.local
+        }
+        range all {
+            start 192.168.22.2
+            stop 192.168.22.254
+        }
+        subnet-id 22
+    }
+    subnet 192.168.101.0/24 {
+        description lab
+        lease 86400
+        option {
+            default-router 192.168.101.1
+            domain-name lab.home.local
+            domain-search lab.home.local
+        }
+        range all {
+            start 192.168.101.2
+            stop 192.168.101.254
+        }
+        subnet-id 101
+    }
+}

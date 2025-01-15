@@ -1,0 +1,52 @@
+rule 10 {
+    outbound-interface {
+        name eth0
+    }
+    source {
+        address 192.168.11.0/24
+    }
+    translation {
+        address masquerade
+    }
+}
+rule 11 {
+    outbound-interface {
+        name eth0
+    }
+    source {
+        address 192.168.22.0/24
+    }
+    translation {
+        address masquerade
+    }
+}
+rule 12 {
+    outbound-interface {
+        name eth0
+    }
+    source {
+        address 192.168.254.0/24
+    }
+    translation {
+        address masquerade
+    }
+}
+rule 13 {
+    outbound-interface {
+        name eth0
+    }
+    source {
+        address 192.168.101.0/24
+    }
+    translation {
+        address masquerade
+    }
+}
+rule 20 {
+    source {
+        address 10.254.0.0/24
+    }
+    translation {
+        address masquerade
+    }
+}
