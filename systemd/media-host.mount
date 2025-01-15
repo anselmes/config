@@ -1,0 +1,15 @@
+[Unit]
+Description=Hostshare
+DefaultDependencies=no
+Conflicts=umount.target
+Before=local-fs.target umount.target
+After=swap.target
+
+[Mount]
+What=hostshare
+Where=/media/host
+Type=9p
+Options=trans=virtio
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,81 @@
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: privileged
+  annotations:
+    checkov.io/skip1: CKV_K8S_1=Do not admit containers wishing to share the host process ID namespace
+    checkov.io/skip10: CKV_K8S_7=Do not admit containers with the NET_RAW capability
+    checkov.io/skip2: CKV_K8S_2=Do not admit privileged containers
+    checkov.io/skip3: CKV_K8S_24=Do not allow containers with added capability
+    checkov.io/skip4: CKV_K8S_3=Do not admit containers wishing to share the host IPC namespace
+    checkov.io/skip5: CKV_K8S_32=Ensure default seccomp profile set to docker/default or runtime/default
+    checkov.io/skip6: CKV_K8S_36=Minimize the admission of containers with capabilities assigned
+    checkov.io/skip7: CKV_K8S_4=Do not admit containers wishing to share the host network namespace
+    checkov.io/skip8: CKV_K8S_5=Containers should not run with allowPrivilegeEscalation
+    checkov.io/skip9: CKV_K8S_6=Do not admit root containers
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: "*"
+  labels:
+    addonmanager.kubernetes.io/mode: EnsureExists
+spec:
+  privileged: true
+  allowPrivilegeEscalation: true
+  allowedCapabilities:
+    - "*"
+  volumes:
+    - "*"
+  hostNetwork: true
+  hostPorts:
+    - min: 0
+      max: 65535
+  hostIPC: true
+  hostPID: true
+  runAsUser:
+    rule: "RunAsAny"
+  seLinux:
+    rule: "RunAsAny"
+  supplementalGroups:
+    rule: "RunAsAny"
+  fsGroup:
+    rule: "RunAsAny"
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: restricted
+  annotations:
+    checkov.io/skip: CKV_K8S_32=Ensure default seccomp profile set to docker/default or runtime/default
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: "runtime/default"
+    apparmor.security.beta.kubernetes.io/allowedProfileNames: "runtime/default"
+  labels:
+    addonmanager.kubernetes.io/mode: EnsureExists
+spec:
+  privileged: false
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+    - ALL
+  volumes:
+    - "configMap"
+    - "emptyDir"
+    - "projected"
+    - "secret"
+    - "downwardAPI"
+    - "persistentVolumeClaim"
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  runAsUser:
+    rule: "MustRunAsNonRoot"
+  seLinux:
+    rule: "RunAsAny"
+  supplementalGroups:
+    rule: "MustRunAs"
+    ranges:
+      - min: 1
+        max: 65535
+  fsGroup:
+    rule: "MustRunAs"
+    ranges:
+      - min: 1
+        max: 65535
+  readOnlyRootFilesystem: true

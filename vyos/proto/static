@@ -1,0 +1,7 @@
+protocols {
+  static {
+    route 0.0.0.0/0 {
+      dhcp-interface eth0
+    }
+  }
+}

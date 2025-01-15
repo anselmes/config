@@ -1,0 +1,10 @@
+[Unit]
+Description=Hostshare
+ConditionPathExists=/media/host
+
+[Automount]
+Where=/media/host
+TimeoutIdleSec=15
+
+[Install]
+WantedBy=multi-user.target

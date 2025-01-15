@@ -33,7 +33,7 @@ DISABLE_UPDATE_PROMPT="true"
 # export UPDATE_ZSH_DAYS=13
 
 # Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
+DISABLE_MAGIC_FUNCTIONS="true"
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -93,9 +93,11 @@ plugins=(
   z
 )
 
-source "${HOME}/scripts/aliases.sh"
-source "${HOME}/scripts/environment.sh"
+source "${HOME}/workspace/scripts/aliases.sh" || true
+source "${HOME}/workspace/scripts/environment.sh" || true
+
 source /etc/profile
+
 source "${ZSH}/oh-my-zsh.sh"
 
 # User configuration

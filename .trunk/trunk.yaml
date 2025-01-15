@@ -18,25 +18,25 @@ runtimes:
 # This is the section where you manage your linters. (https://docs.trunk.io/check/configuration)
 lint:
   enabled:
-    - shellcheck@0.10.0
-    - shfmt@3.6.0
-    - trufflehog-git@3.88.0
-    - gitleaks@8.21.2
-    - actionlint@1.7.5
-    - checkov@3.2.344
+    - actionlint@1.7.6
+    - checkov@3.2.353
     - dotenv-linter@3.3.0
     - git-diff-check
+    - gitleaks@8.23.0
     - markdownlint@0.43.0
     - prettier@3.4.2
-    - trufflehog@3.88.0
+    - shellcheck@0.10.0
+    - shfmt@3.6.0
+    - trufflehog-git@3.88.2
+    - trufflehog@3.88.2
     - yamllint@1.35.1
 actions:
   disabled:
+    - trufflehog-pre-commit
     - trunk-check-pre-push
     - trunk-fmt-pre-commit
   enabled:
     - commitlint
     - submodule-init-update
-    - trufflehog-pre-commit
     - trunk-announce
     - trunk-upgrade-available

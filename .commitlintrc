@@ -15,7 +15,6 @@
         "build",
         "chore",
         "ci",
-        "clos",
         "deployment",
         "devcontainer",
         "docs",
@@ -27,7 +26,8 @@
         "revert",
         "security",
         "site",
-        "test"
+        "test",
+        "workspace"
       ]
     ]
   }

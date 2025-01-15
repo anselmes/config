@@ -1,0 +1,54 @@
+{
+  "id": 28778,
+  "name": "tag",
+  "target": "tag",
+  "source_type": "Organization",
+  "source": "anselmes",
+  "enforcement": "active",
+  "conditions": {
+    "repository_name": {
+      "exclude": [],
+      "include": ["~ALL"],
+      "protected": true
+    },
+    "ref_name": {
+      "exclude": [],
+      "include": ["~ALL"]
+    }
+  },
+  "rules": [
+    {
+      "type": "deletion"
+    },
+    {
+      "type": "non_fast_forward"
+    },
+    {
+      "type": "required_linear_history"
+    },
+    {
+      "type": "required_signatures"
+    },
+    {
+      "type": "tag_name_pattern",
+      "parameters": {
+        "operator": "starts_with",
+        "pattern": "v*",
+        "negate": false,
+        "name": ""
+      }
+    }
+  ],
+  "bypass_actors": [
+    {
+      "actor_id": 5,
+      "actor_type": "RepositoryRole",
+      "bypass_mode": "always"
+    },
+    {
+      "actor_id": 1,
+      "actor_type": "OrganizationAdmin",
+      "bypass_mode": "always"
+    }
+  ]
+}
