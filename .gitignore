@@ -406,6 +406,20 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
+# note: DEVCONTAINER
+.config/
+.dotnet/
+.gnupg/
+.npm/
+.oh-my-zsh/
+.ssh/
+.vscode-server/
+.bashrc
+.gitconfig
+.zcompdump*
+.zsh_history
+.zshrc
+
 # note: PROJECT FILES
 .env
 !.env.example
