@@ -1,0 +1,11 @@
+include "kubernetes/named.conf.rndc.kube";
+
+acl "trusted" {
+  localhost;
+  localnets;
+};
+
+zone "kubernetes.local" {
+  type primary;
+  file "kubernetes/db.kube";
+};
