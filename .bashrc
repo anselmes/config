@@ -116,7 +116,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
+source /etc/profile
+
 source "${HOME}/workspace/scripts/aliases.sh" || true
 source "${HOME}/workspace/scripts/environment.sh" || true
-
-source /etc/profile

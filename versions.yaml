@@ -168,7 +168,6 @@ plugin:
       - debug-shell
       - deprecations
       - df-pv
-      - hns
       - images
       - minio
       - node-shell

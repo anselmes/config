@@ -1,0 +1,10 @@
+key "rndc-kube-key" {
+  algorithm hmac-sha256;
+  secret "<rndc_key>";
+};
+
+options {
+  default-key "rndc-kube-key";
+  default-server 127.0.0.1;
+  default-port 954;
+}

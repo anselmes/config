@@ -1,0 +1,13 @@
+key "rndc-kube-key" {
+  algorithm hmac-sha256;
+  secret "<rndc_key>";
+};
+
+controls {
+  inet 127.0.0.1 port 954
+    allow { 127.0.0.1; } keys { "rndc-kube-key"; };
+};
+
+controls {
+  inet 127.0.0.1 port 953 allow { localhost; };
+};

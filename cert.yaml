@@ -1,0 +1,42 @@
+---
+config:
+  signing:
+    default:
+      expiry: 8760h
+    profiles:
+      intermediate:
+        expiry: 8700h
+        usages:
+          - signing
+          - digital signature
+          - cert sign
+          - crl sign
+          - key encipherment
+          - server auth
+          - client auth
+        ca_constraint:
+          is_ca: true
+ca:
+  CN: Root CA
+  key:
+    algo: rsa
+    size: 4096
+  names:
+    - C: CA
+      L: ON
+      ST: Toronto
+      O: OpenStack Helm
+      OU: Certificate Authority
+intermediate:
+  CN: Intermediate CA
+  key:
+    algo: rsa
+    size: 4096
+  names:
+    - C: CA
+      L: ON
+      ST: Toronto
+      O: OpenStack Helm
+      OU: Certificate Authority
+  ca:
+    expiry: 8760h
