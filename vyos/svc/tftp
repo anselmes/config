@@ -1,7 +1,0 @@
-service {
-  tftp-server {
-    directory /opt/tftp
-    listen-address 172.16.0.1 {
-    }
-  }
-}
