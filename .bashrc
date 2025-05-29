@@ -120,4 +120,3 @@ source /etc/profile
 
 source "${HOME}/workspace/scripts/aliases.sh" >/dev/null 2>&1 || true
 source "${HOME}/workspace/scripts/environment.sh" >/dev/null 2>&1 || true
-
