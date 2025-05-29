@@ -19,6 +19,7 @@ jobs:
 
   trivy:
     uses: anselmes/cicd/.github/workflows/trivy.yml@main # main https://github.com/anselmes/cicd/commit/main
+    if: github.ref != 'refs/heads/main'
     permissions:
       actions: read
       attestations: read
@@ -37,6 +38,7 @@ jobs:
 
   scorecard:
     uses: anselmes/cicd/.github/workflows/scorecard.yml@main # main https://github.com/anselmes/cicd/commit/main
+    if: github.ref != 'refs/heads/main'
     permissions:
       actions: read
       attestations: read
