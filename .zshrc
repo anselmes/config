@@ -93,10 +93,10 @@ plugins=(
   z
 )
 
+source /etc/profile
+
 source "${HOME}/workspace/scripts/aliases.sh" || true
 source "${HOME}/workspace/scripts/environment.sh" || true
-
-source /etc/profile
 
 source "${ZSH}/oh-my-zsh.sh"
 
