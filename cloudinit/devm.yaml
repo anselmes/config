@@ -1,0 +1,188 @@
+#cloud-config
+packages:
+  - bind9
+  - bind9-dnsutils
+  - bind9utils
+  - dnsutils
+  - frr
+  - iproute2
+  - iptables-persistent
+  - qrencode
+  - wireguard
+write_files:
+  - path: /etc/frr/daemons
+    permissions: "0644"
+    content: |
+      babeld=no
+      bfdd=no
+      bgpd=yes
+      eigrpd=no
+      fabricd=no
+      isisd=no
+      ldpd=no
+      nhrpd=no
+      ospf6d=no
+      ospfd=no
+      pbrd=no
+      pimd=no
+      sharpd=no
+      zebra=yes
+  - path: /etc/bind/named.conf.options
+    permissions: "0644"
+    content: |
+      options {
+          directory "/var/cache/bind";
+          forwarders {
+              1.1.1.1;
+              9.9.9.9;
+          };
+          dnssec-validation auto;
+          auth-nxdomain no;
+          listen-on { any; };
+          listen-on-v6 { any; };
+          allow-transfer { none; };
+          allow-update { key "update-key."; };
+      };
+  - path: /etc/bind/named.conf.local
+    permissions: "0644"
+    content: |
+      zone "example.com" {
+          type master;
+          file "/etc/bind/zones/db.example.com";
+          allow-update { key "update-key."; };
+      };
+  - path: /etc/bind/zones/db.example.com
+    permissions: "0644"
+    content: |
+      $TTL    604800
+      @       IN      SOA     devm.example.com. root.example.com. (
+                            2         ; Serial
+                       604800         ; Refresh
+                        86400         ; Retry
+                      2419200         ; Expire
+                       604800 )       ; Negative Cache TTL
+      ;
+      @       IN      NS      devm.example.com.
+      devm     IN      A       10.0.0.1
+  - path: /usr/local/bin/setup-secrets.sh
+    permissions: "0755"
+    content: |
+      #!/bin/bash
+      set -eux
+
+      mkdir -p /etc/wireguard
+      mkdir -p /etc/bind/zones
+
+      # --- WireGuard keypair ---
+      if [ ! -f /etc/wireguard/server.key ]; then
+        wg genkey | tee /etc/wireguard/server.key | wg pubkey > /etc/wireguard/server.pub
+        wg genkey | tee /etc/wireguard/client.key | wg pubkey > /etc/wireguard/client.pub
+        chmod 600 /etc/wireguard/*.key
+      fi
+
+      # --- Detect PUBLIC IPv4 and IPv6 ---
+      EXT_IFACE=$(ip route get 1.1.1.1 | awk '{for (i=1;i<=NF;i++) if ($i=="dev") print $(i+1); exit}')
+      PUBLIC_IPV4=$(ip -4 addr show dev "$EXT_IFACE" | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | head -n1)
+      PUBLIC_IPV6=$(ip -6 addr show dev "$EXT_IFACE" | grep -oP '(?<=inet6\s)[\da-f:]+(?=/)' | grep -v '^fe80' | head -n1)
+
+      # --- FRR BGP config ---
+      cat > /etc/frr/frr.conf <<EOF
+frr defaults traditional
+hostname frr
+log syslog
+
+router bgp 64512
+ bgp router-id ${PUBLIC_IPV4}
+ no bgp ebgp-requires-policy
+ bgp listen range 0.0.0.0/0 peer-group cilium-peers
+ bgp listen range ::/0 peer-group cilium-peers
+ neighbor cilium-peers peer-group
+ neighbor cilium-peers remote-as external
+ !
+ address-family ipv4 unicast
+  network 10.0.0.0/24
+ exit-address-family
+ !
+ address-family ipv6 unicast
+  network 2001:db8::/64
+ exit-address-family
+!
+line vty
+EOF
+
+      # --- WireGuard server config ---
+      cat > /etc/wireguard/wg0.conf <<EOF
+[Interface]
+PrivateKey = $(cat /etc/wireguard/server.key)
+Address = 10.100.100.1/24, fd10::1/64
+ListenPort = 51820
+SaveConfig = true
+
+[Peer]
+PublicKey = $(cat /etc/wireguard/client.pub)
+AllowedIPs = 10.100.100.2/32, fd10::2/128
+EOF
+      chmod 600 /etc/wireguard/wg0.conf
+
+      # --- WireGuard client config and QR ---
+      cat > /etc/wireguard/client.conf <<EOF
+[Interface]
+PrivateKey = $(cat /etc/wireguard/client.key)
+Address = 10.100.100.2/32, fd10::2/128
+DNS = ${PUBLIC_IPV4}
+
+[Peer]
+PublicKey = $(cat /etc/wireguard/server.pub)
+Endpoint = ${PUBLIC_IPV4}:51820
+AllowedIPs = 0.0.0.0/0, ::/0
+EOF
+      qrencode -t ansiutf8 < /etc/wireguard/client.conf
+
+      # --- dnssec-keygen RFC2136 ---
+      cd /etc/bind
+      if [ ! -f update-key.private ]; then
+        dnssec-keygen -a HMAC-SHA256 -b 256 -n USER update-key
+        mv Kupdate-key* update-key
+      fi
+
+      # Bind inclusion
+      cat update-key.key >> /etc/bind/named.conf.local
+      cat update-key.private > /etc/bind/ddns.key
+      chmod 640 /etc/bind/ddns.key
+  - path: /usr/local/bin/setup-services.sh
+    permissions: "0755"
+    content: |
+      #!/bin/bash
+      set -eux
+
+      systemctl enable frr
+      systemctl restart frr
+
+      systemctl enable bind9
+      systemctl restart bind9
+
+      systemctl enable wg-quick@wg0
+      systemctl start wg-quick@wg0
+
+      iptables -A FORWARD -i wg0 -j ACCEPT
+      iptables -A FORWARD -o wg0 -j ACCEPT
+      iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+      netfilter-persistent save
+  - path: /usr/local/bin/test-rfc2136.sh
+    permissions: "0755"
+    content: |
+      #!/bin/bash
+      set -eux
+      nsupdate -k /etc/bind/ddns.key <<EOF
+server 127.0.0.1
+zone example.com
+update add test.example.com. 60 A 10.0.0.123
+send
+EOF
+
+      dig @127.0.0.1 test.example.com +short
+runcmd:
+  - /usr/local/bin/setup-secrets.sh
+  - /usr/local/bin/setup-services.sh
+  - sleep 5
+  - /usr/local/bin/test-rfc2136.sh
