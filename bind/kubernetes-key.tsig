@@ -1,4 +1,0 @@
-key "kubernetes-key" {
-  algorithm hmac-sha512;
-  secret "<tsig_key>";
-};
