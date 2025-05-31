@@ -1,4 +1,6 @@
 #cloud-config
+# fqdn: dev-vm-template.example.com
+# hostname: dev-vm-template
 manage_etc_hosts: true
 package_update: true
 package_upgrade: true
