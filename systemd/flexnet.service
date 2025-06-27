@@ -1,0 +1,17 @@
+[Unit]
+Description=FlexNet
+DefaultDependencies=no
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/usr/local/flexlm
+ExecStart=/usr/local/flexlm/lmgrd -l +/usr/local/flexlm/flexlm.log -c /usr/local/flexlm/licenses/license.dat
+#ExecReload=/bin/kill -s HUP $MAINPID
+TimeoutStartSec=0
+RestartSec=2
+Restart=always
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

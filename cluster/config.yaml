@@ -6,7 +6,7 @@ metadata:
 spec:
   api:
     sans:
-      - kubernetes.local
+      - kube.dev.local
   network:
     provider: custom
   featureGates:
@@ -15,104 +15,74 @@ spec:
   extensions:
     helm:
       charts:
-        - name: k8s-monitoring
-          chartname: oci://registry-1.docker.io/sanselmechart/k8s-monitoring
-          namespace: observability
-          order: 1
-          version: 1.6.11
-          values: |
-            cluster:
-              name: sandbox
-            metrics:
-              enabled: false
-            logs:
-              enabled: false
-              pod_logs:
-                enabled: false
-              cluster_events:
-                enabled: false
-            traces:
-              enabled: false
-            profiles:
-              enabled: false
-            configAnalysis:
-              enabled: false
-            kube-state-metrics:
-              enabled: true
-            prometheus-node-exporter:
-              enabled: true
-            prometheus-operator-crds:
-              enabled: true
-            opencost:
-              enabled: false
-            alloy:
-              enabled: false
-            configAnalysis:
-              enabled: false
-        - name: cilium
-          chartname: oci://registry-1.docker.io/sanselmechart/cilium
+        - name: cni
+          chartname: oci://ghcr.io/labsonline/charts/cni
           namespace: kube-system
           order: 1
-          version: 1.16.4
-          values: |
-            kubeProxyReplacement: true
-            gatewayAPI:
-              enabled: true
-              gatewayClass:
-                create: "'true'"
-            operator:
-              replicas: 1
-        - name: cni-resource
-          chartname: oci://registry-1.docker.io/sanselmechart/cni-resource
-          namespace: kube-system
-          order: 1
-          version: 0.1.0
+          version: 1.0.0
           values: |
             cilium:
+              bgpControlPlane:
+                enabled: false
+              gatewayAPI:
+                gatewayClass:
+                  create: "true"
+                  hostNetwork:
+                    enabled: false
+              operator:
+                replicas: 1
               pool:
-                allowFirstLastIPs: "'No'"
-              advert:
-                l2:
-                  enabled: true
-                bgp:
-                  enabled: false
-              config:
-                cluster:
-                  enabled: false
-                peer:
-                  enabled: false
-        - name: openebs
-          chartname: oci://registry-1.docker.io/sanselmechart/openebs
+                enabled: false
+        - name: csi
+          chartname: oci://ghcr.io/labsonline/charts/csi
           namespace: kube-system
           order: 2
-          version: 3.10.0
+          version: 1.0.0
           values: |
-            analytics:
-              enabled: false
-            localprovisioner:
-              hostpathClass:
-                isDefaultClass: true
-        - name: cert-manager
-          chartname: oci://registry-1.docker.io/sanselmechart/cert-manager
-          namespace: cert-manager
-          order: 3
-          version: v1.16.2
-          values: |
-            crds:
-              enabled: true
-        - name: trust-manager
-          chartname: oci://registry-1.docker.io/sanselmechart/trust-manager
-          namespace: cert-manager
-          order: 3
-          version: v0.13.0
-        - name: ca-clusterissuer
-          chartname: oci://registry-1.docker.io/sanselmechart/ca-clusterissuer
-          namespace: cert-manager
-          order: 3
-          version: 0.2.0
-          values: |
-            manifests:
-              clusterissuer: false
-              selfsigned: true
+            openebs:
+              csi:
+                volumeSnapshots:
+                  enabled: true
+                  keep: false
+              localpv-provisioner:
+                hostpathClass:
+                  name: general
+        # - name: kcm
+        #   chartname: oci://ghcr.io/k0rdent/kcm/charts/kcm
+        #   namespace: kcm-system
+        #   order: 3
+        #   version: 1.0.0
+        #   values: |
+        #     replicas: 1
+        #     controller:
+        #       createManagement: false
+        #       enableTelemetry: false
+        #     cert-manager:
+        #       enableCertificateOwnerRef: true
+        #       crds:
+        #         enabled: true
+        #         keep: false
+        #       config:
+        #         apiVersion: controller.config.cert-manager.io/v1alpha1
+        #         kind: ControllerConfiguration
+        #         enableGatewayAPI: true
+        #     flux2:
+        #       helmController:
+        #         create: true
+        #         container:
+        #           additionalArgs:
+        #             - --watch-label-selector=k0rdent.mirantis.com/managed=true
+        #       kustomizeController:
+        #         create: true
+        #         container:
+        #           additionalArgs:
+        #             - --watch-label-selector=k0rdent.mirantis.com/managed=true
+        #       sourceController:
+        #         create: true
+        #         persistence:
+        #           enabled: true
+        #         container:
+        #           additionalArgs:
+        #             - --watch-label-selector=k0rdent.mirantis.com/managed=true
   telemetry:
     enabled: false

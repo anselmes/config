@@ -9,11 +9,13 @@ spec:
       noTaints: true
       ssh:
         address: 127.0.0.1
-        keyPath: ~/.ssh_rsa
+        keyPath: ~/.ssh/id_ed25519
         port: 22
         user: ubuntu
       installFlags:
         - --enable-cloud-provider
-        - --kubelet-extra-args="--cloud-provider=external"
+        - --kubelet-extra-args=--cloud-provider=external
+        - --kubelet-extra-args=--cgroup-driver=systemd
   k0s:
+    version: v1.33.1+k0s.1
     config: {}

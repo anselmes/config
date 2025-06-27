@@ -1,8 +1,15 @@
 #cloud-config
 packages:
   - apparmor
+  - apt-transport-https
   - ca-certificates
   - conntrack
+  - cron
   - curl
   - gnupg
+  - gnupg-agent
   - libseccomp2
+  - openssl
+  - software-properties-common
+  - ssh
+  - util-linux
