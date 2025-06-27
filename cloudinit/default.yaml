@@ -1,4 +1,6 @@
 #cloud-config
+# fqdn: dev-vm-template.example.com
+# hostname: dev-vm-template
 manage_etc_hosts: true
 package_update: true
 package_upgrade: true
@@ -12,25 +14,23 @@ users:
 ssh_authorized_keys: []
 write_files:
   - path: /etc/environment
-    permissions: "644"
+    permissions: "0644"
     owner: root
     content: |
       PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
       EDITOR="vim"
   - path: /usr/lib/systemd/system/user@.service.d/delegate.conf
-    permissions: "644"
+    permissions: "0644"
     owner: root
     content: |
       [Service]
       Delegate=cpu cpuset io memory pids
   - path: /opt/configure.sh
-    permissions: "755"
+    permissions: "0755"
     owner: root
     content: |
       #!/bin/bash
-      # SPDX-License-Identifier: GPL-3.0
-
-      set -euxo pipefail
+      set -eux
 
       : "${LOCALE:="C.UTF-8"}"
       : "${TIMEZONE:="America/Toronto"}"
