@@ -45,6 +45,22 @@ binary:
     archs:
       - amd64
       - arm64
+  - name: cfssl
+    enabled: false
+    type: executable
+    url: https://github.com/cloudflare/cfssl/releases/download/v${version}/cfssl_${version}_${os}_${arch}
+    version: 1.6.5
+    archs:
+      - amd64
+      - arm64
+  - name: cfssljson
+    enabled: false
+    type: executable
+    url: https://github.com/cloudflare/cfssl/releases/download/v${version}/cfssljson_${version}_${os}_${arch}
+    version: 1.6.5
+    archs:
+      - amd64
+      - arm64
 package:
   add: []
   # - name: ""
@@ -168,6 +184,7 @@ plugin:
       - debug-shell
       - deprecations
       - df-pv
+      - hns
       - images
       - minio
       - node-shell
