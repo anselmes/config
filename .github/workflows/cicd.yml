@@ -29,6 +29,7 @@ jobs:
       discussions: read
       id-token: write
       issues: read
+      # models: read
       packages: read
       pages: read
       pull-requests: read
@@ -48,6 +49,7 @@ jobs:
       discussions: read
       id-token: write
       issues: read
+      # models: read
       packages: read
       pages: read
       pull-requests: read
