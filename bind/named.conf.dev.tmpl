@@ -1,0 +1,29 @@
+include "dev/named.conf.rndc.dev";
+include "dev/keys.conf.dev";
+
+# authoritative
+zone "dev" {
+	type primary;
+	file "dev/zone.dev";
+	allow-update { key dev.; };
+};
+
+zone "${zone_v6}.ip6.arpa" {
+	type primary;
+	file "dev/zone.${zone_v6}.ip6.arpa";
+	allow-update { key dev.; };
+};
+
+zone "${zone_v4}.in-addr.arpa" {
+	type primary;
+	file "dev/zone.${zone_v4}.in-addr.arpa";
+	allow-update { key dev.; };
+};
+
+# forwarded
+acl "trusted" {
+	${IP4_RANGE};
+	${IP6_RANGE};
+	localnets;
+	localhost;
+};
