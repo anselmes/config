@@ -8,5 +8,5 @@ network:
       mtu: 9000
       optional: true
       parameters:
-        mode: balance-alb
         mii-monitor-interval: 100
+        mode: balance-alb

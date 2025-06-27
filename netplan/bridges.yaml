@@ -8,7 +8,7 @@ network:
       mtu: 9000
       optional: true
       parameters:
-        stp: false
         forward-delay: 0
         hello-time: 200
         max-age: 200
+        stp: false
