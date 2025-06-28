@@ -1,6 +1,6 @@
 {
   "workbench.iconTheme": "vscode-icons",
-  "copyrightInserter.license": "gpl3",
+  "copyrightInserter.userText": "SPDX-License-Identifier: GPL-3.0\\nCopyright (c) 2025 Schubert Anselme <schubert@anselm.es>",
   "files.exclude": {
     "**/.trunk/*actions/": true,
     "**/.trunk/*logs/": true,

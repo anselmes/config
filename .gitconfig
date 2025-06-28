@@ -1,90 +1,260 @@
+# Git Global Configuration File
+# This file contains global Git settings that apply to all repositories for the current user.
+# It defines aliases, color schemes, behavior settings, and URL shortcuts to enhance
+# the Git workflow and user experience.
+#
+# Features:
+# - Custom aliases for common Git operations
+# - Enhanced color output for better readability
+# - Optimized performance settings for large repositories
+# - URL shortcuts for GitHub and Gist operations
+# - Security and workflow best practices
+#
+# Usage:
+#   git config --global --edit          # Edit this file directly
+#   git config --global user.name "Name" # Set user name
+#   git config --global user.email "email" # Set user email
+#
+# Location: ~/.gitconfig (global) or .git/config (repository-specific)
+
+# ============================================================================
+# ALIASES - Custom shortcuts for Git commands
+# ============================================================================
+# These aliases provide shorter commands for frequently used Git operations
+
 [alias]
+  # Quick commit with automatic staging of modified files
   c = commit -am
+
+  # Pull changes from remote repository
   up = pull
+
+  # Push changes to remote repository
   p = push
+
+  # Show repository status in short format
   s = status -s
+
+  # Enhanced diff with color highlighting and word-level changes
   df = diff --color --color-words --abbrev
+
+  # Pretty log format with graph, colors, and commit information
+  # Shows: hash, branches/tags, message, relative date, author
   lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+
+  # Generate .gitignore files from gitignore.io service
+  # Usage: git ignore python,node,macos
   ignore = "!gi() { curl -L -s https://www.gitignore.io/api/$@# }# gi"
 
+# ============================================================================
+# COLOR CONFIGURATION - Enhanced visual output
+# ============================================================================
+# Configure colors for various Git operations to improve readability
+
 [color]
+  # Enable colored output for all Git commands
   ui = always
 
+# Branch command colors
 [color "branch"]
-  current = yellow reverse
-  local = yellow
-  remote = green
+  current = yellow reverse   # Current branch: yellow background
+  local = yellow             # Local branches: yellow text
+  remote = green             # Remote branches: green text
 
+# Diff command colors
 [color "diff"]
-  meta = yellow bold
-  frag = magenta bold
-  old = red bold
-  new = green bold
+  meta = yellow bold         # File headers: bold yellow
+  frag = magenta bold        # Hunk headers: bold magenta
+  old = red bold             # Removed lines: bold red
+  new = green bold           # Added lines: bold green
 
+# Status command colors
 [color "status"]
-  added = yellow
-  changed = green
-  untracked = cyan
+  added = yellow             # Staged files: yellow
+  changed = green            # Modified files: green
+  untracked = cyan           # Untracked files: cyan
+
+# ============================================================================
+# COMMIT CONFIGURATION
+# ============================================================================
+# Settings related to commit creation and signing
 
 #[commit]
+#  # Automatically sign commits with GPG (uncomment to enable)
 #  gpgsign = true
 
+# ============================================================================
+# CORE CONFIGURATION - Fundamental Git behavior
+# ============================================================================
+# Basic Git settings that affect repository operations
+
 [core]
+  # Global gitignore file location
   excludesfiles = ~/.gitignore
+
+  # Global gitattributes file location
   attributesfile = ~/.gitattributes
+
+  # Default text editor for commit messages and interactive operations
   editor = vi
+
+  # Performance tuning for large repositories
+  # Maximum size of a pack file before Git splits it
   packedGitLimit = 512m
+
+  # Maximum size of pack file window
   packedGitWindowsSite = 512m
+
+  # Line ending handling (uncomment for Windows compatibility)
   #autocrlf = true
+
+  # Compression level (0-9, uncomment to disable compression)
   #compression = 0
 
+# ============================================================================
+# REVIEW CONFIGURATION (commented)
+# ============================================================================
+# Configuration for git-review tool (Gerrit integration)
+
 #[gitreview]
-#    usename = ""
+#  # Default username for code review submissions
+#  usename = ""
+
+# ============================================================================
+# GPG CONFIGURATION (commented)
+# ============================================================================
+# GNU Privacy Guard settings for commit and tag signing
 
 #[gpg]
+#  # Path to GPG program executable
 #  program = gpg
 
+# ============================================================================
+# PROXY CONFIGURATION (commented)
+# ============================================================================
+# HTTP/HTTPS proxy settings for corporate networks
+
 # [http]
-#     proxy = ""
+#   # HTTP proxy server
+#   proxy = ""
 #
 # [https]
-#     proxy = ""
+#   # HTTPS proxy server
+#   proxy = ""
+
+# ============================================================================
+# REPOSITORY INITIALIZATION
+# ============================================================================
+# Settings for new repository creation
 
 [init]
+  # Use 'main' as the default branch name for new repositories
+  # This follows modern Git practices instead of 'master'
   defaultBranch = main
 
+# ============================================================================
+# MERGE CONFIGURATION
+# ============================================================================
+# Settings for merge operations
+
 [merge]
+  # Include commit messages from merged commits in merge commit message
   log = true
 
+# ============================================================================
+# PACK CONFIGURATION - Performance optimization
+# ============================================================================
+# Settings for Git's object packing and storage optimization
+
 [pack]
+  # Cache size for delta compression (2GB)
   deltaCacheSize = 2047m
+
+  # Maximum size limit for packed objects (2GB)
   packedSizeLimit = 2047m
+
+  # Memory limit for pack window operations (2GB)
   windowMemory = 2047m
 
+# ============================================================================
+# PULL CONFIGURATION
+# ============================================================================
+# Default behavior for git pull operations
+
 [pull]
+  # Rebase local commits on top of fetched commits instead of merging
+  # This creates a cleaner, linear history
   rebase = true
+
+  # Only allow fast-forward merges to prevent unnecessary merge commits
   ff = only
 
+# ============================================================================
+# TAG CONFIGURATION
+# ============================================================================
+# Settings for Git tag creation
+
 [tag]
+  # Force GPG signing for annotated tags
+  # Ensures tag authenticity and integrity
   forceSignAnnotated = true
 
+# ============================================================================
+# URL SHORTCUTS - GitHub and Gist integration
+# ============================================================================
+# URL rewriting rules for convenient access to GitHub repositories
+
+# GitHub SSH shortcuts
 [url "git@github.com:"]
+  # Allow 'gh:user/repo' as shortcut for GitHub repositories
   insteadOf = "gh:"
+
+  # Use SSH for pushing to GitHub instead of HTTPS
   pushInsteadOf = "github:"
   pushInsteadOf = "git://github.com/"
 
+# GitHub HTTPS shortcuts
 [url "git://github.com/"]
+  # Allow 'github:user/repo' as shortcut for GitHub repositories
   insteadOf = "github:"
 
+# GitHub Gist SSH shortcuts
 [url "git@gist.github.com:"]
+  # Allow 'gst:gist-id' as shortcut for GitHub Gists
   insteadOf = "gst:"
+
+  # Use SSH for pushing to Gists instead of HTTPS
   pushInsteadOf = "gist:"
   pushInsteadOf = "git://gist.github.com/"
 
+# GitHub Gist HTTPS shortcuts
 [url "git://gist.github.com/"]
+  # Allow 'gist:gist-id' as shortcut for GitHub Gists
   insteadOf = "gist:"
 
+# ============================================================================
+# USER CONFIGURATION - Identity settings
+# ============================================================================
+# Personal information used for commits and tags
+
 [user]
+  # Full name for commit attribution (REQUIRED - set your name)
   name = ""
+
+  # Email address for commit attribution (REQUIRED - set your email)
   email = ""
+
+  # GPG key ID for signing commits and tags (uncomment and set if using GPG)
   #signingkey= ""
+
+# ============================================================================
+# EXAMPLE USAGE:
+# ============================================================================
+# After setting up this configuration:
+#
+# git c "commit message"           # Quick commit with staging
+# git lg                          # Pretty log with graph
+# git s                           # Short status
+# git df                          # Enhanced diff
+# git clone gh:user/repo          # Clone from GitHub using shortcut
+# git ignore python,node          # Generate .gitignore for Python and Node.js

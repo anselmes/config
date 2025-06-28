@@ -1,9 +1,11 @@
-# config
+# Configuration
+
+A collection of configuration files and templates for development environments and system setup.
 
 ---
 
 [![OpenSSF Scorecard][ossf-score-badge]][ossf-score-link]
-[![Contiuos Integration][ci-badge]][ci-link]
+[![Continuous Integration][ci-badge]][ci-link]
 [![Review][review-badge]][review-link]
 
 [ossf-score-badge]: https://api.securityscorecards.dev/projects/github.com/anselmes/dotfiles/badge
@@ -15,7 +17,26 @@
 
 ---
 
-Copyright (c) [<schubert@anselme.es>](mailto:schubert@anselm.es)
+## Overview
+
+This repository contains various configuration files and templates for:
+
+- Development environment setup
+- Application configurations
+- System configuration templates
+- Dotfiles and shell configurations
+
+## Usage
+
+Browse the repository structure to find the configuration files you need. Each directory contains specific configuration types organized by application or purpose.
+
+## Contributing
+
+Contributions are welcome! Please ensure all configuration files are well-documented and follow the established patterns in the repository.
+
+## License
+
+Copyright (c) [<schubert@anselm.es>](mailto:schubert@anselm.es)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
