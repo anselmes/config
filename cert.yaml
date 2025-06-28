@@ -1,42 +1,129 @@
+# SPDX-License-Identifier: GPL-3.0
+# Copyright (c) 2025 Schubert Anselme <schubert@anselm.es>
+
+# CFSSL Certificate Authority Configuration
+# This configuration file defines the settings for creating a Certificate Authority (CA)
+# hierarchy using CloudFlare's CFSSL toolkit. It establishes a root CA and intermediate CA
+# structure for secure certificate management in distributed systems.
+#
+# Structure:
+# - Root CA: Self-signed certificate at the top of the trust chain
+# - Intermediate CA: Signed by root CA, used for issuing end-entity certificates
+# - Certificate profiles: Define usage patterns and validity periods
+#
+# Use cases:
+# - Kubernetes cluster certificate management
+# - Internal service TLS certificates
+# - Client certificate authentication
+# - Code signing certificates
+#
+# Security considerations:
+# - Root CA private key should be stored offline after intermediate CA creation
+# - Intermediate CA handles day-to-day certificate issuance
+# - Regular certificate rotation and monitoring recommended
+#
+# Prerequisites:
+# - CFSSL and CFSSLJSON tools installed
+# - Secure storage for private keys
+# - Network access for certificate distribution
+#
+# Usage:
+#   # Generate root CA
+#   cfssl genkey -initca cert.yaml | cfssljson -bare ca
+#
+#   # Generate intermediate CA
+#   cfssl gencert -ca ca.pem -ca-key ca-key.pem cert.yaml | cfssljson -bare intermediate
 ---
+
+# Global configuration for certificate signing operations
 config:
+  # Default signing configuration applied to all certificate operations
   signing:
+    # Default certificate parameters when no specific profile is used
     default:
-      expiry: 8760h
+      expiry: 8760h  # Certificate validity period: 1 year (365 days * 24 hours)
+
+    # Certificate profiles define specific use cases and constraints
     profiles:
+      # Intermediate CA profile for creating subordinate certificate authorities
       intermediate:
-        expiry: 8700h
+        expiry: 8700h  # Slightly shorter than default to ensure renewal before root expires
+
+        # Key usage extensions define what the certificate can be used for
         usages:
-          - signing
-          - digital signature
-          - cert sign
-          - crl sign
-          - key encipherment
-          - server auth
-          - client auth
+          - signing           # Can sign other certificates
+          - digital signature # Can create digital signatures
+          - cert sign         # Can sign certificates (CA capability)
+          - crl sign          # Can sign Certificate Revocation Lists
+          - key encipherment  # Can encrypt symmetric keys
+          - server auth       # Can authenticate servers (TLS server certificates)
+          - client auth       # Can authenticate clients (TLS client certificates)
+
+        # CA constraints define certificate authority capabilities
         ca_constraint:
-          is_ca: true
+          is_ca: true  # Mark this certificate as a Certificate Authority
+
+# Root Certificate Authority configuration
+# The root CA is the trust anchor for the entire certificate hierarchy
 ca:
-  CN: Root CA
+  CN: Root CA  # Common Name: identifies the certificate authority
+
+  # Private key configuration for the root CA
   key:
-    algo: rsa
-    size: 4096
+    algo: rsa   # Algorithm: RSA (alternatives: ecdsa)
+    size: 4096  # Key size: 4096 bits for strong security (minimum 2048)
+
+  # Distinguished Name components for the root CA certificate
   names:
-    - C: CA
-      L: ON
-      ST: Toronto
-      O: OpenStack Helm
-      OU: Certificate Authority
+    - C: CA                        # Country: Canada
+      L: ON                        # Locality: Ontario
+      ST: Toronto                  # State/Province: Toronto
+      O: OpenStack Helm            # Organization: OpenStack Helm project
+      OU: Certificate Authority    # Organizational Unit: Certificate Authority division
+
+# Intermediate Certificate Authority configuration
+# The intermediate CA is used for day-to-day certificate issuance
 intermediate:
-  CN: Intermediate CA
+  CN: Intermediate CA  # Common Name: identifies the intermediate certificate authority
+
+  # Private key configuration for the intermediate CA
   key:
-    algo: rsa
-    size: 4096
+    algo: rsa   # Algorithm: RSA for compatibility
+    size: 4096  # Key size: 4096 bits matching root CA security level
+
+  # Distinguished Name components for the intermediate CA certificate
   names:
-    - C: CA
-      L: ON
-      ST: Toronto
-      O: OpenStack Helm
-      OU: Certificate Authority
+    - C: CA                        # Country: Canada (matching root CA)
+      L: ON                        # Locality: Ontario (matching root CA)
+      ST: Toronto                  # State/Province: Toronto (matching root CA)
+      O: OpenStack Helm            # Organization: OpenStack Helm project (matching root CA)
+      OU: Certificate Authority    # Organizational Unit: Certificate Authority division
+
+  # Intermediate CA specific configuration
   ca:
-    expiry: 8760h
+    expiry: 8760h  # Validity period: 1 year (should be shorter than root CA)
+
+# Additional certificate profiles can be added here for specific use cases:
+#
+# profiles:
+#   server:
+#     expiry: 8760h
+#     usages:
+#       - signing
+#       - key encipherment
+#       - server auth
+#
+#   client:
+#     expiry: 8760h
+#     usages:
+#       - signing
+#       - key encipherment
+#       - client auth
+#
+#   peer:
+#     expiry: 8760h
+#     usages:
+#       - signing
+#       - key encipherment
+#       - server auth
+#       - client

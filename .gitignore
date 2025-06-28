@@ -1,4 +1,4 @@
-# note: LINUX
+# Note: LINUX
 *~
 
 # temporary files which can be created if a process still has a handle open of a deleted file
@@ -13,7 +13,7 @@
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
 
-# note: MACOS
+# Note: MACOS
 # General
 .DS_Store
 .AppleDouble
@@ -42,7 +42,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# note: WINDOWS
+# Note: WINDOWS
 # Windows thumbnail cache files
 Thumbs.db
 Thumbs.db:encryptable
@@ -68,7 +68,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# note: C/C++
+# Note: C/C++
 # Prerequisites
 *.d
 
@@ -122,7 +122,7 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# note: SWIFT
+# Note: SWIFT
 # Xcode
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
@@ -186,7 +186,7 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
-# note: RUST
+# Note: RUST
 # Build and Release Folders
 bin-debug/
 bin-release/
@@ -206,7 +206,7 @@ bin-release/
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
 
-# note: GO
+# Note: GO
 # If you prefer the allow list template instead of the deny list, see community template:
 # https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
 #
@@ -233,7 +233,7 @@ go.work.sum
 # env file
 .env
 
-# note: PYTHON
+# Note: PYTHON
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -406,7 +406,7 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-# note: DEVCONTAINER
+# Note: DEVCONTAINER
 .config/
 .dotnet/
 .gnupg/
@@ -420,6 +420,6 @@ cython_debug/
 .zsh_history
 .zshrc
 
-# note: PROJECT FILES
+# Note: PROJECT FILES
 .env
 !.env.example

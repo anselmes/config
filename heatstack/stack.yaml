@@ -1,3 +1,4 @@
+---
 heat_template_version: 2017-02-24
 description: >
   Template is creating an instance with cinder volume and two NICs.

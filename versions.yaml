@@ -1,5 +1,21 @@
+# SPDX-License-Identifier: GPL-3.0
+# Copyright (c) 2025 Schubert Anselme <schubert@anselm.es>
+
+# Configuration file for managing binary downloads, package installations, and plugin management
+# This file defines versions, URLs, and installation parameters for various development tools
+# and system packages used in containerized or bare-metal environments.
+#
+# Structure:
+# - binary: Downloadable binaries from GitHub releases or official sources
+# - package: System packages managed via package managers (apt, yum, etc.)
+# - plugin: Extensions for existing tools (kubectl plugins via krew)
+
+---
+# Binary downloads section
+# Defines third-party binaries to download and install from official sources
 binary:
-  - name: helm
+  - # Helm - Kubernetes package manager
+    name: helm
     enabled: false
     path: ${os}-${arch}/helm
     type: archive
@@ -8,16 +24,20 @@ binary:
     archs:
       - amd64
       - arm64
-  - name: kustomize
+
+  - # Kustomize - Kubernetes configuration management tool
+    name: kustomize
     enabled: false
-    path: ""
+    path: ""                         # Empty path means binary is at archive root
     type: archive
     url: https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v${version}/kustomize_v${version}_${os}_${arch}.tar.gz
     version: 5.6.0
     archs:
       - amd64
       - arm64
-  - name: krew
+
+  - # Krew - kubectl plugin manager
+    name: krew
     url: https://github.com/kubernetes-sigs/krew/releases/download/v${version}/krew-${os}_${arch}.tar.gz
     enabled: false
     path: krew-${os}_${arch}
@@ -25,11 +45,13 @@ binary:
     post: install krew
     type: archive
     version: 0.4.4
-    workspace: /usr/local/krew
+    workspace: /usr/local/krew       # Custom installation directory
     archs:
       - amd64
       - arm64
-  - name: kubectl
+
+  - # kubectl - Kubernetes command-line tool
+    name: kubectl
     enabled: false
     type: executable
     url: https://dl.k8s.io/release/v${version}/bin/${os}/${arch}/kubectl
@@ -37,7 +59,9 @@ binary:
     archs:
       - amd64
       - arm64
-  - name: k0sctl
+
+  - # k0sctl - k0s cluster management tool
+    name: k0sctl
     enabled: false
     type: executable
     url: https://github.com/k0sproject/k0sctl/releases/download/v${version}/k0sctl-${os}-${arch}
@@ -45,7 +69,9 @@ binary:
     archs:
       - amd64
       - arm64
-  - name: cfssl
+
+  - # CFSSL - CloudFlare's PKI toolkit for TLS certificate management
+    name: cfssl
     enabled: false
     type: executable
     url: https://github.com/cloudflare/cfssl/releases/download/v${version}/cfssl_${version}_${os}_${arch}
@@ -53,7 +79,9 @@ binary:
     archs:
       - amd64
       - arm64
-  - name: cfssljson
+
+  - # CFSSL JSON - JSON output tool for CFSSL
+    name: cfssljson
     enabled: false
     type: executable
     url: https://github.com/cloudflare/cfssl/releases/download/v${version}/cfssljson_${version}_${os}_${arch}
@@ -61,143 +89,161 @@ binary:
     archs:
       - amd64
       - arm64
+
+# Package management section
+# Defines system packages to install or remove via package managers
 package:
+  # Individual packages to add
   add: []
-  # - name: ""
+  # Example individual package addition:
+  # - name: "package-name"
   #   enabled: false
-  #   keyring: ""
-  #   repo: ""
-  #   type: apt
+  #   keyring: "https://example.com/gpg-key"  # GPG key for package verification
+  #   repo: "https://example.com/repo"        # Custom repository URL
+  #   type: apt                               # Package manager type
+
+  # Individual packages to remove
   remove: []
+  # Example individual package removal:
   # - name: containerd
   #   enabled: false
   #   type: apt
+
+  # Package groups for organized installation
   group:
+    # Default system packages - essential tools and libraries
     - name: default
       enabled: true
       type: apt
       add:
-        - bash
-        - ca-certificates
-        - conntrack
-        - cron
-        - file
-        - iproute2
-        - kmod
-        - libseccomp2
-        - mount
-        - nftables
-        - open-iscsi
-        - openssl
-        - pigz
-        - procps
-        - software-properties-common
-        - ssh
-        - udev
-        - util-linux
+        - bash                       # Shell
+        - ca-certificates            # SSL certificate authorities
+        - conntrack                  # Connection tracking utilities
+        - cron                       # Task scheduler
+        - file                       # File type identification
+        - iproute2                   # Advanced IP routing utilities
+        - kmod                       # Kernel module utilities
+        - libseccomp2                # Secure computing library
+        - mount                      # Filesystem mounting utilities
+        - nftables                   # Netfilter tables userspace utilities
+        - open-iscsi                 # iSCSI initiator tools
+        - openssl                    # SSL/TLS toolkit
+        - pigz                       # Parallel gzip
+        - procps                     # Process utilities
+        - software-properties-common # Repository management tools
+        - ssh                        # Secure Shell client/server
+        - udev                       # Device manager
+        - util-linux                 # System utilities
+
+    # Docker container runtime and tools
     - name: docker
       enabled: false
       keyring: https://download.docker.com/${os}/ubuntu/gpg
       repo: https://download.docker.com/${os}/ubuntu
       type: apt
       add:
-        - containerd.io
-        - docker-buildx-plugin
-        - docker-ce-cli
-        - docker-ce
-        - docker-compose-plugin
-      remove:
-        - containerd
-        - docker-compose
-        - docker-doc
-        - docker.io
-        - podman-docker
-        - runc
+        - containerd.io            # Container runtime
+        - docker-buildx-plugin     # Extended build capabilities
+        - docker-ce-cli            # Docker command-line interface
+        - docker-ce                # Docker Community Edition
+        - docker-compose-plugin    # Multi-container orchestration
+      remove:                      # Remove conflicting packages
+        - containerd               # Old containerd version
+        - docker-compose           # Old compose version
+        - docker-doc               # Documentation package
+        - docker.io                # Ubuntu's docker package
+        - podman-docker            # Podman's docker compatibility
+        - runc                     # Old container runtime
+
+    # Development toolchain - compilers, build tools, and development libraries
     - name: toolchain
       enabled: false
       type: apt
       add:
-        - avahi-utils
-        - binutils
-        - bison
-        - build-essential
-        - ccache
-        - clang
-        - cmake
-        - default-jre
-        - dfu-util
-        - flex
-        - g++
-        - gcc
-        - git
-        - gnupg2
-        - gperf
-        - libavahi-client-dev
-        - libc6-dev
-        - libcairo2-dev
-        - libcurl4
-        - libdbus-1-dev
-        - libedit2
-        - libelf-dev
-        - libffi-dev
-        - libgcc-9-dev
-        - libgirepository1.0-dev
-        - libglib2.0-dev
-        - libncurses6
-        - libreadline-dev
-        - libsdl2-dev
-        - libsqlite3-0
-        - libssl-dev
-        - libssl-dev
-        - libstdc++-9-dev
-        - libusb-1.0-0
-        - libxml2
-        - libz3-dev
-        - lld
-        - llvm
-        - ninja-build
-        - pipx
-        - pkg-config
-        - python3
-        - python3-dev
-        - python3-pip
-        - python3-venv
-        - repo
-        - tzdata
-        - unzip
-        - uuid-dev
-        - wget
-        - wine
-        - wine64
-        - zlib1g-dev
+        - avahi-utils              # Network service discovery utilities
+        - binutils                 # Binary utilities (assembler, linker, etc.)
+        - bison                    # Parser generator
+        - build-essential          # Basic build tools meta-package
+        - ccache                   # Compiler cache for faster builds
+        - clang                    # C/C++/Objective-C compiler
+        - cmake                    # Cross-platform build system
+        - default-jre              # Java Runtime Environment
+        - dfu-util                 # Device Firmware Upgrade utilities
+        - flex                     # Lexical analyzer generator
+        - g++                      # GNU C++ compiler
+        - gcc                      # GNU C compiler
+        - git                      # Version control system
+        - gnupg2                   # GNU Privacy Guard
+        - gperf                    # Perfect hash function generator
+        - libavahi-client-dev      # Avahi client library development files
+        - libc6-dev                # GNU C Library development files
+        - libcairo2-dev            # Cairo graphics library development files
+        - libcurl4                 # HTTP client library
+        - libdbus-1-dev            # D-Bus message bus development files
+        - libedit2                 # Command line editor library
+        - libelf-dev               # ELF object file access library
+        - libffi-dev               # Foreign Function Interface library
+        - libgcc-9-dev             # GCC support library development files
+        - libgirepository1.0-dev   # GObject introspection development files
+        - libglib2.0-dev           # GLib development files
+        - libncurses6              # Terminal handling library
+        - libreadline-dev          # GNU readline development files
+        - libsdl2-dev              # Simple DirectMedia Layer development files
+        - libsqlite3-0             # SQLite 3 shared library
+        - libssl-dev               # SSL development files
+        - libstdc++-9-dev          # GNU C++ standard library development files
+        - libusb-1.0-0             # USB device access library
+        - libxml2                  # XML parsing library
+        - libz3-dev                # Z3 theorem prover library
+        - lld                      # LLVM linker
+        - llvm                     # Low Level Virtual Machine
+        - ninja-build              # Small build system focused on speed
+        - pipx                     # Install Python applications in isolated environments
+        - pkg-config               # Package configuration system
+        - python3                  # Python 3 interpreter
+        - python3-dev              # Python 3 development files
+        - python3-pip              # Python 3 package installer
+        - python3-venv             # Python 3 virtual environment creation
+        - repo                     # Android repo tool for managing repositories
+        - tzdata                   # Time zone data
+        - unzip                    # Archive extraction utility
+        - uuid-dev                 # UUID library development files
+        - wget                     # Web content retrieval tool
+        - wine                     # Windows compatibility layer (32-bit)
+        - wine64                   # Windows compatibility layer (64-bit)
+        - zlib1g-dev               # Compression library development files
+
+# Plugin management section
+# Defines plugins/extensions for existing tools
 plugin:
+  # kubectl plugins managed via krew
   - name: kubectl
     enabled: false
     installer: krew
     list:
-      - access-matrix
-      - ca-cert
-      - cert-manager
-      - cilium
-      - config-import
-      - ctx
-      - debug-shell
-      - deprecations
-      - df-pv
-      - hns
-      - images
-      - minio
-      - node-shell
-      - ns
-      - nsenter
-      - oidc-login
-      - open-svc
-      - openebs
-      - pod-shell
-      - rabbitmq
-      - rook-ceph
-      - view-cert
-      - view-secret
-      - view-utilization
-      - view-webhook
-      - virt
+      - access-matrix              # RBAC access matrix visualization
+      - ca-cert                    # Certificate authority management
+      - cert-manager               # Certificate management operations
+      - cilium                     # Cilium CNI troubleshooting
+      - config-import              # Import kubeconfig files
+      - ctx                        # Switch between kubeconfig contexts
+      - debug-shell                # Debug pods with shell access
+      - deprecations               # Find deprecated API usage
+      - df-pv                      # Show persistent volume disk usage
+      - hns                        # Windows HNS network troubleshooting
+      - images                     # Show container images used in cluster
+      - minio                      # MinIO object storage operations
+      - node-shell                 # Access node shell directly
+      - ns                         # Switch between namespaces
+      - nsenter                    # Enter node namespaces
+      - oidc-login                 # OIDC authentication helper
+      - open-svc                   # Open service URLs in browser
+      - openebs                    # OpenEBS storage troubleshooting
+      - pod-shell                  # Easy pod shell access
+      - rabbitmq                   # RabbitMQ operations and monitoring
+      - rook-ceph                  # Rook Ceph storage troubleshooting
+      - view-cert                  # View certificate details
+      - view-secret                # View secret contents
+      - view-utilization           # Resource utilization visualization
+      - view-webhook               # View webhook configurations
+      - virt                       # Virtual machine operations (KubeVirt)
