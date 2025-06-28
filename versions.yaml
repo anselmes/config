@@ -191,7 +191,6 @@ package:
         - libsdl2-dev              # Simple DirectMedia Layer development files
         - libsqlite3-0             # SQLite 3 shared library
         - libssl-dev               # SSL development files
-        - libssl-dev               # SSL development files (duplicate entry)
         - libstdc++-9-dev          # GNU C++ standard library development files
         - libusb-1.0-0             # USB device access library
         - libxml2                  # XML parsing library
