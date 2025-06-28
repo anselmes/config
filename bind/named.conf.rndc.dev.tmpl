@@ -1,0 +1,9 @@
+key "rndc-dev-key" {
+	algorithm hmac-sha256;
+	secret "${rndc_secret}";
+};
+
+controls {
+	inet 127.0.0.1 port 954
+		allow { 127.0.0.1; } keys { "rndc-dev-key"; };
+};
