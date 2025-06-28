@@ -9,9 +9,9 @@ updates:
     package-ecosystem: devcontainers
     directory: /
     schedule:
-      interval: monthly
-
-  - package-ecosystem: docker
+      interval: daily
+  - # Maintain dependencies for Dockerfiles
+    package-ecosystem: docker
     directory: /.devcontainer
     schedule:
       interval: daily
