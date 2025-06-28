@@ -1,8 +1,0 @@
-service {
-  mdns {
-    repeater {
-      interface eth1
-      interface eth1.22
-    }
-  }
-}

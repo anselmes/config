@@ -1,7 +1,0 @@
-service {
-  lldp {
-    interface all {
-    }
-    management-address 10.10.10.1
-  }
-}
