@@ -35,7 +35,7 @@ PreDown = ip6tables -D FORWARD -i wg0 -j ACCEPT
 PreDown = ip6tables -D FORWARD -o wg0 -j ACCEPT
 
 # Remove external interface rule
-PreDown = ip6tables -D INPUT -i ${netdev} -p udp --dport 51820 -j ACCEPT
+PreDown = ip6tables -D INPUT -i ${netdev} -p udp --dport ${wg_port} -j ACCEPT
 
 [Peer]
 AllowedIPs = ${IP4_RANGE}, ${IP6_RANGE}
