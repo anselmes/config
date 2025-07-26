@@ -10,7 +10,7 @@ PostUp = iptables -I FORWARD -i wg0 -j ACCEPT
 PostUp = iptables -I FORWARD -o wg0 -j ACCEPT
 
 PostUp = iptables -t nat -I POSTROUTING -s ${ipv4_addr} -o ${netdev} -j MASQUERADE  # Enable NAT for IPv4 traffic from WireGuard clients
-PostUp = iptables -I INPUT -i ${netdev} -p udp --dport 51820 -j ACCEPT              # Allow WireGuard port traffic on the external interface
+PostUp = iptables -I INPUT -i ${netdev} -p udp --dport ${wg_port} -j ACCEPT              # Allow WireGuard port traffic on the external interface
 
 # Allow traffic on the WireGuard interface - IPv6
 PostUp = ip6tables -I INPUT -i wg0 -j ACCEPT
