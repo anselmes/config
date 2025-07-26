@@ -27,7 +27,7 @@ PreDown = iptables -D FORWARD -o wg0 -j ACCEPT
 
 # Remove NAT rule and external interface rule
 PreDown = iptables -t nat -D POSTROUTING -s ${ipv4_addr} -o ${netdev} -j MASQUERADE
-PreDown = iptables -D INPUT -i ${netdev} -p udp --dport 51820 -j ACCEPT
+PreDown = iptables -D INPUT -i ${netdev} -p udp --dport ${wg_port} -j ACCEPT
 
 # Remove WireGuard interface rules - IPv6
 PreDown = ip6tables -D INPUT -i wg0 -j ACCEPT
