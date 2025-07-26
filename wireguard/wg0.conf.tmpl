@@ -1,16 +1,42 @@
+# /etc/wireguard/wg0.conf
 [Interface]
-PrivateKey = ${privkey}
 Address = ${ipv4_addr}, ${ipv6_addr}
 ListenPort = ${wg_port}
-SaveConfig = true
-PostUp = ufw route allow in on wg0 out on ${netdev}
-PostUp = iptables -t nat -I POSTROUTING -o ${netdev} -j MASQUERADE
-PostUp = ip6tables -t nat -I POSTROUTING -o ${netdev} -j MASQUERADE
-PreDown = ufw route delete allow in on wg0 out on ${netdev}
-PreDown = iptables -t nat -D POSTROUTING -o ${netdev} -j MASQUERADE
-PreDown = ip6tables -t nat -D POSTROUTING -o ${netdev} -j MASQUERADE
+PrivateKey = ${privkey}
+
+# Allow traffic on the WireGuard interface - IPv4
+PostUp = iptables -I INPUT -i wg0 -j ACCEPT
+PostUp = iptables -I FORWARD -i wg0 -j ACCEPT
+PostUp = iptables -I FORWARD -o wg0 -j ACCEPT
+
+PostUp = iptables -t nat -I POSTROUTING -s ${ipv4_addr} -o ${netdev} -j MASQUERADE  # Enable NAT for IPv4 traffic from WireGuard clients
+PostUp = iptables -I INPUT -i ${netdev} -p udp --dport 51820 -j ACCEPT              # Allow WireGuard port traffic on the external interface
+
+# Allow traffic on the WireGuard interface - IPv6
+PostUp = ip6tables -I INPUT -i wg0 -j ACCEPT
+PostUp = ip6tables -I FORWARD -i wg0 -j ACCEPT
+PostUp = ip6tables -I FORWARD -o wg0 -j ACCEPT
+
+# Allow WireGuard port traffic on the external interface
+PostUp = ip6tables -I INPUT -i ${netdev} -p udp --dport 51820 -j ACCEPT
+
+# Remove WireGuard interface rules - IPv4
+PreDown = iptables -D INPUT -i wg0 -j ACCEPT
+PreDown = iptables -D FORWARD -i wg0 -j ACCEPT
+PreDown = iptables -D FORWARD -o wg0 -j ACCEPT
+
+# Remove NAT rule and external interface rule
+PreDown = iptables -t nat -D POSTROUTING -s ${ipv4_addr} -o ${netdev} -j MASQUERADE
+PreDown = iptables -D INPUT -i ${netdev} -p udp --dport 51820 -j ACCEPT
+
+# Remove WireGuard interface rules - IPv6
+PreDown = ip6tables -D INPUT -i wg0 -j ACCEPT
+PreDown = ip6tables -D FORWARD -i wg0 -j ACCEPT
+PreDown = ip6tables -D FORWARD -o wg0 -j ACCEPT
+
+# Remove external interface rule
+PreDown = ip6tables -D INPUT -i ${netdev} -p udp --dport 51820 -j ACCEPT
 
 [Peer]
+AllowedIPs = ${IP4_RANGE}, ${IP6_RANGE}
 PublicKey = ${pubkey}
-AllowedIPs = ${allowed_ips}
-Endpoint = ${server_ip}:${wg_port}
