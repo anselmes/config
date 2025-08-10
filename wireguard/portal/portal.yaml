@@ -1,0 +1,19 @@
+---
+services:
+  wgportal:
+    image: wgportal/wg-portal:master
+    container_name: wgportal
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - WG_PORTAL_CONFIG=/app/config/portal.yaml
+    logging:
+      options:
+        max-size: 10m
+        max-file: 3
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - /etc/wireguard:/etc/wireguard
+      - /var/lib/wireguard/portal/data:/app/data
+      - /var/lib/wireguard/portal/config:/app/config

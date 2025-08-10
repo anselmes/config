@@ -1,0 +1,174 @@
+---
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: OpenStackDeployment
+metadata:
+  name: osdpl
+  namespace: openstack
+spec:
+  region_name: RegionOne
+  public_domain_name: os.dev.local
+  openstack_version: caracal
+  # local_volume_storage_class: standard
+  # persistent_volume_storage_class: standard
+  preset: core #compute
+  size: single #tiny
+  services:
+    # orchestration:
+    #   heat:
+    #     values:
+    #       conf:
+    #         heat:
+    #           clients_heat:
+    #             insecure: true
+    # block-storage:
+    #   cinder:
+    #     values:
+    #       conf:
+    #         cinder:
+    #           DEFAULT:
+    #             default_volume_type: volumes-hdd-luks
+    #       bootstrap:
+    #         volume_types:
+    #           volumes-hdd-luks:
+    #             volume_backend_name: volumes-hdd
+    #             arguments:
+    #               encryption-cipher: aes-xts-plain64
+    #               encryption-control-location: front-end
+    #               encryption-key-size: 256
+    #               encryption-provider: luks
+    compute:
+      nova:
+        values:
+          conf:
+            nova:
+              filter_scheduler:
+                enabled_filters:
+                  - ~AvailabilityZoneFilter
+    # networking:
+    #   neutron:
+    #     values:
+    #       conf:
+    #         neutron:
+    #           DEFAULT:
+    #             global_physnet_mtu: 1480
+    #             support_sync_ha_routers_info: false
+    #             support_sync_ovs_info: false
+    #   openvswitch:
+    #     values:
+    #       conf:
+    #         neutron:
+    #           DEFAULT:
+    #             support_sync_ovs_info: false
+    identity:
+      keystone:
+        values:
+          conf:
+            keystone:
+              resource:
+                admin_project_name: admin
+                admin_project_domain_name: Default
+  features:
+    # keystone:
+    #  keycloak:
+    #    enabled: true
+    #    url: https://SET_KEYCLOAKIP
+    #    oidc:
+    #      OIDCOAuthSSLValidateServer: false
+    #      OIDCSSLValidateServer: false
+    glance:
+      signature:
+        enabled: true
+      backends:
+        file:
+          pvcstore:
+            default: true
+            pvc:
+              storage_class_name: standard
+              size: 10Gi
+    # cinder:
+    #   volume:
+    #     backends:
+    #       lvm:
+    #         lvm:
+    #           volume_group: cinder-vol
+    nova:
+      live_migration_interface: oam
+      vcpu_type: host-passthrough
+      allocation_ratios:
+        cpu: 4
+        disk: 1
+        ram: 1
+      console:
+        novnc:
+          enabled: true
+          tls:
+            enabled: true
+      libvirt:
+        tls:
+          enabled: true
+      images:
+        backend: qcow2
+        # backend: lvm
+        # lvm:
+        #   volume_group: nova-vol
+        # backend: ceph
+        encryption:
+          enabled: true
+          cipher: aes-xts-plain64
+          key_size: 256
+    neutron:
+      tunnel_interface: oam
+      ipsec:
+        enabled: true
+      dvr:
+        enabled: true
+      dns_servers:
+        - 1.1.1.1
+        - 9.9.9.9
+      external_networks:
+        - bridge: br-ext
+          interface: br-fip
+          mtu: 1500
+          physnet: physnet1
+          vlan_ranges: null
+          network_types:
+            - flat
+      floating_network:
+        enabled: true
+        physnet: physnet1
+        subnet:
+          gateway: 172.11.12.11
+          pool_end: 172.11.12.200
+          pool_start: 172.11.12.100
+          range: 172.11.12.0/24
+    octavia:
+      lb_network:
+        subnets:
+          - pool_end: 172.31.255.250
+            pool_start: 172.31.240.10
+            range: 172.31.240.0/20
+    ssl:
+      public_endpoints:
+        api_cert:
+          value_from:
+            secret_key_ref:
+              key: api_cert
+              name: openstack-ssl-secret
+        api_key:
+          value_from:
+            secret_key_ref:
+              key: api_key
+              name: openstack-ssl-secret
+        ca_cert:
+          value_from:
+            secret_key_ref:
+              key: ca_cert
+              name: openstack-ssl-secret
+    # database:
+    #   backup:
+    #     enabled: true
+    # network_policies:
+    #   enabled: false
+    policies:
+      strict_admin:
+        enabled: true

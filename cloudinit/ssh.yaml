@@ -1,0 +1,72 @@
+write_files:
+  - path: /etc/ssh/sshd_config.d/99-ca.conf
+    permissions: "0644"
+    owner: root
+    content: |
+      # For client keys
+      TrustedUserCAKeys /etc/ssh/ca.pem
+
+      # For host keys
+      HostCertificate /etc/ssh/ssh_host_rsa_key-cert.pub
+      HostCertificate /etc/ssh/ssh_host_ecdsa_key-cert.pub
+      HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
+  - path: /etc/ssh/ca.pem
+    encoding: b64
+    owner: root
+    permissions: "0644"
+    content: |
+      c3NoLXJzYQ==
+  - path: /etc/ssh/ssh_host_ecdsa_key
+    encoding: b64
+    owner: root
+    permissions: "0600"
+    content: |
+     IC0tLS0tQkVHSU4gT1BFTlNTSCBQUklWQVRFIEtFWS0tLS0tCiAgICAgIC4uLgogICAgICAtLS0tLUVORCBPUEVOU1NIIFBSSVZBVEUgS0VZLS0tLS0=
+  - path: /etc/ssh/ssh_host_ecdsa_key.pub
+    encoding: b64
+    owner: root
+    permissions: "0644"
+    content: |
+      ZWNkc2Etc2hhMi1uaXN0cDI1Ng==
+  - path: /etc/ssh/ssh_host_ecdsa_key-cert.pub
+    encoding: b64
+    owner: root
+    permissions: "0644"
+    content: |
+      ZWNkc2Etc2hhMi1uaXN0cDI1Ni1jZXJ0LXYwMUBvcGVuc3NoLmNvbQ==
+  - path: /etc/ssh/ssh_host_ed25519_key
+    encoding: b64
+    owner: root
+    permissions: "0600"
+    content: |
+      LS0tLS1CRUdJTiBPUEVOU1NIIFBSSVZBVEUgS0VZLS0tLS0KICAgICAgLi4uCiAgICAgIC0tLS0tRU5EIE9QRU5TU0ggUFJJVkFURSBLRVktLS0tLQ==
+  - path: /etc/ssh/ssh_host_ed25519_key.pub
+    encoding: b64
+    owner: root
+    permissions: "0644"
+    content: |
+      c3NoLWVkMjU1MTk=
+  - path: /etc/ssh/ssh_host_ed25519_key-cert.pub
+    encoding: b64
+    owner: root
+    permissions: "0644"
+    content: |
+      c3NoLWVkMjU1MTktY2VydC12MDFAb3BlbnNzaC5jb20=
+  - path: /etc/ssh/ssh_host_rsa_key
+    encoding: b64
+    owner: root
+    permissions: "0600"
+    content: |
+      ICAgICAgLS0tLS1CRUdJTiBPUEVOU1NIIFBSSVZBVEUgS0VZLS0tLS0KICAgICAgLi4uCiAgICAgIC0tLS0tRU5EIE9QRU5TU0ggUFJJVkFURSBLRVktLS0tLQ==
+  - path: /etc/ssh/ssh_host_rsa_key.pub
+    encoding: b64
+    owner: root
+    permissions: "0644"
+    content: |
+      c3NoLXJzYQ==
+  - path: /etc/ssh/ssh_host_rsa_key-cert.pub
+    encoding: b64
+    owner: root
+    permissions: "0644"
+    content: |
+      c3NoLXJzYS1jZXJ0LXYwMUBvcGVuc3NoLmNvbQ==

@@ -1,0 +1,85 @@
+---
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: ceph
+  namespace: ceph
+spec:
+  dataDirHostPath: /var/lib/rook
+  csi:
+    readAffinity:
+      enabled: false
+  healthCheck:
+    livenessProbe:
+      mgr:
+        probe:
+          failureThreshold: 5
+          timeoutSeconds: 5
+      mon:
+        probe:
+          failureThreshold: 5
+          timeoutSeconds: 5
+      osd:
+        probe:
+          failureThreshold: 5
+          timeoutSeconds: 5
+  mon:
+    count: 3
+  mgr:
+    count: 2
+    modules:
+      - enabled: true
+        name: balancer
+        settings: {}
+      - enabled: true
+        name: pg_autoscaler
+        settings: {}
+  network:
+    provider: host
+  # placement:
+  #   mgr:
+  #     nodeAffinity:
+  #       requiredDuringSchedulingIgnoredDuringExecution:
+  #         nodeSelectorTerms:
+  #           - matchExpressions:
+  #               - key: ceph_role_mgr
+  #                 operator: In
+  #                 values:
+  #                   - 'true'
+  #     tolerations:
+  #       - key: ceph_role_mgr
+  #         operator: Exists
+  #   mon:
+  #     nodeAffinity:
+  #       requiredDuringSchedulingIgnoredDuringExecution:
+  #         nodeSelectorTerms:
+  #           - matchExpressions:
+  #               - key: ceph_role_mon
+  #                 operator: In
+  #                 values:
+  #                   - 'true'
+  #     tolerations:
+  #       - key: ceph_role_mon
+  #         operator: Exists
+  # security:
+  #   keyRotation:
+  #     enabled: false
+  storage:
+    flappingRestartIntervalHours: 0
+    useAllDevices: true
+    # nodes:
+    #   - name: host-01
+    #     devices:
+    #       - name: sdb
+    #       - name: sdc
+    #       - name: sdd
+    #   - name: host-02
+    #     devices:
+    #       - name: sdb
+    #       - name: sdc
+    #       - name: sdd
+    #   - name: host-03
+    #     devices:
+    #       - name: sdb
+    #       - name: sdc
+    #       - name: sdd

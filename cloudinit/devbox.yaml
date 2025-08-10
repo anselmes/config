@@ -1,14 +1,14 @@
 #cloud-config
 write_files:
   - path: /etc/motd
-    permissions: "0644"
     owner: root
+    permissions: "0644"
     content: |
       ===========================================
         Welcome to DevBox 🚀
       ===========================================
 
-      Hostname: kcm (K0rdent Sandbox)
+      Hostname: $(hostname)
       Purpose:  FRR for Cilium BGP, WireGuard VPN, Bind9 DNS, and more.
 
       Useful Info:
@@ -19,193 +19,41 @@ write_files:
 
       Enjoy hacking in your sandbox!
       ===========================================
+  - path: /etc/bind/named.conf.devbox-zones
+    encoding: b64
+    owner: bind
+    permissions: "0644"
+    content: |
+      ICAgICAgaW5jbHVkZSAiL2V0Yy9iaW5kL2RldmJveC5rZXkiOwoKICAgICAgem9uZSAiZGV2LmxvY2FsIiBJTiB7CiAgICAgICAgdHlwZSBwcmltYXJ5OwogICAgICAgIGZpbGUgIi92YXIvY2FjaGUvYmluZC9kYi5kZXZib3giOwoKICAgICAgICBhbGxvdy10cmFuc2ZlciB7CiAgICAgICAgICBrZXkgImV4dGVybmFsZG5zIjsKICAgICAgICB9OwoKICAgICAgICB1cGRhdGUtcG9saWN5IHsKICAgICAgICAgIGdyYW50IGV4dGVybmFsZG5zIHpvbmVzdWIgQU5ZOwogICAgICAgIH07CiAgICAgIH07Cg==  - path: /etc/bind/devbox.key
+  - path: /opt/db.devbox.tmpl
+    encoding: b64
+    owner: bind
+    permissions: "0644"
+    content: |
+      ICAgICAgJFRUTCAgICA2MDQ4MDAKICAgICAgQCAgICAgICBJTiAgICAgIFNPQSAgICAgbnMuZGV2LmxvY2FsLiBhZG1pbi5kZXYubG9jYWwuICgKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMiAgICAgICAgIDsgU2VyaWFsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDYwNDgwMCAgICAgICAgIDsgUmVmcmVzaAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDg2NDAwICAgICAgICAgOyBSZXRyeQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAyNDE5MjAwICAgICAgICAgOyBFeHBpcmUKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgNjA0ODAwICkgICAgICAgOyBOZWdhdGl2ZSBDYWNoZSBUVEwKICAgICAgOwogICAgICBAICAgICAgIElOICAgICAgTlMgICAgICBucy5kZXYubG9jYWwuCiAgICAgIG5zICAgICAgSU4gICAgICBBICAgICAgICR7c2VydmVyX2lwfQo=
   - path: /opt/frr.conf.tmpl
-    permissions: "0644"
+    encoding: b64
     owner: root
+    permissions: "0644"
     content: |
-      # default to using syslog. /etc/rsyslog.d/45-frr.conf places the log in
-      # /var/log/frr/frr.log
-      #
-      # Note:
-      # FRR's configuration shell, vtysh, dynamically edits the live, in-memory
-      # configuration while FRR is running. When instructed, vtysh will persist the
-      # live configuration to this file, overwriting its contents. If you want to
-      # avoid this, you can edit this file manually before starting FRR, or instruct
-      # vtysh to write configuration to a different file.
-      frr defaults traditional
-      log syslog informational
-      service integrated-vtysh-config
-      hostname ${hostname}
-      #debug bgp events
-      #debug bgp filters
-      #debug bgp fsm
-      #debug bgp keepalives
-      #debug bgp updates
-      !
-      router bgp ${bgp_as}
-      bgp router-id ${server_ip}
-      bgp log-neighbor-changes
-      no bgp ebgp-requires-policy
-      no bgp default ipv4-unicast
-      bgp bestpath as-path multipath-relax
-      no bgp network import-check
-      neighbor cilium peer-group
-      neighbor cilium remote-as external
-      neighbor cilium password changeme
-      neighbor cilium ebgp-multihop 4
-      neighbor cilium capability extended-nexthop
-      !
-      address-family ipv4 unicast
-        neighbor cilium activate
-      exit-address-family
-      exit
-      !
+      ICAgICAgIyBkZWZhdWx0IHRvIHVzaW5nIHN5c2xvZy4gL2V0Yy9yc3lzbG9nLmQvNDUtZnJyLmNvbmYgcGxhY2VzIHRoZSBsb2cgaW4KICAgICAgIyAvdmFyL2xvZy9mcnIvZnJyLmxvZwogICAgICAjCiAgICAgICMgTm90ZToKICAgICAgIyBGUlIncyBjb25maWd1cmF0aW9uIHNoZWxsLCB2dHlzaCwgZHluYW1pY2FsbHkgZWRpdHMgdGhlIGxpdmUsIGluLW1lbW9yeQogICAgICAjIGNvbmZpZ3VyYXRpb24gd2hpbGUgRlJSIGlzIHJ1bm5pbmcuIFdoZW4gaW5zdHJ1Y3RlZCwgdnR5c2ggd2lsbCBwZXJzaXN0IHRoZQogICAgICAjIGxpdmUgY29uZmlndXJhdGlvbiB0byB0aGlzIGZpbGUsIG92ZXJ3cml0aW5nIGl0cyBjb250ZW50cy4gSWYgeW91IHdhbnQgdG8KICAgICAgIyBhdm9pZCB0aGlzLCB5b3UgY2FuIGVkaXQgdGhpcyBmaWxlIG1hbnVhbGx5IGJlZm9yZSBzdGFydGluZyBGUlIsIG9yIGluc3RydWN0CiAgICAgICMgdnR5c2ggdG8gd3JpdGUgY29uZmlndXJhdGlvbiB0byBhIGRpZmZlcmVudCBmaWxlLgogICAgICBmcnIgZGVmYXVsdHMgdHJhZGl0aW9uYWwKICAgICAgbG9nIHN5c2xvZyBpbmZvcm1hdGlvbmFsCiAgICAgIHNlcnZpY2UgaW50ZWdyYXRlZC12dHlzaC1jb25maWcKICAgICAgaG9zdG5hbWUgJHtob3N0bmFtZX0KICAgICAgI2RlYnVnIGJncCBldmVudHMKICAgICAgI2RlYnVnIGJncCBmaWx0ZXJzCiAgICAgICNkZWJ1ZyBiZ3AgZnNtCiAgICAgICNkZWJ1ZyBiZ3Aga2VlcGFsaXZlcwogICAgICAjZGVidWcgYmdwIHVwZGF0ZXMKICAgICAgIQogICAgICByb3V0ZXIgYmdwICR7YmdwX2FzfQogICAgICBiZ3Agcm91dGVyLWlkICR7c2VydmVyX2lwfQogICAgICBiZ3AgbG9nLW5laWdoYm9yLWNoYW5nZXMKICAgICAgbm8gYmdwIGViZ3AtcmVxdWlyZXMtcG9saWN5CiAgICAgIG5vIGJncCBkZWZhdWx0IGlwdjQtdW5pY2FzdAogICAgICBiZ3AgYmVzdHBhdGggYXMtcGF0aCBtdWx0aXBhdGgtcmVsYXgKICAgICAgbm8gYmdwIG5ldHdvcmsgaW1wb3J0LWNoZWNrCiAgICAgIG5laWdoYm9yIGNpbGl1bSBwZWVyLWdyb3VwCiAgICAgIG5laWdoYm9yIGNpbGl1bSByZW1vdGUtYXMgZXh0ZXJuYWwKICAgICAgbmVpZ2hib3IgY2lsaXVtIHBhc3N3b3JkIGNoYW5nZW1lCiAgICAgIG5laWdoYm9yIGNpbGl1bSBlYmdwLW11bHRpaG9wIDQKICAgICAgbmVpZ2hib3IgY2lsaXVtIGNhcGFiaWxpdHkgZXh0ZW5kZWQtbmV4dGhvcAogICAgICAhCiAgICAgIGFkZHJlc3MtZmFtaWx5IGlwdjQgdW5pY2FzdAogICAgICAgIG5laWdoYm9yIGNpbGl1bSBhY3RpdmF0ZQogICAgICBleGl0LWFkZHJlc3MtZmFtaWx5CiAgICAgIGV4aXQKICAgICAgIQo=
   - path: /opt/wg0.conf.tmpl
-    permissions: "0644"
+    encoding: b64
     owner: root
+    permissions: "0644"
     content: |
-      [Interface]
-      PrivateKey = ${privkey}
-      Address = ${ipv4_addr}, ${ipv6_addr}
-      ListenAddress = ${server_ip}
-      ListenPort = ${wg_port}
-      SaveConfig = true
-      PostUp = ufw route allow in on wg0 out on ${netdev}
-      PostUp = iptables -t nat -I POSTROUTING -o ${netdev} -j MASQUERADE
-      PostUp = ip6tables -t nat -I POSTROUTING -o ${netdev} -j MASQUERADE
-      PreDown = ufw route delete allow in on wg0 out on ${netdev}
-      PreDown = iptables -t nat -D POSTROUTING -o ${netdev} -j MASQUERADE
-      PreDown = ip6tables -t nat -D POSTROUTING -o ${netdev} -j MASQUERADE
-
-      [Peer]
-      PublicKey = ${pubkey}
-      AllowedIPs = ${IP4_RANGE}, ${IP6_RANGE}, ${vip4_addr}
-      Endpoint = ${server_ip}:${wg_port}
+      ICAgICAgIyAvZXRjL3dpcmVndWFyZC93ZzAuY29uZgogICAgICBbSW50ZXJmYWNlXQogICAgICBBZGRyZXNzID0gJHtpcHY0X2FkZHJ9LCAke2lwdjZfYWRkcn0KICAgICAgTGlzdGVuUG9ydCA9ICR7d2dfcG9ydH0KICAgICAgUHJpdmF0ZUtleSA9ICR7cHJpdmtleX0KCiAgICAgIFBvc3RVcCA9IGlwdGFibGVzIC1JIElOUFVUIC1pIHdnMCAtaiBBQ0NFUFQKICAgICAgUG9zdFVwID0gaXB0YWJsZXMgLUkgRk9SV0FSRCAtaSB3ZzAgLWogQUNDRVBUCiAgICAgIFBvc3RVcCA9IGlwdGFibGVzIC1JIEZPUldBUkQgLW8gd2cwIC1qIEFDQ0VQVAoKICAgICAgUG9zdFVwID0gaXB0YWJsZXMgLXQgbmF0IC1JIFBPU1RST1VUSU5HIC1zICR7aXB2NF9hZGRyfSAtbyAke25ldGRldn0gLWogTUFTUVVFUkFERQogICAgICBQb3N0VXAgPSBpcHRhYmxlcyAtSSBJTlBVVCAtaSAke25ldGRldn0gLXAgdWRwIC0tZHBvcnQgNTE4MjAgLWogQUNDRVBUCgogICAgICBQb3N0VXAgPSBpcDZ0YWJsZXMgLUkgSU5QVVQgLWkgd2cwIC1qIEFDQ0VQVAogICAgICBQb3N0VXAgPSBpcDZ0YWJsZXMgLUkgRk9SV0FSRCAtaSB3ZzAgLWogQUNDRVBUCiAgICAgIFBvc3RVcCA9IGlwNnRhYmxlcyAtSSBGT1JXQVJEIC1vIHdnMCAtaiBBQ0NFUFQKCiAgICAgIFBvc3RVcCA9IGlwNnRhYmxlcyAtSSBJTlBVVCAtaSAke25ldGRldn0gLXAgdWRwIC0tZHBvcnQgNTE4MjAgLWogQUNDRVBUCgogICAgICBQcmVEb3duID0gaXB0YWJsZXMgLUQgSU5QVVQgLWkgd2cwIC1qIEFDQ0VQVAogICAgICBQcmVEb3duID0gaXB0YWJsZXMgLUQgRk9SV0FSRCAtaSB3ZzAgLWogQUNDRVBUCiAgICAgIFByZURvd24gPSBpcHRhYmxlcyAtRCBGT1JXQVJEIC1vIHdnMCAtaiBBQ0NFUFQKCiAgICAgIFByZURvd24gPSBpcHRhYmxlcyAtdCBuYXQgLUQgUE9TVFJPVVRJTkcgLXMgJHtpcHY0X2FkZHJ9IC1vICR7bmV0ZGV2fSAtaiBNQVNRVUVSQURFCiAgICAgIFByZURvd24gPSBpcHRhYmxlcyAtRCBJTlBVVCAtaSAke25ldGRldn0gLXAgdWRwIC0tZHBvcnQgNTE4MjAgLWogQUNDRVBUCgogICAgICBQcmVEb3duID0gaXA2dGFibGVzIC1EIElOUFVUIC1pIHdnMCAtaiBBQ0NFUFQKICAgICAgUHJlRG93biA9IGlwNnRhYmxlcyAtRCBGT1JXQVJEIC1pIHdnMCAtaiBBQ0NFUFQKICAgICAgUHJlRG93biA9IGlwNnRhYmxlcyAtRCBGT1JXQVJEIC1vIHdnMCAtaiBBQ0NFUFQKCiAgICAgIFByZURvd24gPSBpcDZ0YWJsZXMgLUQgSU5QVVQgLWkgJHtuZXRkZXZ9IC1wIHVkcCAtLWRwb3J0IDUxODIwIC1qIEFDQ0VQVAoKICAgICAgW1BlZXJdCiAgICAgIEFsbG93ZWRJUHMgPSAke0lQNF9SQU5HRX0sICR7SVA2X1JBTkdFfQogICAgICBQdWJsaWNLZXkgPSAke3B1YmtleX0=
   - path: /opt/wg0.client.tmpl
+    encoding: b64
+    owner: root
     permissions: "0644"
-    owner: root
     content: |
-      [Interface]
-      PrivateKey = ${privkey}
-      Address = ${ipv4_addr}, ${ipv6_addr}
-      DNS = ${dns_servers}
-
-      [Peer]
-      PublicKey = ${pubkey}
-      AllowedIPs = ${allowed_ips}
-      Endpoint = ${server_ip}:${wg_port}
+      ICAgICAgIyAvZXRjL3dpcmVndWFyZC9jbGllbnQuY29uZgogICAgICBbSW50ZXJmYWNlXQogICAgICBBZGRyZXNzID0gJHtpcHY0X2FkZHJ9LCAke2lwdjZfYWRkcn0KICAgICAgRE5TID0gJHtkbnNfc2VydmVyc30KICAgICAgUHJpdmF0ZUtleSA9ICR7cHJpdmtleX0KCiAgICAgIFtQZWVyXQogICAgICBBbGxvd2VkSVBzID0gJHtpcHY0X2FkZHJ9LCAke2lwdjZfYWRkcn0sICR7YWxsb3dlZF9pcHN9CiAgICAgIEVuZHBvaW50ID0gJHtzZXJ2ZXJfaXB9OiR7d2dfcG9ydH0KICAgICAgUHVibGljS2V5ID0gJHtwdWJrZXl9Cg==
   - path: /opt/bootstrap.sh
-    permissions: "0755"
+    encoding: b64
     owner: root
+    permissions: "0755"
     content: |
-      #!/bin/bash
-      set -exo pipefail
-
-      ipv6() {
-        timestamp="$(date +%s%N)"
-        machineid="$(cat /etc/machine-id)"
-        shasum="$(printf ${timestamp}${machineid} | sha1sum)"
-        bytes="$(printf ${shasum} | cut -c 31- | tr -d '-')"
-
-        printf fd${bytes:0:2}:${bytes:2:4}:${bytes:4:4}::/64
-      }
-
-      # MARK: - pre
-
-      sudo apt-get update -yq
-      sudo apt-get install -y --no-install-recommends \
-        bind9 \
-        frr \
-        qrencode \
-        wireguard
-
-      # MARK: - networking
-
-      : "${VIP:="172.16.254.0/24"}"
-      : "${IP4_RANGE:="10.10.10.0/24"}"
-      : "${IP6_RANGE:="$(ipv6)"}"
-
-      upstream_dns="172.16.0.1"
-      ipv4_net="$(printf ${IP4_RANGE} | cut -d '/' -f 1)"
-      ipv6_net="$(printf ${IP6_RANGE} | cut -d '/' -f 1)"
-
-      export server_ip="$(ip route list default | awk '{ print $3 }')"
-
-      # config network
-      sudo sed -i 's/[#]net.ipv4.ip_forward.*/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
-      sudo sed -i 's/[#]net.ipv6.conf.all.forwarding.*/net.ipv6.conf.all.forwarding=1/g' /etc/sysctl.conf
-      sudo sysctl -p
-      sudo ufw allow bgp
-      sudo ufw allow bind9
-      sudo ufw allow ${wg_port}/udp
-
-      # reload firewall
-      sudo ufw --force disable
-      sudo ufw --force enable
-      sudo ufw status
-
-      # MARK: - bind
-      # TODO: bind
-
-      # MARK: - frr
-
-      # enable bgpd
-      sudo sed -i 's/bgpd=.*/bgpd=yes/g' /etc/frr/daemons
-      sudo systemctl enable frr.service
-      sudo systemctl restart frr.service
-
-      # generate config
-      envsubst < /opt/frr.conf.tmpl | sudo tee /etc/frr/frr.conf >/dev/null
-
-      # MARK: - wireguard
-
-      export wg_port=51820
-
-      # create server key pair
-      server_priv_key="/etc/wireguard/private.key"
-      server_pub_key="/etc/wireguard/public.key"
-      if ! sudo stat "${server_priv_key}" >/dev/null; then
-        wg genkey | sudo tee "${server_priv_key}" >/dev/null
-        sudo chmod go= "${server_priv_key}"
-      fi
-      sudo stat "${server_pub_key}" >/dev/null ||
-        sudo cat "${server_priv_key}" | wg pubkey | sudo tee "${server_pub_key}" >/dev/null
-
-      # create client key pair
-      client_priv_key="/etc/wireguard/client.private.key"
-      client_pub_key="/etc/wireguard/client.public.key"
-      if ! sudo stat "${client_priv_key}" >/dev/null; then
-        wg genkey | sudo tee "${client_priv_key}" >/dev/null
-        sudo chmod go= "${client_priv_key}"
-      fi
-      sudo stat "${client_pub_key}" >/dev/null ||
-        sudo cat "${client_priv_key}" | wg pubkey | sudo tee "${client_pub_key}" >/dev/null
-
-      # generate server config
-      if ! sudo stat /etc/wireguard/wg0.conf >/dev/null; then
-        export privkey="$(sudo cat ${server_priv_key})"
-        export pubkey="$(sudo cat ${client_pub_key})"
-        export netdev="$(ip route list default | awk '{ print $5 }')"
-        export ipv4_addr="$(printf ${ipv4_net%?}1)/24"
-        export ipv6_addr="$(printf ${ipv6_net%?}:1)/64"
-
-        envsubst < /opt/wg0.conf.tmpl | sudo tee /etc/wireguard/wg0.conf >/dev/null
-        sudo systemctl enable quick@wg0.service
-        sudo systemctl restart quick@wg0.service
-      fi
-
-
-      # generate client config
-      if ! stat client.conf >/dev/null && ! stat client.png >/dev/null; then
-        export privkey="$(sudo cat ${client_priv_key})"
-        export pubkey="$(sudo cat ${server_pub_key})"
-        export ipv4_addr="$(printf ${ipv4_net%?}2)/24"
-        export ipv6_addr="$(printf ${ipv6_net%?}:2)/64"
-        export dns_servers="${server_ip}, ${upstream_dns}"
-        export allowed_ips="${IP4_RANGE}, ${IP6_RANGE}, ${VIP}"
-
-        envsubst < /opt/client.conf.tmpl | tee client.conf >/dev/null
-        qrencode -s 10 -l H -o client.png < client.conf
-      fi
+      ICAgICAgIyEvYmluL2Jhc2gKICAgICAgc2V0IC1leG8gcGlwZWZhaWwKCiAgICAgIGlwdjYoKSB7CiAgICAgICAgdGltZXN0YW1wPSIkKGRhdGUgKyVzJU4pIgogICAgICAgIG1hY2hpbmVpZD0iJChjYXQgL2V0Yy9tYWNoaW5lLWlkKSIKICAgICAgICBzaGFzdW09IiQocHJpbnRmICR7dGltZXN0YW1wfSR7bWFjaGluZWlkfSB8IHNoYTFzdW0pIgogICAgICAgIGJ5dGVzPSIkKHByaW50ZiAke3NoYXN1bX0gfCBjdXQgLWMgMzEtIHwgdHIgLWQgJy0nKSIKCiAgICAgICAgcHJpbnRmIGZkJHtieXRlczowOjJ9OiR7Ynl0ZXM6Mjo0fToke2J5dGVzOjQ6NH06Oi82NAogICAgICB9CgogICAgICAjIE1BUks6IC0gcHJlCgogICAgICBzdWRvIGFwdC1nZXQgdXBkYXRlIC15cQogICAgICBzdWRvIGFwdC1nZXQgaW5zdGFsbCAteSAtLW5vLWluc3RhbGwtcmVjb21tZW5kcyBcCiAgICAgICAgYmluZDkgXAogICAgICAgIGZyciBcCiAgICAgICAgcXJlbmNvZGUgXAogICAgICAgIHdpcmVndWFyZAoKICAgICAgIyBNQVJLOiAtIG5ldHdvcmtpbmcKCiAgICAgIDogIiR7VklQOj0iMTcyLjE2LjI1NC4wLzI0In0iCiAgICAgIDogIiR7SVA0X1JBTkdFOj0iMTAuMTAuMTAuMC8yNCJ9IgogICAgICA6ICIke0lQNl9SQU5HRTo9IiQoaXB2NikifSIKCiAgICAgIHVwc3RyZWFtX2Rucz0iMTcyLjE2LjAuMSIKICAgICAgaXB2NF9uZXQ9IiQocHJpbnRmICR7SVA0X1JBTkdFfSB8IGN1dCAtZCAnLycgLWYgMSkiCiAgICAgIGlwdjZfbmV0PSIkKHByaW50ZiAke0lQNl9SQU5HRX0gfCBjdXQgLWQgJy8nIC1mIDEpIgoKICAgICAgZXhwb3J0IHNlcnZlcl9pcD0iJChpcCByb3V0ZSBsaXN0IGRlZmF1bHQgfCBhd2sgJ3sgcHJpbnQgJDMgfScpIgoKICAgICAgIyBjb25maWcgbmV0d29yawogICAgICBzdWRvIHNlZCAtaSAncy9bI11uZXQuaXB2NC5pcF9mb3J3YXJkLiovbmV0LmlwdjQuaXBfZm9yd2FyZD0xL2cnIC9ldGMvc3lzY3RsLmNvbmYKICAgICAgc3VkbyBzZWQgLWkgJ3MvWyNdbmV0LmlwdjYuY29uZi5hbGwuZm9yd2FyZGluZy4qL25ldC5pcHY2LmNvbmYuYWxsLmZvcndhcmRpbmc9MS9nJyAvZXRjL3N5c2N0bC5jb25mCiAgICAgIHN1ZG8gc3lzY3RsIC1wCiAgICAgIHN1ZG8gdWZ3IGFsbG93IGJncAogICAgICBzdWRvIHVmdyBhbGxvdyBiaW5kOQogICAgICBzdWRvIHVmdyBhbGxvdyAke3dnX3BvcnR9L3VkcAoKICAgICAgIyByZWxvYWQgZmlyZXdhbGwKICAgICAgc3VkbyB1ZncgLS1mb3JjZSBkaXNhYmxlCiAgICAgIHN1ZG8gdWZ3IC0tZm9yY2UgZW5hYmxlCiAgICAgIHN1ZG8gdWZ3IHN0YXR1cwoKICAgICAgIyBNQVJLOiAtIGJpbmQKCiAgICAgICMgY29uZmlndXJlIGJpbmQ5CiAgICAgIGVjaG8gJ2luY2x1ZGUgIi9ldGMvYmluZC9uYW1lZC5jb25mLmRldmJveC16b25lcyI7JyB8IHN1ZG8gdGVlIC1hIC9ldGMvYmluZC9uYW1lZC5jb25mCiAgICAgIGVudnN1YnN0IDwgL29wdC9kYi5kZXZib3gudG1wbCB8IHN1ZG8gdGVlIC92YXIvY2FjaGUvYmluZC9kYi5kZXZib3ggPi9kZXYvbnVsbAogICAgICBzdWRvIHN5c3RlbWN0bCByZXN0YXJ0IG5hbWVkLnNlcnZpY2UKCiAgICAgICMgY2hlY2sgYmluZCBjb25maWd1cmF0aW9uCiAgICAgIHN1ZG8gbmFtZWQtY2hlY2t6b25lIGRldi5sb2NhbCAvdmFyL2NhY2hlL2JpbmQvZGIuZGV2Ym94CiAgICAgIHN1ZG8gcm5kYyB6b25lc3RhdHVzIGRldi5sb2NhbAoKICAgICAgIyBNQVJLOiAtIGZycgoKICAgICAgIyBlbmFibGUgYmdwZAogICAgICBzdWRvIHNlZCAtaSAncy9iZ3BkPS4qL2JncGQ9eWVzL2cnIC9ldGMvZnJyL2RhZW1vbnMKICAgICAgc3VkbyBzeXN0ZW1jdGwgZW5hYmxlIGZyci5zZXJ2aWNlCiAgICAgIHN1ZG8gc3lzdGVtY3RsIHJlc3RhcnQgZnJyLnNlcnZpY2UKCiAgICAgICMgZ2VuZXJhdGUgY29uZmlnCiAgICAgIGVudnN1YnN0IDwgL29wdC9mcnIuY29uZi50bXBsIHwgc3VkbyB0ZWUgL2V0Yy9mcnIvZnJyLmNvbmYgPi9kZXYvbnVsbAoKICAgICAgIyBNQVJLOiAtIHdpcmVndWFyZAoKICAgICAgZXhwb3J0IHdnX3BvcnQ9NTE4MjAKCiAgICAgICMgY3JlYXRlIHNlcnZlciBrZXkgcGFpcgogICAgICBzZXJ2ZXJfcHJpdl9rZXk9Ii9ldGMvd2lyZWd1YXJkL3ByaXZhdGUua2V5IgogICAgICBzZXJ2ZXJfcHViX2tleT0iL2V0Yy93aXJlZ3VhcmQvcHVibGljLmtleSIKICAgICAgaWYgISBzdWRvIHN0YXQgIiR7c2VydmVyX3ByaXZfa2V5fSIgPi9kZXYvbnVsbDsgdGhlbgogICAgICAgIHdnIGdlbmtleSB8IHN1ZG8gdGVlICIke3NlcnZlcl9wcml2X2tleX0iID4vZGV2L251bGwKICAgICAgICBzdWRvIGNobW9kIGdvPSAiJHtzZXJ2ZXJfcHJpdl9rZXl9IgogICAgICBmaQogICAgICBzdWRvIHN0YXQgIiR7c2VydmVyX3B1Yl9rZXl9IiA+L2Rldi9udWxsIHx8CiAgICAgICAgc3VkbyBjYXQgIiR7c2VydmVyX3ByaXZfa2V5fSIgfCB3ZyBwdWJrZXkgfCBzdWRvIHRlZSAiJHtzZXJ2ZXJfcHViX2tleX0iID4vZGV2L251bGwKCiAgICAgICMgY3JlYXRlIGNsaWVudCBrZXkgcGFpcgogICAgICBjbGllbnRfcHJpdl9rZXk9Ii9ldGMvd2lyZWd1YXJkL2NsaWVudC5wcml2YXRlLmtleSIKICAgICAgY2xpZW50X3B1Yl9rZXk9Ii9ldGMvd2lyZWd1YXJkL2NsaWVudC5wdWJsaWMua2V5IgogICAgICBpZiAhIHN1ZG8gc3RhdCAiJHtjbGllbnRfcHJpdl9rZXl9IiA+L2Rldi9udWxsOyB0aGVuCiAgICAgICAgd2cgZ2Vua2V5IHwgc3VkbyB0ZWUgIiR7Y2xpZW50X3ByaXZfa2V5fSIgPi9kZXYvbnVsbAogICAgICAgIHN1ZG8gY2htb2QgZ289ICIke2NsaWVudF9wcml2X2tleX0iCiAgICAgIGZpCiAgICAgIHN1ZG8gc3RhdCAiJHtjbGllbnRfcHViX2tleX0iID4vZGV2L251bGwgfHwKICAgICAgICBzdWRvIGNhdCAiJHtjbGllbnRfcHJpdl9rZXl9IiB8IHdnIHB1YmtleSB8IHN1ZG8gdGVlICIke2NsaWVudF9wdWJfa2V5fSIgPi9kZXYvbnVsbAoKICAgICAgIyBnZW5lcmF0ZSBzZXJ2ZXIgY29uZmlnCiAgICAgIGlmICEgc3VkbyBzdGF0IC9ldGMvd2lyZWd1YXJkL3dnMC5jb25mID4vZGV2L251bGw7IHRoZW4KICAgICAgICBleHBvcnQgcHJpdmtleT0iJChzdWRvIGNhdCAke3NlcnZlcl9wcml2X2tleX0pIgogICAgICAgIGV4cG9ydCBwdWJrZXk9IiQoc3VkbyBjYXQgJHtjbGllbnRfcHViX2tleX0pIgogICAgICAgIGV4cG9ydCBuZXRkZXY9IiQoaXAgcm91dGUgbGlzdCBkZWZhdWx0IHwgYXdrICd7IHByaW50ICQ1IH0nKSIKICAgICAgICBleHBvcnQgaXB2NF9hZGRyPSIkKHByaW50ZiAke2lwdjRfbmV0JT99MSkvMjQiCiAgICAgICAgZXhwb3J0IGlwdjZfYWRkcj0iJChwcmludGYgJHtpcHY2X25ldCU/fToxKS82NCIKCiAgICAgICAgZW52c3Vic3QgPCAvb3B0L3dnMC5jb25mLnRtcGwgfCBzdWRvIHRlZSAvZXRjL3dpcmVndWFyZC93ZzAuY29uZiA+L2Rldi9udWxsCiAgICAgICAgc3VkbyBzeXN0ZW1jdGwgZW5hYmxlIHF1aWNrQHdnMC5zZXJ2aWNlCiAgICAgICAgc3VkbyBzeXN0ZW1jdGwgcmVzdGFydCBxdWlja0B3ZzAuc2VydmljZQogICAgICBmaQoKCiAgICAgICMgZ2VuZXJhdGUgY2xpZW50IGNvbmZpZwogICAgICBpZiAhIHN0YXQgY2xpZW50LmNvbmYgPi9kZXYvbnVsbCAmJiAhIHN0YXQgY2xpZW50LnBuZyA+L2Rldi9udWxsOyB0aGVuCiAgICAgICAgZXhwb3J0IHByaXZrZXk9IiQoc3VkbyBjYXQgJHtjbGllbnRfcHJpdl9rZXl9KSIKICAgICAgICBleHBvcnQgcHVia2V5PSIkKHN1ZG8gY2F0ICR7c2VydmVyX3B1Yl9rZXl9KSIKICAgICAgICBleHBvcnQgaXB2NF9hZGRyPSIkKHByaW50ZiAke2lwdjRfbmV0JT99MikvMjQiCiAgICAgICAgZXhwb3J0IGlwdjZfYWRkcj0iJChwcmludGYgJHtpcHY2X25ldCU/fToyKS82NCIKICAgICAgICBleHBvcnQgZG5zX3NlcnZlcnM9IiR7c2VydmVyX2lwfSwgJHt1cHN0cmVhbV9kbnN9IgogICAgICAgIGV4cG9ydCBhbGxvd2VkX2lwcz0iJHtJUDRfUkFOR0V9LCAke0lQNl9SQU5HRX0sICR7VklQfSIKCiAgICAgICAgZW52c3Vic3QgPCAvb3B0L2NsaWVudC5jb25mLnRtcGwgfCB0ZWUgY2xpZW50LmNvbmYgPi9kZXYvbnVsbAogICAgICAgIHFyZW5jb2RlIC1zIDEwIC1sIEggLW8gY2xpZW50LnBuZyA8IGNsaWVudC5jb25mCiAgICAgIGZpCg==
 runcmd:
   - /opt/bootstrap.sh

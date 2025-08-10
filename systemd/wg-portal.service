@@ -1,0 +1,17 @@
+[Unit]
+Description=Wireguard Portal
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/bin/docker compose -f /etc/wireguard/portal.yaml up -d
+ExecStop=/usr/bin/docker compose -f /etc/wireguard/portal.yaml down
+Restart=on-failure
+RestartSec=5s
+#Group=admin
+#User=admin
+
+[Install]
+WantedBy=multi-user.target

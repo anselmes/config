@@ -12,10 +12,29 @@ spec:
         keyPath: ~/.ssh/id_ed25519
         port: 22
         user: ubuntu
-      installFlags:
-        - --enable-cloud-provider
-        - --kubelet-extra-args=--cloud-provider=external
-        - --kubelet-extra-args=--cgroup-driver=systemd
+      # installFlags:
+      #   - --disable-components=metrics-server
+      #   - --enable-cloud-provider
+      #   - --kubelet-extra-args=--cgroup-driver=systemd
+      #   - --kubelet-extra-args=--cloud-provider=external
+      # files:
+      #   - # containerd patch
+      #     name: containerd
+      #     src: ./config/containerd.toml
+      #     dst: /etc/k0s/containerd.d/systemd.toml
+      #   - # custom resources definitions
+      #     name: crds
+      #     src: ./crds
+      #     dstDir: /var/lib/k0s/manifests/crds
+      # hooks:
+      #   apply:
+      #     after:
+      #       - sleep 15
+      #       - bash -c "sudo k0s kubectl label node '$(hostname)' openebs.io/nodeid='$(hostname)' --overwrite"
+      #       - bash -c "sudo k0s kubectl label node '$(hostname)' openstack-control-plane=enabled' --overwrite"
+      #       - bash -c "sudo k0s kubectl label node '$(hostname)' openstack-compute-node=enabled' --overwrite"
+      #       - bash -c "sudo k0s kubectl label node '$(hostname)' openstack-gateway=enabled' --overwrite"
+      #       - bash -c "sudo k0s kubectl label node '$(hostname)' openvswitch=enabled' --overwrite"
   k0s:
     version: v1.33.1+k0s.1
     config: {}
