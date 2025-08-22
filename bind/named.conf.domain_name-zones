@@ -1,9 +1,14 @@
 include "/etc/bind/${domain_name}.key";
 
-zone "${domain_name}" IN {
-  type primary;
+zone "${domain_name}" {
+  type master;
   file "/var/lib/bind/zone.${domain_name}";
-  allow-transfer { key "${domain_name}"; };
+};
+
+zone "${subdomain}.${domain_name}" IN {
+  type primary;
+  file "/var/lib/bind/zone.${subdomain}.${domain_name}";
+  allow-transfer { key "${subdomain}"; };
   update-policy {
     grant devbox self .;
     grant devbox zonesub ANY;
