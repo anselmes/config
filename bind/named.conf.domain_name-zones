@@ -1,8 +1,11 @@
-include "/etc/bind/devbox.key";
+include "/etc/bind/${domain_name}.key";
 
 zone "${domain_name}" IN {
   type primary;
-  file "/var/cache/bind/db.${domain_name}";
-  allow-transfer { key "externaldns"; };
-  update-policy { grant externaldns zonesub ANY; };
+  file "/var/lib/bind/zone.${domain_name}";
+  allow-transfer { key "${domain_name}"; };
+  update-policy {
+    grant devbox self .;
+    grant devbox zonesub ANY;
+  };
 };

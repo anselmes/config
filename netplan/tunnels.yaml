@@ -1,0 +1,19 @@
+network:
+  version: 2
+  tunnels:
+    tun0:
+      mode: wireguard
+      port: 51820
+      mtu: 1280
+      key:
+        private: /etc/wireguard/private.key
+        private-key-flags:
+          - agent-owned
+      addresses:
+        - ${ipv4_addr}
+        - ${ipv6_addr}
+      peers:
+        - keepalive: 25
+          keys:
+            public: ${pubkey}
+          allowed-ips: ${allowed_ips}

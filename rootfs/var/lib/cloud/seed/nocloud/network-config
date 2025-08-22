@@ -1,0 +1,12 @@
+version: 2
+ethernets:
+  oam:
+    dhcp4: true
+    dhcp6: true
+    set-name: oam
+    match:
+      macaddress: null
+    dhcp4-overrides:
+      route-metric: 0
+    dhcp6-overrides:
+      route-metric: 0

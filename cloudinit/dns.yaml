@@ -1,0 +1,9 @@
+#cloud-config
+write_files:
+  - path: /etc/systemd/resolved.conf.d/dns-local.conf
+    owner: root
+    permissions: "0644"
+    content: |
+      [Resolve]
+      DNS=${dns_ip}
+      Domain=~local

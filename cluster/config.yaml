@@ -1,14 +1,22 @@
 ---
 apiVersion: k0s.k0sproject.io/v1beta1
-kind: Cluster
+kind: ClusterConfig
 metadata:
   name: kubernetes
 spec:
   api:
+    address: 127.0.0.1
     sans:
-      - kube.dev.local
+      - kubernetes.local
+      - 127.0.0.1
+  storage:
+    etcd:
+      peerAddress: 127.0.0.1
   network:
     provider: custom
+    kubeProxy:
+      disabled: true
+      mode: ipvs
   featureGates:
     - name: UserNamespacesSupport
       enabled: true
@@ -23,6 +31,9 @@ spec:
           version: 1.0.0
           values: |
             cilium:
+              kubeProxyReplacement: true
+              k8sServiceHost: 127.0.0.1
+              k8sServicePort: 6443
               operator:
                 replicas: 1
               bgpControlPlane:
@@ -73,20 +84,98 @@ spec:
           namespace: kube-system
           order: 3
           version: 1.0.0
-        # - # rook ceph operator
+        # - # ceph operator
         #   name: ceph-operator
         #   chartname: oci://ghcr.io/labsonline/charts/csi
         #   namespace: operators
         #   order: 3
         #   version: 1.0.0
-        #   values: ""
-        # - # rook ceph cluster
+        #   values: |
+        #     openebs:
+        #       enabled: false
+        #       install: false
+        #     rook-ceph:
+        #       enabled: true
+        #       allowLoopDevices: false
+        #       csi:
+        #         enableCSIEncryption: false
+        # - # ceph csi resources
         #   name: ceph
         #   chartname: oci://ghcr.io/labsonline/charts/csi
         #   namespace: ceph
         #   order: 4
         #   version: 1.0.0
-        #   values: ""
+        #   values: |
+        #     openebs:
+        #       enabled: false
+        #       install: false
+        #     rook-ceph-cluster:
+        #       enabled: true
+        #       operatorNamespace: operators
+        #       toolbox:
+        #         enabled: true
+        #       cephClusterSpec:
+        #         mon:
+        #           count: 1
+        #         mgr:
+        #           count: 2
+        #           allowMultiplePerNode: true
+        #         dashboard:
+        #           enabled: true
+        #           ssl: true
+        #         storage:
+        #           useAllNodes: true
+        #           useAllDevices: true
+        #       cephBlockPools:
+        #         - name: ceph-blockpool
+        #           spec:
+        #             failureDomain: disk
+        #             replicated:
+        #               size: 3
+        #           storageClass:
+        #             enabled: true
+        #             name: general
+        #             isDefault: true
+        #       cephFileSystems:
+        #         - name: ceph-filesystem
+        #           spec:
+        #             metadataPool:
+        #               failureDomain: disk
+        #               replicated:
+        #                 size: 3
+        #             dataPools:
+        #               - failureDomain: disk
+        #                 name: data0
+        #                 replicated:
+        #                   size: 3
+        #             metadataServer:
+        #               activeCount: 1
+        #               activeStandby: true
+        #           storageClass:
+        #             enabled: true
+        #             isDefault: false
+        #             name: file
+        #             pool: data0
+        #       cephObjectStores:
+        #         - name: ceph-objectstore
+        #           spec:
+        #             preservePoolsOnDelete: true
+        #             metadataPool:
+        #               failureDomain: disk
+        #               replicated:
+        #                 size: 3
+        #             dataPool:
+        #               failureDomain: disk
+        #               erasureCoded:
+        #                 dataChunks: 2
+        #                 codingChunks: 1
+        #             gateway:
+        #               port: 80
+        #           storageClass:
+        #             enabled: true
+        #             name: oss
+        #             parameters:
+        #               region: us-east-1
         # - # external dns
         #   name: edns
         #   chartname: oci://ghcr.io/labsonline/charts/edns
@@ -94,12 +183,12 @@ spec:
         #   order: 5
         #   version: 1.0.0
         #   values: |
-        #     endpoints:
-        #       - name: a-devbox-dev-local
-        #         records:
-        #           - name: devbox.dev.local
-        #             targets:
-        #               - 10.211.55.12
+        #     # endpoints:
+        #     #   - name: a-kubernetes-local
+        #     #     records:
+        #     #       - name: kubernetes.local
+        #     #         targets:
+        #     #           - 127.0.0.1
         #     external-dns:
         #       enabled: true
         #       env:
@@ -114,56 +203,86 @@ spec:
         #             key: secret
         #             name: externaldns-tsig-secret
         #       extraArgs:
-        #       - --rfc2136-host=10.211.55.12
+        #       - --rfc2136-host=192.168.0.135
         #       - --rfc2136-port=53
         #       - --rfc2136-tsig-secret-alg=hmac-sha256
-        #       - --rfc2136-zone=dev.local
+        #       - --rfc2136-zone=local
         #       - --rfc2136-tsig-axfr
         #       provider:
         #         name: rfc2136
-        - # gateway
-          name: gw
-          chartname: oci://ghcr.io/labsonline/charts/gateway
-          namespace: kube-system
-          order: 5
-          version: 1.0.0
-          values: |
-            routes: []
-            gateways:
-              - name: default-gateway
-                className: cilium
-                listeners:
-                  - name: http
-                    port: 80
-                    protocol: HTTP
-                    allowedRoutes:
-                      namespaces:
-                        from: All
-                  # - name: https
-                  #   port: 443
-                  #   protocol: HTTPS
-                  #   hostname: "*.dev.local"
-                  #   allowedRoutes:
-                  #     namespaces:
-                  #       from: All
-                  #   tls:
-                  #     mode: Terminate
-                  #     certificateRefs:
-                  #       - name: default-gw-cert
-                  #         issuer: self-signed-ca-issuer
-              - name: tls-gateway
-                className: cilium
-                listeners:
-                  - name: tls
-                    port: 443
-                    protocol: TLS
-                    allowedRoutes:
-                      namespaces:
-                        from: All
-                      kinds:
-                        - kind: TLSRoute
-                    tls:
-                      mode: Passthrough
+        # - # gateway
+        #   name: gw
+        #   chartname: oci://ghcr.io/labsonline/charts/gateway
+        #   namespace: kube-system
+        #   order: 5
+        #   version: 1.0.0
+        #   values: |
+        #     routes: []
+        #     gateways:
+        #       - name: default-gateway
+        #         className: cilium
+        #         listeners:
+        #           - name: http
+        #             port: 80
+        #             protocol: HTTP
+        #             allowedRoutes:
+        #               namespaces:
+        #                 from: All
+        #           # - name: https
+        #           #   port: 443
+        #           #   protocol: HTTPS
+        #           #   hostname: "*.local"
+        #           #   allowedRoutes:
+        #           #     namespaces:
+        #           #       from: All
+        #           #   tls:
+        #           #     mode: Terminate
+        #           #     certificateRefs:
+        #           #       - name: default-gw-cert
+        #           #         issuer: ca-issuer
+        #       - name: tls-gateway
+        #         className: cilium
+        #         listeners:
+        #           - name: tls
+        #             port: 443
+        #             protocol: TLS
+        #             allowedRoutes:
+        #               namespaces:
+        #                 from: All
+        #               kinds:
+        #                 - kind: TLSRoute
+        #             tls:
+        #               mode: Passthrough
+        # - # openstack gateway
+        #   name: osgw
+        #   chartname: oci://ghcr.io/labsonline/charts/gateway
+        #   namespace: openstack
+        #   order: 5
+        #   version: 1.0.0
+        #   values: |
+        #     # routes:
+        #     #   - name: horizon
+        #     #     kind: TLSRoute
+        #     #     rules:
+        #     #       - backendRefs:
+        #     #           - name: horizon-int
+        #     #             port: 4999
+        #     #     gateways:
+        #     #       - name: os-gateway
+        #     gateways:
+        #       - name: os-gateway
+        #         className: cilium
+        #         listeners:
+        #           - name: tls
+        #             port: 443
+        #             protocol: TLS
+        #             allowedRoutes:
+        #               namespaces:
+        #                 from: Same
+        #               kinds:
+        #                 - kind: TLSRoute
+        #             tls:
+        #               mode: Passthrough
         # - # kubernetes cluster manager
         #   name: kcm
         #   chartname: oci://ghcr.io/labsonline/charts/kcm
@@ -224,5 +343,104 @@ spec:
         #         selfSigned: true
         #         secret:
         #           create: false
+        #       # - name: ca-issuer
+        #       #   type: vault
+        #       #   clustered: true
+        #       #   secret:
+        #       #     create: false
+        #       #     name: ca-vault-secret
+        #       #   vault:
+        #       #     path: intermediate/sign/kubernetes.local
+        #       #     server: https://vault.local
+        #       #     caBundle: ""
+        #       #     auth:
+        #       #       appRole:
+        #       #         roleId: ""
+        #     # trust:
+        #     #   enabled: true
+        #     # trust-manager:
+        #     #   app:
+        #     #     trust:
+        #     #       namespace: kcm-system
+        # - # pinniped
+        #   name: pinniped
+        #   chartname: oci://ghcr.io/labsonline/charts/pinniped
+        #   namespace: ucp
+        #   order: 7
+        #   version: 1.0.0
+        #   values: |
+        #     # rbac:
+        #     #   - name: kcm-ns-viewer
+        #     #     namespace: kcm-system
+        #     #     role:
+        #     #       kind: ClusterRole
+        #     #       name: kcm-namespace-viewer-role
+        #     #     subjects:
+        #     #       - kind: Group
+        #     #         name: admins
+        #     #         apiGroup: rbac.authorization.k8s.io
+        #     auth:
+        #       enabled: true
+        #       name: default-supervisor-jwt-authenticator
+        #       audience: kubernetes
+        #       issuer:
+        #         url: https://pinniped.kubernetes.local/default
+        #         # ca: |
+        #         #   -----BEGIN CERTIFICATE-----
+        #         #   -----END CERTIFICATE-----
+        #     domain:
+        #       enabled: true
+        #       name: default-federation-domain
+        #       providers:
+        #         - name: vault
+        #       issuer:
+        #         url: https://pinniped.kubernetes.local/default
+        #         cert:
+        #           create: true
+        #           name: supervisor-tls-cert
+        #           dnsNames:
+        #             - pinniped.kubernetes.local
+        #           issuerRef:
+        #             kind: ClusterIssuer
+        #             name: ca-issuer
+        #     idp:
+        #       enabled: true
+        #       name: vault
+        #       issuer:
+        #         url: https://vault.local/v1/identity/oidc/provider/default
+        #         secret:
+        #           create: false
+        #           name: pinniped-oidc-credentials
+        #         # ca: |
+        #         #   -----BEGIN CERTIFICATE-----
+        #         #   -----END CERTIFICATE-----
+        #     pinniped:
+        #       enabled: true
+        #       # image:
+        #       #   registry: docker.io
+        #       #   repository: bitnami/pinniped
+        #       #   tag: 0.40.0-debian-12-r2
+        #       #   digest: ""
+        #       gateway:
+        #         enabled: true
+        #         name: tls-gateway
+        #         namespace: kube-system
+        #         hostnames:
+        #           - pinniped.kubernetes.local
+        #       concierge:
+        #         enabled: true
+        #         replicaCount: 1
+        #         resourcesPreset: none
+        #         credentialIssuerConfig: |
+        #           impersonationProxy:
+        #             mode: enabled
+        #             service:
+        #               type: LoadBalancer
+        #               annotations:
+        #                 service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "4000"
+        #       supervisor:
+        #         enabled: true
+        #         replicaCount: 1
+        #         resourcesPreset: none
   telemetry:
     enabled: false

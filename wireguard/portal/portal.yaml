@@ -5,8 +5,6 @@ services:
     container_name: wgportal
     restart: unless-stopped
     network_mode: host
-    environment:
-      - WG_PORTAL_CONFIG=/app/config/portal.yaml
     logging:
       options:
         max-size: 10m
