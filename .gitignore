@@ -422,6 +422,7 @@ cython_debug/
 .env
 !.env.example
 !manifest/
-!sudoers.d/
 !ssh/**
+!sudoers.d/
 !systemd/**
+!ufw/**
