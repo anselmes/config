@@ -1,4 +1,4 @@
-include "/etc/bind/${domain_name}.key";
+include "/etc/bind/${domain_name}.keys";
 
 zone "${domain_name}" {
   type master;
@@ -6,6 +6,26 @@ zone "${domain_name}" {
 };
 
 zone "${subdomain}.${domain_name}" IN {
+  type primary;
+  file "/var/lib/bind/zone.${subdomain}.${domain_name}";
+  allow-transfer { key "${subdomain}"; };
+  update-policy {
+    grant devbox self .;
+    grant devbox zonesub ANY;
+  };
+};
+
+zone "os.${subdomain}.${domain_name}" IN {
+  type primary;
+  file "/var/lib/bind/zone.${subdomain}.${domain_name}";
+  allow-transfer { key "${subdomain}"; };
+  update-policy {
+    grant devbox self .;
+    grant devbox zonesub ANY;
+  };
+};
+
+zone "svc.${subdomain}.${domain_name}" IN {
   type primary;
   file "/var/lib/bind/zone.${subdomain}.${domain_name}";
   allow-transfer { key "${subdomain}"; };

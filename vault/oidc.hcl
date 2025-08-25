@@ -1,0 +1,6 @@
+{
+  "custom_claims": {
+    "email": {{identity.entity.metadata.email}},
+    "groups": {{identity.entity.groups.names}}
+  }
+}

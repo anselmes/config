@@ -23,6 +23,6 @@ options {
 	//========================================================================
 	dnssec-validation auto;
 
-	listen-on { 10.211.55.25; };
-	listen-on-v6 { fdb2:2c26:f4e4:0:21c:42ff:fe93:e21b; };
+	listen-on { ${ns_ip_addr}; };
+	listen-on-v6 { ${ns_ip6_addr}; };
 };
