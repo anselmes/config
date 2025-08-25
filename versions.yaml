@@ -213,6 +213,20 @@ package:
         - wine64                   # Windows compatibility layer (64-bit)
         - zlib1g-dev               # Compression library development files
 
+    - name: devbox
+      enabled: false
+      type: apt
+      add:
+        - apt-transport-https
+        - bind9
+        - ca-certificates
+        - cockpit
+        - curl
+        - opensc
+        - softhsm2
+        - software-properties-common
+        - wireguard
+
 # Plugin management section
 # Defines plugins/extensions for existing tools
 plugin:
