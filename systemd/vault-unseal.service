@@ -1,0 +1,24 @@
+[Unit]
+Description=Unseal HashiCorp Vault (Shamir)
+After=network-online.target vault.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/vault-unseal.sh
+# If Vault uses TLS with a custom CA:
+# Environment=CURL_EXTRA=--cacert=/etc/ssl/certs/my-ca.pem
+# If you want to set VAULT_ADDR (defaults to http://127.0.0.1:8200):
+# Environment=VAULT_ADDR=https://127.0.0.1:8200
+# If you prefer env-based keys (avoid storing on disk):
+# Environment=VAULT_UNSEAL_KEYS=key1,key2,key3
+User=root
+Group=root
+# Hardening (tune to your environment)
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target
