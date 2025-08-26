@@ -17,7 +17,7 @@ zone "${subdomain}.${domain_name}" IN {
 
 zone "os.${subdomain}.${domain_name}" IN {
   type primary;
-  file "/var/lib/bind/zone.${subdomain}.${domain_name}";
+  file "/var/lib/bind/zone.os.${subdomain}.${domain_name}";
   allow-transfer { key "${subdomain}"; };
   update-policy {
     grant devbox self .;
@@ -27,7 +27,7 @@ zone "os.${subdomain}.${domain_name}" IN {
 
 zone "svc.${subdomain}.${domain_name}" IN {
   type primary;
-  file "/var/lib/bind/zone.${subdomain}.${domain_name}";
+  file "/var/lib/bind/zone.svc.${subdomain}.${domain_name}";
   allow-transfer { key "${subdomain}"; };
   update-policy {
     grant devbox self .;

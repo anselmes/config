@@ -1,0 +1,4 @@
+[Cockpit]
+title=Cockpit Web Service
+description=Web-based server management interface
+ports=9090/tcp

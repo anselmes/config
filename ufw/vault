@@ -1,0 +1,4 @@
+[Vault]
+title=Vault
+description=HashiCorp Vault - Secrets Management Tool
+ports=8200/tcp
