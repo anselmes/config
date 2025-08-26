@@ -90,6 +90,9 @@ binary:
       - amd64
       - arm64
 
+  # TODO: pinniped
+  # TODO: sops
+
 # Package management section
 # Defines system packages to install or remove via package managers
 package:
@@ -222,6 +225,7 @@ package:
         - ca-certificates
         - cockpit
         - curl
+        - golang-cfssl
         - opensc
         - softhsm2
         - software-properties-common
