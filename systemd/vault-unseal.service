@@ -2,6 +2,7 @@
 Description=Unseal HashiCorp Vault (Shamir)
 After=network-online.target vault.service
 Wants=network-online.target
+PartOf=vault.service
 
 [Service]
 Type=oneshot
