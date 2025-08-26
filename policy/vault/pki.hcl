@@ -1,11 +1,11 @@
-path "intermediate*" {
+path "pki*" {
   capabilities = ["read", "list"]
 }
 
-path "intermediate/sign/*" {
+path "pki/sign/*" {
   capabilities = ["create", "update"]
 }
 
-path "intermediate/issue/*" {
+path "pki/issue/*" {
   capabilities = ["create"]
 }
