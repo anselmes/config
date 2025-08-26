@@ -422,6 +422,7 @@ cython_debug/
 .env
 !.env.example
 !manifest/
+!rootfs/**
 !ssh/**
 !sudoers.d/
 !systemd/**
