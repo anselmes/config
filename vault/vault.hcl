@@ -44,9 +44,11 @@ listener "tcp" {
 # Example HSM auto unseal
 #seal "pkcs11" {
 #  lib            = "/usr/lib/softhsm/libsofthsm2.so"
-#  slot           = "129862"
-#  pin            = "bab6b11dc669d4260763d62a356deea6"
-#  key_label      = "vault"
-#  hmac_key_label = "hmac-key"
-#  generate_key   = "true"
+#  pin            = "4321"
+#  slot           = "123456789"
+#  token_label    = "Vault"
+#  key_label      = "vault-root-key-rsa"
+#  key_id         = "01"
+#  mechanism      = "CKM_RSA_PKCS_OAEP"
+#  rsa_oaep_hash  = "sha1"
 #}
