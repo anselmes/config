@@ -1,0 +1,10 @@
+#
+# run resolvconf?
+RESOLVCONF=no
+
+# Environment variables for the server
+SOFTHSM2_CONF=/etc/softhsm/softhsm2.conf
+OPENSSL_MODULES=/usr/lib/${ARCH}-linux-gnu/ossl-modules
+
+# startup options for the server
+OPTIONS="-u bind"

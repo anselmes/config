@@ -1,0 +1,16 @@
+openssl_conf = openssl_init
+
+[openssl_init]
+providers = provider_sect
+
+[provider_sect]
+default = default_sect
+pkcs11  = pkcs11_sect
+
+[default_sect]
+activate = 1
+
+[pkcs11_sect]
+module = /usr/lib/${ARCH}-linux-gnu/ossl-modules/pkcs11.so
+init_args = "module:/usr/lib/softhsm/libsofthsm2.so"
+activate = 1
