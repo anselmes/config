@@ -1,0 +1,48 @@
+echo "=== U-Boot FPGA override start ==="
+
+# Feature flag: default is disabled
+if test "${fpga_override}" != "yes"; then
+    echo "FPGA override disabled (fpga_override=${fpga_override})"
+    echo "Set 'fpga_override=yes' in U-Boot env to enable."
+    echo "=== U-Boot FPGA override skipped ==="
+    # Return to caller (bootcmd) without touching FPGA
+    exit
+fi
+
+# Where to load the RBF in SDRAM (safe scratch area)
+if test -z "${fpga_loadaddr}"; then
+    setenv fpga_loadaddr 0x02000000
+fi
+
+# Path to FPGA override bitstream on the boot device
+if test -z "${fpga_image}"; then
+    setenv fpga_image "socfpga.rbf"
+fi
+
+echo "FPGA loadaddr: ${fpga_loadaddr}"
+echo "FPGA override image: ${fpga_image}"
+echo "Checking for FPGA override on mmc 0:2..."
+
+if ext4load mmc 0:2 ${fpga_loadaddr} ${fpga_image}; then
+    echo "FPGA override image found (${fpga_image}), size=${filesize} bytes"
+
+    echo "WARNING: Reconfiguring FPGA while running from SDRAM."
+    echo "         Make sure this RBF keeps DDR + clocks compatible."
+
+    # Optional: disable bridges if your design/docs require it
+    # bridge disable
+
+    echo "Configuring FPGA from override bitstream..."
+    if fpga load 0 ${fpga_loadaddr} ${filesize}; then
+        echo "FPGA override successfully loaded"
+    else
+        echo "FPGA load failed (leaving system as-is)"
+    fi
+
+    # Optional: re-enable bridges
+    # bridge enable
+else
+    echo "No FPGA override found on mmc 0:2 (${fpga_image}), skipping."
+fi
+
+echo "=== U-Boot FPGA override done, returning to bootcmd ==="
