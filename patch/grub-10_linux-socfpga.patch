@@ -1,0 +1,37 @@
+--- 10_linux	    2025-11-23 18:00:19.698354174 -0500
++++ 10_linux	    2025-11-23 18:26:02.027866827 -0500
+@@ -305,7 +305,7 @@
+ EOF
+       fi
+       sed "s/^/$submenu_indentation/" << EOF
+-	devicetree	${rel_dirname}/${dtb}
++	devicetree	/${dtb}
+ EOF
+     fi
+   fi
+@@ -455,12 +455,24 @@
+   fi
+
+   dtb=
+-  for i in "dtb-${version}" "dtb-${alt_version}" "dtb"; do
++  # Prefer versioned DTBs, skip bare "dtb" directory
++  for i in "dtb-${version}" "dtb-${alt_version}"; do
+     if test -e "${dirname}/${i}" ; then
+       dtb="$i"
+       break
+     fi
+   done
++  # SoCFPGA fallback: use board DTB if present
++  if test -z "${dtb}"; then
++    # If /boot/socfpga.dtb exists (symlink or file), use that
++    if test -e "${dirname}/socfpga.dtb"; then
++      dtb="socfpga.dtb"
++    # Or, if only the real file exists under /boot/dtb, use that path
++    elif test -e "${dirname}/dtb/socfpga_cyclone5_socdk.dtb"; then
++      dtb="dtb/socfpga_cyclone5_socdk.dtb"
++    fi
++  fi
++
+
+   config=
+   for i in "${dirname}/config-${version}" "${dirname}/config-${alt_version}" "/etc/kernels/kernel-config-${version}" ; do
