@@ -1,0 +1,4 @@
+[RDP]
+title=RDP
+description=Remote Desktop Manager
+ports=3389/udp|3389/tcp
