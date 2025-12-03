@@ -1,0 +1,14 @@
+[Unit]
+Description=Load FPGA bitstream
+After=local-fs.target
+Before=multi-user.target
+ConditionPathExists=/lib/firmware/socfpga.rbf
+ConditionPathExists=/sys/class/fpga_manager/fpga0/firmware
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'echo socfpga.rbf > /sys/class/fpga_manager/fpga0/firmware'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
