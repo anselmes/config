@@ -51,13 +51,8 @@ config:
 
         # Key usage extensions define what the certificate can be used for
         usages:
-          - signing           # Can sign other certificates
-          - digital signature # Can create digital signatures
           - cert sign         # Can sign certificates (CA capability)
           - crl sign          # Can sign Certificate Revocation Lists
-          - key encipherment  # Can encrypt symmetric keys
-          - server auth       # Can authenticate servers (TLS server certificates)
-          - client auth       # Can authenticate clients (TLS client certificates)
 
         # CA constraints define certificate authority capabilities
         ca_constraint:
@@ -99,26 +94,24 @@ intermediate:
       O: OpenStack Helm            # Organization: OpenStack Helm project (matching root CA)
       OU: Certificate Authority    # Organizational Unit: Certificate Authority division
 
-  # Intermediate CA specific configuration
-  ca:
-    expiry: 8760h  # Validity period: 1 year (should be shorter than root CA)
-
 # Additional certificate profiles can be added here for specific use cases:
 #
 # profiles:
 #   server:
 #     expiry: 8760h
 #     usages:
-#       - signing
+#       - digital signature
 #       - key encipherment
 #       - server auth
+#       - signing
 #
 #   client:
 #     expiry: 8760h
 #     usages:
-#       - signing
-#       - key encipherment
 #       - client auth
+#       - digital signature
+#       - key encipherment
+#       - signing
 #
 #   peer:
 #     expiry: 8760h
@@ -126,4 +119,5 @@ intermediate:
 #       - signing
 #       - key encipherment
 #       - server auth
-#       - client
+#       - client auth
+
