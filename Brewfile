@@ -76,8 +76,11 @@ tap "vmware-tanzu/pinniped"                                      # Pinniped auth
 
 # Virtualization Tools
 # brew "qemu"                       # Machine emulator and virtualizer
+# brew "virt-manager"               # Virtual machine manager
+# brew "winetricks"                 # Wine helper scripts
 
 # Cloud Native/Infrastructure Tools
+# brew "ansible"                    # IT automation tool
 # brew "cfssl"                      # CloudFlare's PKI toolkit
 # brew "clusterctl"                 # Cluster API management
 # brew "flux"                       # GitOps toolkit
