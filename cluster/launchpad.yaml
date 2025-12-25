@@ -1,0 +1,112 @@
+apiVersion: launchpad.mirantis.com/mke/v1.4
+kind: mke+msr
+metadata:
+  name: kubernetes
+spec:
+  hosts:
+  - role: manager
+    # privateInterface: eth0
+    # hooks:
+    #   apply:
+    #     before:
+    #       - ls -al > test.txt
+    #     after:
+    #       - cat test.txt
+    ssh:
+      address: 127.0.0.1
+      keyPath: ~/.ssh/id_ed25519
+      port: 22
+      user: ubuntu
+    # environment:
+    #   http_proxy: http://example.com
+    #   NO_PROXY: 10.0.0.*
+    # mcrConfig:
+    #   debug: true
+    #   log-opts:
+    #     max-size: 10m
+    #     max-file: 3
+  - role: node
+    # localhost:
+    #   enabled: true
+    ssh:
+      address: 127.0.0.1
+      keyPath: ~/.ssh/id_ed25519
+      port: 22
+      user: ubuntu
+  - role: msr
+    # imageDir: ./msr-images
+    ssh:
+      address: 127.0.0.1
+      keyPath: ~/.ssh/id_ed25519
+      port: 22
+      user: ubuntu
+  # - role: windows
+  #   winRM:
+  #     address: 127.0.0.1
+  #     user: Administrator
+  #     password: $PASSWORD
+  #     port: 5986
+  #     useHTTPS: true
+  #     insecure: false
+  #     useNTLM: false
+  #     caCertPath: ~/.certs/cacert.pem
+  #     certPath: ~/.certs/cert.pem
+  #     keyPath: ~/.certs/key.pem
+  mke:
+    version: $MKE_VERSION
+    imageRepo: docker.io/mirantis
+    adminUsername: admin
+    adminPassword: $MKE_ADMIN_PASSWORD
+    # configFile: ./config/ucp.toml
+    # licenseFilePath: ./config/docker-enterprise.lic
+    installFlags:
+      # - --external-server-cert
+      - --default-node-orchestrator kubernetes
+      - --cloud-provider $CLOUD_PROVIDER
+      - --external-service-lb $MKE_LB_FQDN
+      - --san $MKE_LB_FQDN
+    # configData: |-
+    #   [scheduling_configuration]
+    #     default_node_orchestrator = kubernetes
+    #   [auth]
+    #     [auth.external_identity_provider]
+    #       clientId = ""
+    #       clientSecret = ""
+    #       wellKnownConfigUrl = "https://example.com/.well-known/openid-configuration"
+    #       usernameClaim = "email"
+    #       caBundle = ""
+    #       httpProxy = ""
+    #       httpsProxy = ""
+    #       issuer = "https://example.com"
+    #       userServiceId = ""
+    #   [cluster_config]
+    #     shared_sans = ["example.com"]
+    #     external_service_lb = ""
+    #     cloud_provider = ""
+    #     cluster_name = "kubernetes"
+    #     [cluster_config.ingress_controller]
+    #       enabled = false
+    #       ingress_num_replicas = 2
+    #       ingress_external_ips = []
+    #       ingress_enable_lb = false
+    #       ingress_preserve_client_ip = false
+    #       [cluster_config.metallb_config]
+    #         enabled = false
+    #       [[cluster_config.metallb_config.metallb_ip_addr_pool]]
+    #         name = "example"
+    #         external_ip = ["192.168.10.0/24", "192.168.1.0/24"]
+  msr:
+    version: $MSR_VERSION
+    imageRepo: docker.io/mirantis
+    replicaIDs: sequential
+    installFlags:
+      - --ucp-insecure-tls
+      - --dtr-external-url $MSR_LB_FQDN
+  # mcr:
+  #   version: $MCR_VERSION
+  #   channel: stable
+  #   repoURL: https://repos.mirantis.com
+  #   installURLLinux: https://get.mirantis.com/
+  #   installURLWindows: https://get.mirantis.com/install.ps1
+  cluster:
+    prune: true
