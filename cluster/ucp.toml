@@ -1,0 +1,863 @@
+# Example UCP configuration file
+[hardening_configuration]
+  hardening_enabled = false
+  pids_limit_unspecified_int = true
+  pids_limit_int = 0
+  pids_limit_unspecified_k8s = true
+  pids_limit_k8s = 0
+  pids_limit_unspecified_swarm = true
+  pids_limit_swarm = 0
+
+  # Enable limiting the kernel capabilities
+  limit_kernel_capabilities = false
+
+  # Reduce number of containers running as root
+  limit_non_root_containers = false
+
+  # Limit cipher suites for API server, kubelet, and etcd to the suites mandated by the control 4.2.12 of the CIS Benchmark v1.7.0
+  use_strong_tls_ciphers = false
+
+[auth]
+
+  # The name of the auth backend to use, either "managed" or "ldap".
+  backend = "managed"
+
+  # NOTE: LDAP options may only be configured via the UCP UI or API.
+
+  # Indicates if SAML is enabled on this UCP.
+  samlEnabled = false
+
+  # The customized SAML login button text
+  samlLoginText = ""
+
+  # Indicates if SCIM is enabled on this UCP.
+  scimEnabled = false
+
+  # Indicates if managed password is disabled.
+  managedPasswordDisabled = false
+
+  # The fallback user when the managed password authentication is disabled.
+  managedPasswordFallbackUser = ""
+
+  # The role that new users will get for their private collections. Can be
+  # "admin", "viewonly", "scheduler", "restrictedcontrol", or "fullcontrol".
+  default_new_user_role="restrictedcontrol"
+
+  [auth.sessions]
+    # Specifies the initial lifetime (in minutes) of a session from the moment
+    # it is generated.
+    lifetime_minutes = 60
+
+    # Indicates a period of time (in minutes) before the expiration of a session
+    # where, if used, a session will be extended by the current configured lifetime
+    # from then, a zero value disables session extension.
+    renewal_threshold_minutes = 20
+
+    # Indicates the maximum number of sessions that any user can have active at any
+    # given time. If creating a new session would put a user over this limit then
+    # the least recently used session will be deleted. A value of zero disables
+    # limiting the number of sessions that users may have.
+    per_user_limit = 10
+
+    # Set token to be stored in sessionStorage instead of localStorage
+    store_token_per_session = false
+
+  # SAML related settings
+  [auth.saml]
+
+    # Service Provider Host
+    spHost = "52.38.7.31"
+
+    # Identity Provider URL
+    idpMetadataURL = "https://www.testshib.org/metadata/testshib-providers.xml"
+
+    # Root Certs for IdP metadata
+    rootCerts = ""
+
+    # TLS Skip verify for IdP Metadata
+    tlsSkipVerify = false
+
+    # Whether to allow LDAP logins
+    allowLdapLogins = false
+
+  # SAML proxy settings
+  [auth.samlProxy]
+    # URL of the proxy server
+    proxy_url = "https://proxy.com/"
+
+    # Whether proxy is enabled for SAML
+    enabled = true
+  # Credentials for SAML proxy (optional)
+  [auth.samlProxy.credentials]
+    [auth.samlProxy.credentials.basic]
+    # Username for accessing proxy
+    user = "mke"
+    # Password for accessing proxy (optional), it will be encrypted
+    password = ""
+
+  # SCIM related settings
+  [auth.scim]
+
+    # SCIM API token
+    token = ""
+
+    # Organization name
+    orgName = "docker-datacenter"
+
+  # External OpenID Connect identity provider settings
+  [auth.external_identity_provider]
+    # The client ID that you obtain from your provider
+    clientId = ""
+
+    # The client secret that you obtain from your provider
+    clientSecret = ""
+
+    # OpenID Discovery endpoint for your provider
+    wellKnownConfigUrl = "https://example.com/.well-known/openid-configuration"
+
+    # JWT claim of ID tokens that contains a username for users from external provider
+    usernameClaim = "email"
+
+    # PEM certificate bundle used to authenticate the discovery, issuer, and JWKs endpoints
+    caBundle = ""
+
+    # HTTP Proxy for your OpenID provider
+    httpProxy = ""
+
+    # HTTPS Proxy for your OpenID provider
+    httpsProxy = ""
+
+    # Optional. Issuer of ID tokens. If empty, will be obtained automatically from the discovery endpoint
+    issuer = "https://example.com"
+
+    # Optional. A service created with POST /accounts/<username>/services/ that has JWK URI for the provider.
+    # If empty, will be created automatically
+    userServiceId = ""
+
+    # List of claims that ID token must have to be allowed for using with MKE
+    [[auth.external_identity_provider.signInCriteria]]
+        # Name of the claim
+        term = "hd"
+
+        # Value for the claim, must be a string
+        value = "mirantis.com"
+
+        # Either 'must' or 'contains'. Indicates how the value will be checked.
+        # 'must' means the actual JWT claim value must be equal to the value in the config
+        # 'contains' means the the actual JWT claim value must contain the config value
+        matchType = "must"
+
+    # List of claims that ID token must have for admin users
+    [[auth.external_identity_provider.adminRoleCriteria]]
+        # Name of the claim
+        term = "iam_roles"
+
+        # Value for the claim, must be a string
+        value = "admin"
+
+        # Either 'must' or 'contains'
+        matchType = "contains"
+
+    # Settings for automatic account locking after successive failed login attempts
+    [auth.account_lock]
+      # Whether account lock is enabled
+      enabled = false
+
+      # How many successive failed login attempts trigger an account lock
+      failureTrigger = 3
+
+      # How long an account lock remains in effect after it is triggered
+      durationSeconds = 600
+
+[backup_schedule_config]
+  # Set the number of days after users get notified that they do not have a fresh backup
+  # Set to -1 to disable notifications
+  notification_delay = 7
+
+  # Whether backups should be created periodically
+  enabled = true
+
+  # Path where automatically created backups will be stored
+  path = "/tmp"
+
+  # Set the number of backups being kept
+  # After reaching this number of created scheduled backups, older backups will be deleted
+  # Set to -1 to disable rotation
+  backups_limit = 30
+
+  # True if backups should not be encrypted.
+  no_passphrase = false
+
+  # Passphrase for encrypting backups. Must be empty if no_passphrase is true.
+  passphrase = ""
+
+  # Cron expression that defines how often backups should be created
+  # It accepts
+  # - Full crontab specs in format <seconds> <minutes> <hours> <day of month> <month> <day of week>,
+  #   e.g. "* * * * * ?"
+  # - Descriptors, e.g. "@midnight", "@every 1h30m"
+  cron_spec = "0 0 0 * * *"
+
+  # Whether to create a separate log file with each backup
+  include_logs = true
+
+[etcd_cleanup_schedule_config]
+  # Set to true to periodically clean up Kubernetes events in etcd,
+  # followed by compacting the etcd revisions.
+  cleanup_enabled = true
+
+  # Minimum TTL to retain certain events in etcd
+  min_ttl_to_keep_seconds = 0
+
+  # Cron expression that defines how often events in etcd should be cleaned up
+  # Cleanup involves deleting the events and then compacting the etcd revisions
+  # It accepts
+  # - Full crontab specs in format <seconds> <minutes> <hours> <day of month> <month> <day of week>,
+  #   e.g. "* * * * * ?"
+  # - Descriptors, e.g. "@weekly", "@monthly", "@every 72h"
+  # When defrag_enabled is set to true, it's recommended to schedule cron_expression during
+  # off-peak hours or periods of low activity.
+  # Etcd cleanup operation must have a minimum scheduling interval of three days (72 hours)
+  cron_expression = "0 0 0 * * MON"
+
+  # Set to true to trigger defragmentation of the etcd cluster after successful cleanup
+  # Warning: Etcd cluster defragmentation process may lead to temporary performance degradation,
+  # scheduling the cron_expression during off-peak hours or low-activity periods can minimize its impact.
+  # Optianal parameter, default is false
+  defrag_enabled = true
+
+  # How long to wait between issuing defrag commands to etcd members
+  # Default 60s
+  defrag_pause_seconds = 0
+
+  # How long to wait for each etcd member to finish defragmentation
+  # Default 300s
+  defrag_timeout_seconds = 0
+
+[[registries]]
+  # The address used to connect to the DTR instance tied to this UCP cluster
+  host_address = ""
+
+  # The DTR instance's OpenID Connect Client ID, as registered with our auth provider.
+  service_id = ""
+
+  # The root CA bundle for the DTR instance (if using a custom CA).
+  ca_bundle = ""
+
+  # Whether or not this DTR can look up image scanning data in batches
+  batch_scanning_data_enabled = true
+
+[scheduling_configuration]
+
+  # Allow admins to schedule containers on managers
+  # Set to true to allow admins to schedule on manager
+  enable_admin_ucp_scheduling = true
+
+  # The type of orchestrator to use for new nodes that are joined to the
+  # cluster. Can be either "swarm" or "kubernetes".
+  default_node_orchestrator = "swarm"
+
+
+[tracking_configuration]
+
+  # Disable analytics of usage information
+  # Set to true to disable analytics
+  disable_usageinfo = false
+
+  # Disable analytics of API call information
+  # Set to true to disable analytics
+  disable_tracking = false
+
+  # Set an optional label to be included with analytics that are sent to
+  # Docker indicating whether this UCP cluster is a production cluster or a
+  # development cluster. This allows Docker to analyze the data in UCP
+  # analytics more accurately.
+  cluster_label = "default"
+
+  # Turn on / off Ops Care
+  ops_care = false
+
+[trust_configuration]
+
+  # Require images be signed by content trust
+  require_content_trust = false
+
+  # Specify users or teams which must sign images
+  require_signature_from = ["team1", "team2"]
+
+  # Specify repos allowed to bypass content trust check
+  allow_repos = ["dtr.example.org/demo/docker-demo1", "docker.io/mirantis/dtr", "docker.io/library/nginx", "172.17.0.4:444/admin/busybox"]
+
+
+[log_configuration]
+
+  # Set the logging level for UCP components - uses syslog levels
+  level = "DEBUG"
+
+[audit_log_configuration]
+
+  # Specify the audit logging level. Leave empty for disabling audit logs. Other
+  # legal values are "metadata" and "request". TODO: add link to level descriptions
+  level = ""
+
+  # When set to true, support bundles will include audit logs in the logs
+  # of the ucp-controller container of each manager node.
+  support_bundle_include_audit_logs = false
+
+[license_configuration]
+
+  # Enable attempted automatic license renewal when the license nears expiration
+  # If disabled, you must manually upload renewed licesnse after expiration.
+  auto_refresh = true
+
+  # Disable sending telemetry to Mirantis in the license confirmation requests
+  omit_telemetry = false
+
+[[custom_api_server_headers]]
+  # The name of the HTTP header.
+  name = "X-Some-Custom-Name"
+  # The value of the HTTP header.
+  value = "Some Custom Value"
+
+[pki]
+
+  # A custom Root CA bundle to use for client TLS certificate authentication in
+  # addition to UCP's internal cluster CAs.
+  client_ca_bundle = ""
+
+[user_workload_defaults]
+  # A map describing default values to set on Swarm services at creation time
+  # if those fields are not explicitly set in the service spec.
+  [user_workload_defaults.swarm_defaults]
+    [user_workload_defaults.swarm_defaults."tasktemplate.restartpolicy.delay"]
+      value = "5m"
+    [user_workload_defaults.swarm_defaults."tasktemplate.restartpolicy.maxattempts"]
+      value = "3"
+
+[cluster_config]
+
+  # Configures the port the ucp-controller listens to
+  controller_port = 443
+
+  # Configures the port the Kubernetes API server listens to
+  kube_apiserver_port = 6443
+
+  node_exporter_port = 9100
+
+  # Configures the port the ucp-swarm-manager listens to
+  swarm_port = 2376
+
+  # Configures Swarm scheduler strategy for container scheduling
+  # This does not affect swarm-mode services
+  swarm_strategy = "spread"
+
+  # Configures DNS settings for the UCP components
+  dns = []
+  dns_opt = []
+  dns_search = []
+
+  # Configures SANs shared between manager nodes
+  shared_sans = ["example.com"]
+
+  # Turn on specialized debugging endpoints for profiling UCP performance
+  profiling_enabled = false
+
+  # Turn off Swarm API polling to increase performance of UCP
+  swarm_polling_disabled = false
+
+  # Hide all Swarm objects types' UI in UCP website
+  hide_swarm_ui = false
+
+  # Indicates whether a cluster is running in swarm-only mode.
+  swarm_only = false
+
+  # Enable aggregation of DTR image vulnerability scans
+  image_scan_aggregation_enabled = false
+
+  # Set the vulnerability severity scoring version
+  image_scan_cvss_version = 3
+
+  # Allow to cache authorization info in ucp-controller for non-Kubernetes resource listing APIs.
+  # Unit: seconds
+  # Default 0(s) means the cache is not enabled.
+  authz_cache_timeout = 0
+
+  # Allow to cache (10s) authentication info in ucp-controller for client certificate authentication.
+  pubkey_auth_cache_enabled = false
+
+  # Tune the KV store timeout and snapshot settings
+  kv_timeout = 5000
+  kv_snapshot_count = 20000
+
+  # Specify an optional external LB for default links to services with expose ports in the UI
+  external_service_lb = ""
+
+  # Specify the URL of a kubernetes YAML file to be used for installing a CNI
+  # plugin. Only applies during initial installation. If empty, the default CNI
+  # plugin will be used
+  cni_installer_url = ""
+
+  # Set to true if ucp kubelet component should not be specifying
+  # seccomp-default to be true
+  disable_seccomp_default = false
+
+  # Set to true if ucp should not manage the cni provider lifecycle.
+  # UCP only manages Calico plugin if the unmanaged-flag is set to false.
+  unmanaged_cni = false
+
+  # Set to true if ucp should deploy secure-overlay which enables IPsec
+  # Network Encryption in Kubernetes
+  secure_overlay = false
+
+  # Set to true if cluster should use vxlan as dataplane.
+  calico_vxlan = false
+
+  # Set VXLAN VNI id for vxlan data plane.
+  vxlan_vni = 10000
+
+  # Adjust the metrics retention time
+  metrics_retention_time = ""
+
+  # Set the interval for how frequently managers gather metrics from nodes in the cluster
+  metrics_scrape_interval = "1m"
+
+  # Set memory limit for CoreDNS container.
+  core_dns_memory_limit = ""
+  # Set memory requests for CoreDNS container.
+  core_dns_memory_request = ""
+
+  # Set memory limit for Prometheus container.
+  prometheus_memory_limit = ""
+  # Set memory requests for Prometheus container.
+  prometheus_memory_request = ""
+
+  # Set the size of the cache used by UCP's RethinkDB servers. The installed
+  # default is 1GB, but leaving this field empty or specifying the special
+  # value "auto" will instruct RethinkDB to determine a cache size
+  # automatically (about half of currently available memory) which ensures a
+  # reliable operation in most scenarios, but the cache size can be tuned
+  # manually to accommodate increased memory usage by other processes or to
+  # maximize query performance. A larger cache improves the database’s
+  # performance, but you must consider other sources of memory consumption to
+  # avoid out of memory conditions.
+  # https://www.rethinkdb.com/docs/memory-usage/#cache-size
+  rethinkdb_cache_size = "16GB"
+
+  # Set the size of the storage size limit for etcd.
+  # The default is empty, which means it will use etcd default value (2GB)
+  etcd_storage_quota = "8GB"
+
+  # Set to true to disable the generation of client bundles for all accounts/users.
+  # This will also permanently delete all previously created client bundles.
+  # WARNING: Once all client bundles are deleted, this action CANNOT be undone.
+  # To enable client bundle generation again, set this parameter back to false.
+  # However, previously deleted client bundles will NOT be restored.
+  # Default: false (client bundle generation is enabled).
+  disable_client_bundle = false
+
+  # If true, disable headers in UCP API responses that indicate which
+  # UCP controller is returning the response
+  exclude_server_identity_headers = true
+
+  # Set the cloud provider for the kubernetes cluster. Depending on the cloud provider
+  # different configurations to kubernetes plugin might be need.For eg This could be used
+  # for cases where we need specific CNI plugin depending on the cloud provider to support
+  # pod networking
+  cloud_provider = ""
+
+  # Enable the cluster's ISCSI storage backend. Enabling this prepares the
+  # Kubernetes worker nodes for creation and management of ISCSI based
+  # persistent volumes.
+  iscsi_enabled = false
+
+  # iscsiadm is the absolute path to the host's iscsiadm binary. This is used when
+  # iscsi_enabled is set to true. This is necessary for the containerized
+  # kubelet to act as a iscsi initiator. Defaults to "/usr/sbin/iscsiadm"
+  # Symlinks not allowed.
+  iscsiadm_path = ""
+
+  # iscsidb is the absolute path to the host's iscsi database. This is used when
+  # iscsi_enabled is set to true. This is necessary for the containerized
+  # kubelet to act as a iscsi initiator. Defaults to "/etc/iscsi". Symlinks not allowed.
+  iscsidb_path = ""
+
+  # Set cluster Pod subnet pool. This will be the subnet pool from which the IP for the pod
+  # would be allocated by the CNI ipam plugin
+  pod_cidr = "192.168.0.0/16"
+
+  # storage_expt_enabled flag is used to enable experimental storage features in the cluster.
+  storage_expt_enabled = false
+
+  # Set the method to use to autodetect the IPv4 address for the host.
+  calico_ip_auto_method = ""
+
+  # Use explicitly specified  parameters for the calico-kube-controllers liveness and
+  # readiness probes
+  calico_controller_probes_tuning = false
+
+  # These default values are actually illegal values - used as sentinels
+  # If tuned; a valid value must be specified for each of these
+  calico_controller_liveness_probe_failure_threshold = 0
+  calico_controller_liveness_probe_initial_delay_seconds = -1
+  calico_controller_liveness_probe_period_seconds = 0
+  calico_controller_liveness_probe_success_threshold = 0
+  calico_controller_liveness_probe_timeout_seconds = 0
+  calico_controller_readiness_probe_failure_threshold = 0
+  calico_controller_readiness_probe_initial_delay_seconds = -1
+  calico_controller_readiness_probe_period_seconds = 0
+  calico_controller_readiness_probe_success_threshold = 0
+  calico_controller_readiness_probe_timeout_seconds = 0
+
+  # Set the MTU (maximum transmission unit) size for the Calico plugin.
+  calico_mtu = "1480"
+
+  # Set strict affinity for the Calico plugin.
+  calico_strict_affinity = false
+
+  # Set the VXLAN MTU (maximum transmission unit) size for the Calico plugin.
+  calico_vxlan_mtu = "1450"
+
+  # Set the VXLAN Port for the Calico plugin.
+  calico_vxlan_port = "4789"
+
+  # Set the IPIP MTU size for the calico IPIP tunnel interface
+  ipip_mtu = "1480"
+
+  # Set the IP count for azure allocator to allocate IPs per azure VM
+  azure_ip_count = "64"
+
+  # Set the ServiceClusterIPRange used by Kubernates for Services
+  service_cluster_ip_range = "10.96.0.0/16"
+
+  # Set the port range that for Kubernetes services of type NodePort can be
+  # exposed in.
+  nodeport_range = "32768-35535"
+
+  # Enable Calico eBPF mode
+  calico_ebpf_enabled = false
+
+  # Use k8s default values for iptables drop and masquerade bits
+  kube_default_drop_masq_bits = false
+
+  #Do not use a config file for kube proxy, pass in cmd line flags instead
+  kube_proxy_use_config_file = false
+
+  # Set the operational mode for kube-proxy
+  kube_proxy_mode = "iptables"
+
+  # Do not perform kube-proxy's iptable rules cleanup before starting kube-proxy
+  kube_proxy_no_cleanup_on_start = true
+
+  # Disable profiling for kube components (enabled by default)
+  kube_api_server_profiling_enabled = true
+  kube_controller_manager_profiling_enabled = true
+  kube_scheduler_profiling_enabled = true
+
+  # Bind kube-scheduler to all network interfaces instead of just localhost (disabled by default)
+  kube_scheduler_bind_to_all = false
+
+  # Enable kernel defaults protection (disabled by default)
+  kube_protect_kernel_defaults = false
+
+  # The below are relevant for kube_proxy_mode=ipvs only
+  ipvs_exclude_cidrs = ""
+  ipvs_min_sync_period = ""
+  ipvs_scheduler = ""
+  ipvs_strict_arp = false
+  ipvs_sync_period = ""
+  ipvs_tcp_timeout = ""
+  ipvs_tcpfin_timeout = ""
+  ipvs_udp_timeout = ""
+
+  # Enable the use of a KMS (Key Management Service) plugin. The KMS plugin
+  # must be deployed on every manager node. UCP will configure the API server
+  # with the specified endpoint socket.
+  kms_enabled = false
+
+  # Name of the KMS resource
+  kms_name = ""
+
+  # Host path of the KMS endpoint socket
+  kms_endpoint = ""
+
+  # Host path of the Kubelet data root
+  kubelet_data_root = "/var/lib/kubelet"
+
+  # Host path of the Windows Kubelet data root
+  windows_kubelet_data_root = "C:\\k"
+
+  # Host path of the containerd root on Windows
+  windows_containerd_root = "C:\\ProgramData\\containerd"
+
+  # Host path of the containerd root
+  containerd_root = "/var/lib/containerd"
+
+  # Number of data encryption keys to be cached in the clear by the KMS.
+  kms_cachesize = 0
+
+  cipher_suites_for_kube_api_server = ""
+  cipher_suites_for_kubelet = ""
+  cipher_suites_for_etcd_server = ""
+
+  # Enable a standalone cadvisor deployment to expose additional container-level metrics
+  cadvisor_enabled = false
+
+  # ADVANCED: Set any additional flags on the Kubernetes system components that
+  # you may require. You must ensure that any custom flags do not conflict with
+  # configuration options already set by UCP.
+  custom_kube_api_server_flags = ["--event-ttl=1h0m0s", "--service-node-port-range=30000-32767"]
+  custom_kube_controller_manager_flags = ["--service-sync-period=5m0s"]
+  custom_kubelet_flags = ["--http-check-frequency=20s", "--kube-api-qps=200", "--kube-api-burst=200"]
+  custom_kube_scheduler_flags = ["--algorithm-provider=DefaultProvider", "--kube-api-qps=200", "--kube-api-burst=200"]
+  custom_kube_proxy_flags = ["--conntrack-min=300000", "--conntrack-max-per-core=200000"]
+
+  # ADVANCED: Set any yaml fields that will be merged into the kube-proxy config file.
+  # You must ensure that any custom yaml does not conflict with configuration options already set by UCP.
+  # Note this field has no effect unless kube_proxy_use_config_file is set to true.
+  custom_proxy_config_yaml = """
+"""
+
+  # Store data about collections for volumes in UCP's local KV store instead of
+  # on the volume labels. This is used for enforcing access control on volumes.
+  # Most users will not need to turn this on; this is only necessary if you
+  # use third-party volume drivers.
+  local_volume_collection_mapping = false
+
+  # Reserve resources for Docker UCP and Kubernetes components which are
+  # running on manager nodes.
+  # For more details, see:
+  #   https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/#kube-reserved
+  manager_kube_reserved_resources = "cpu=1,memory=2Gi,ephemeral-storage=4Gi"
+
+  # Reserve resources for Docker UCP and Kubernetes components which are
+  # running on worker nodes.
+  # For more details, see:
+  #   https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/#kube-reserved
+  worker_kube_reserved_resources = "cpu=100m,memory=300Mi,ephemeral-storage=500Mi"
+
+  # Set Number of Pods that can run on this Kubelet.
+  kubelet_max_pods = 110
+
+  # Set Number of Pods that can run on a single core.
+  kubelet_pods_per_core = 0
+
+  # Set pre logon message to alert users before they proceed with login.
+  pre_logon_message = ""
+
+  # Enable Windows GMSA support in Kubernetes. Enabling this deploys the webhook
+  # admission controller, and creates the Kubernetes resources, required for GMSA
+  # workloads in Kubernetes.
+  windows_gmsa = false
+
+  # Enable nvidia device plugin.
+  nvidia_device_plugin = false
+
+  # Enable nvidia device partitioner. Will be ignored if nvidia_device_plugin = false
+  nvidia_device_partitioner = false
+
+  # Switch back to an earlier mode of the MKE ucpnodeselector admission controller
+  # where pod updates are not validated or mutated.
+  ignore_pod_updates_for_node_selector = false
+
+  # Cluster Name is passed to Kube controller manager.
+  cluster_name = "kubernetes"
+
+  # Allow non-admin user accounts to bypass certain aspects of MKE admission controllers
+  priv_attributes_allowed_for_user_accounts = []
+
+  # Allow specified non-admin user accounts to bypass certain aspects of MKE admission controllers
+  priv_attributes_user_accounts = []
+
+  # Allow service accounts to bypass certain aspects of MKE admission controllers
+  priv_attributes_allowed_for_service_accounts = []
+
+  # Allow specified service accounts to bypass certain aspects of MKE admission controllers
+  priv_attributes_service_accounts = []
+
+  # gmsa_allow_non_admins flag is used to allow non-admins to operate on gmsa configs
+  # By default, only admins can create/update/delete configs that are gmsa configs
+  gmsa_allow_non_admins = false
+
+  # The maximum number of networks in a collection.
+  networks_quota_per_collection = 0
+
+  # Set CPU usage threshold above which a warning banner will be displayed on MKE UI
+  cpu_usage_banner_threshold = 20
+  # Set CPU usage metric scrape interval for displaying a warning banner on MKE UI
+  cpu_usage_banner_scrape_interval = "10m"
+
+  # Cron expression (including seconds) that describes how often images should be pruned in the cluster
+  image_prune_schedule = "0 0 0 * * *"
+
+  # Enable auditing in kube apiserver.
+  kube_api_server_auditing = true
+
+  kube_api_server_enable_custom_audit_policy = false
+
+  # ADVANCED: Set a custom audit log policy for the kubernetes api server.
+  # The provided audit policy yaml will be merged with existing rules that exclude logging
+  # from MKE system components. Any custom policy will override the audit_log_configuration level.
+  # Note this field has no effect unless kube_api_server_enable_custom_audit_policy is set to true.
+  kube_api_server_custom_audit_policy_yaml = """
+"""
+
+  # Set the maximum number of days to retain old audit log files in kube apiserver
+  kube_api_server_audit_log_maxage = 30
+
+  # Set the maximum number of audit log files to retain in kube apiserver
+  kube_api_server_audit_log_maxbackup = 10
+
+  # Set the maximum size in megabytes of the audit log file before it gets rotated in kube apiserver
+  kube_api_server_audit_log_maxsize = 10
+
+  # Whether to enable the support of flex volume driver
+  use_flex_volume_driver = false
+
+  # Sets the maximum event creations per second
+  kubelet_event_record_qps = 50
+
+  # Enables serialized image pulls
+  # When set to true, image pulls are serialized (one at a time)
+  # Set to false to allow multiple images to be pulled in parallel
+  kubelet_serialize_image_pulls = true
+
+  # Sets the maximum number of parallel image pulls the kubelet can perform
+  # Must be set to 1 if kubelet_serialize_image_pulls is true
+  # If parallel pulls are enabled (kubelet_serialize_image_pulls = false), this must be greater than 0
+  # If set to 0, the kubelet will default to pulling 1 image at a time
+  kubelet_max_parallel_image_pulls = 1
+
+  # Sets the threshold for the terminated pod garbage collector.
+  kube_manager_terminated_pod_gc_threshold = 12500
+
+  # Enables the AlwaysPullImages admission controller on kube-apiserver
+  k8s_always_pull_images_ac_enabled = false
+
+  # Enables the UnauthenticatedHTTP2DOSMitigation feature gate
+  unauthenticated_http2_dos_mitigation = false
+
+  # Disables HTTP2 on all of MKE-s own components like ucp-proxy/ucp-controller etc.
+  disable_http2 = false
+
+  # Sets the timeout for Kube API server requests
+  kube_api_server_request_timeout = "1m0s"
+
+  # Enable node local dns.
+  node_local_dns = false
+
+  # Persist CoreDNS ConfigMap when it is reconciled
+  node_local_dns_config_persist = false
+
+  # Persist CoreDNS ConfigMap when it is reconciled
+  core_dns_config_persist = false
+
+  # Sets the backend datastore  for MKE-s managned CNI (Calico OSS) to be k8s instead of etcd
+  calico_kdd = false
+
+  # Disables manifest changes that make it possible to migrate to Tigera Operator
+  calico_manifest_tigop_compat_disabled = false
+
+  # Immutable true value that represents if tigera operator migration compatible manifests are
+  # used by the MKE build
+  tigop_compatible_manifest = true
+
+  # List of whitelisted images for image pruning, these images won't be deleted
+  [[cluster_config.image_prune_whitelist]]
+    # supported filter keys are: "dangling", "label", "before", "since", "reference"
+    # https://docs.docker.com/engine/reference/commandline/images/
+    key = "label"
+
+    # value of the filter
+    value = "important_image"
+
+
+
+  [cluster_config.ingress_controller]
+    # Disable Ingress Controller
+    enabled = false
+
+    # Set the Number of Ingress Controller Replicas
+    ingress_num_replicas = 2
+
+    # Set the List of External IPs for Ingress Controller Service
+    ingress_external_ips = []
+
+    # Enable external load balancer
+    ingress_enable_lb = false
+
+    # Enable preserving inbound traffic source IP
+    ingress_preserve_client_ip = false
+
+    # Set exposed ports
+    [[cluster_config.ingress_controller.ingress_exposed_ports]]
+      name = "name"
+      port = 1
+      target_port = 2
+      node_port = 3
+      protocol = "tcp"
+
+    # Set node affinity
+    [cluster_config.ingress_controller.ingress_node_affinity]
+       nodetype = "ingress"
+
+    # Set node toleration
+    [[cluster_config.ingress_controller.ingress_node_toleration]]
+      key = "com.docker.ucp.manager"
+      value = "dummy"
+      operator = "Exists"
+      effect = "NoSchedule"
+
+    # Set config map data for ingress controller
+    [cluster_config.ingress_controller.ingress_config_map]
+       use-dummy-data = "true"
+
+        [cluster_config.ingress_controller.ingress_tcp_services]
+       6333 = "tcp-service-on-port-6333"
+
+        [cluster_config.ingress_controller.ingress_udp_services]
+       64444 = "udp-service-on-port-64444"
+
+    # Set startup arguments for ingress controller
+    [cluster_config.ingress_controller.ingress_extra_args]
+       enable_ssl_passthrough = false
+       default_ssl_certificate = "default-ssl-certificate"
+       default_backend_service = "ingress-nginx/nginx-errors"
+       # Enable collection of metrics for monitoring the NGINX Ingress controller (default: false)
+       enable_metrics = false
+       http_port = 80
+       https_port = 443
+
+    # Set policy enforcement configuration
+    [cluster_config.policy_enforcement]
+      # Enable kubernetes pod security policy admission controller
+      pod_security_policy = true
+      [cluster_config.policy_enforcement.gatekeeper]
+        enabled = false
+        excluded_namespaces = ["kube-system", "kube-public", "kube-node-lease", "node-feature-discovery", "gatekeeper-system"]
+
+    # Set Core Dns health plugin configuration
+    [cluster_config.core_dns_lameduck_config]
+      # Set duration for lameduck
+      # Any value more than 0s will enable lameduck. The recommended value is 7s
+      enabled = false
+      duration = "7s"
+
+    # Set MetalLB configuration
+    [cluster_config.metallb_config]
+      enabled = false
+    [[cluster_config.metallb_config.metallb_ip_addr_pool]]
+      name = "example"
+      # Specify multiple IP address range in CIDR notation
+      external_ip = ["192.168.10.0/24", "192.168.1.0/24"]
+
+    [cluster_config.k8s_event_rate_limit]
+      event_rate_limit_ac_enabled = false
+    [[cluster_config.k8s_event_rate_limit.limits]]
+      limit = "Server"
+      limit_qps = 3
+      limit_burst = 10
+      limit_cache_size = 8192
+
+    [cluster_config.custom_kubelet_flags_profiles]
+      low-memory = "--eviction-hard=memory.available<500Mi"
+      high-memory = "--eviction-hard=memory.available<1Gi"
