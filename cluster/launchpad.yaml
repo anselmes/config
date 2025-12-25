@@ -61,6 +61,7 @@ spec:
     # licenseFilePath: ./config/docker-enterprise.lic
     installFlags:
       # - --external-server-cert
+      # - --unmanaged-cni
       - --default-node-orchestrator kubernetes
       - --cloud-provider $CLOUD_PROVIDER
       - --external-service-lb $MKE_LB_FQDN
