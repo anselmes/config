@@ -79,9 +79,9 @@
 # ============================================================================
 # Settings related to commit creation and signing
 
-#[commit]
-#  # Automatically sign commits with GPG (uncomment to enable)
-#  gpgsign = true
+# [commit]
+#   # Automatically sign commits with GPG (uncomment to enable)
+#   gpgsign = true
 
 # ============================================================================
 # CORE CONFIGURATION - Fundamental Git behavior
@@ -97,6 +97,9 @@
 
   # Default text editor for commit messages and interactive operations
   editor = vi
+
+  # Pager settings for viewing command output
+  pager = less -FRSX
 
   # Performance tuning for large repositories
   # Maximum size of a pack file before Git splits it
@@ -116,18 +119,18 @@
 # ============================================================================
 # Configuration for git-review tool (Gerrit integration)
 
-#[gitreview]
-#  # Default username for code review submissions
-#  usename = ""
+# [gitreview]
+#   # Default username for code review submissions
+#   username = ""
 
 # ============================================================================
 # GPG CONFIGURATION (commented)
 # ============================================================================
 # GNU Privacy Guard settings for commit and tag signing
 
-#[gpg]
-#  # Path to GPG program executable
-#  program = gpg
+# [gpg]
+#   # Path to GPG program executable
+#   program = gpg
 
 # ============================================================================
 # PROXY CONFIGURATION (commented)
