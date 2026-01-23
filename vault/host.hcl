@@ -3,7 +3,7 @@
   "allow_bare_domains": true,
   "allow_host_certificates": true,
   "allow_subdomains": true,
-  "allowed_domains": "$FQDN, *.$FQDN",
+  "allowed_domains": "$DOMAIN, *.$DOMAIN",
   "key_type": "ca",
   "ttl": "8760h"
 }
