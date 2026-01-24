@@ -23,12 +23,12 @@ spec:
   extensions:
     helm:
       charts:
-        - # cilium cni
+        - # FIXME: cilium cni
           name: cilium
           chartname: oci://ghcr.io/labsonline/charts/cni
           namespace: kube-system
           order: 1
-          version: 1.0.0
+          version: 1.0.3
           values: |
             cilium:
               kubeProxyReplacement: true
@@ -38,15 +38,6 @@ spec:
                 replicas: 1
               bgpControlPlane:
                 enabled: false
-        - # cilium cni resources
-          name: cilium-resource
-          chartname: oci://ghcr.io/labsonline/charts/cni
-          namespace: kube-system
-          order: 2
-          version: 1.0.0
-          values: |
-            cilium:
-              install: false
               l2:
                 enabled: true
               # peer:
@@ -78,18 +69,18 @@ spec:
                 cidr: 172.16.11.0/24
                 # start: 172.16.11.100
                 # stop: 172.16.11.200
-        - # openebs csi
+        - # TODO: openebs csi
           name: openebs
           chartname: oci://ghcr.io/labsonline/charts/csi
           namespace: kube-system
           order: 3
-          version: 1.0.0
+          version: 1.0.2
         # - # ceph operator
         #   name: ceph-operator
         #   chartname: oci://ghcr.io/labsonline/charts/csi
         #   namespace: operators
         #   order: 3
-        #   version: 1.0.0
+        #   version: 1.0.2
         #   values: |
         #     openebs:
         #       enabled: false
@@ -99,12 +90,12 @@ spec:
         #       allowLoopDevices: false
         #       csi:
         #         enableCSIEncryption: false
-        # - # ceph csi resources
+        # - # ceph cluster
         #   name: ceph
         #   chartname: oci://ghcr.io/labsonline/charts/csi
         #   namespace: ceph
         #   order: 4
-        #   version: 1.0.0
+        #   version: 1.0.2
         #   values: |
         #     openebs:
         #       enabled: false
@@ -181,7 +172,7 @@ spec:
         #   chartname: oci://ghcr.io/labsonline/charts/edns
         #   namespace: kube-system
         #   order: 5
-        #   version: 1.0.0
+        #   version: 1.19.0
         #   values: |
         #     # endpoints:
         #     #   - name: a-kubernetes-local
@@ -215,7 +206,7 @@ spec:
         #   chartname: oci://ghcr.io/labsonline/charts/gateway
         #   namespace: kube-system
         #   order: 5
-        #   version: 1.0.0
+        #   version: 1.0.3
         #   values: |
         #     routes: []
         #     gateways:
@@ -258,7 +249,7 @@ spec:
         #   chartname: oci://ghcr.io/labsonline/charts/gateway
         #   namespace: openstack
         #   order: 5
-        #   version: 1.0.0
+        #   version: 1.0.3
         #   values: |
         #     # routes:
         #     #   - name: horizon
@@ -283,59 +274,13 @@ spec:
         #                 - kind: TLSRoute
         #             tls:
         #               mode: Passthrough
-        # - # kubernetes cluster manager
-        #   name: kcm
-        #   chartname: oci://ghcr.io/labsonline/charts/kcm
-        #   namespace: kcm-system
-        #   order: 6
-        #   version: 1.2.0
-        #   values: |
-        #     kcm:
-        #       cert-manager:
-        #         config:
-        #           apiVersion: controller.config.cert-manager.io/v1alpha1
-        #           kind: ControllerConfiguration
-        #           enableGatewayAPI: true
-        # - # kubernetes cluster manager resources
-        #   name: kcm-resource
-        #   chartname: oci://ghcr.io/labsonline/charts/kcm
-        #   namespace: kcm-system
-        #   order: 7
-        #   version: 1.2.0
-        #   values: |
-        #     management:
-        #       enabled: true
-        #       access:
-        #         enabled: true
-        #         rules:
-        #           - clusterTemplateChains:
-        #               - adopted-cluster
-        #               - docker-hosted-cp
-        #               - remote-cluster
-        #             targetNamespaces:
-        #               list:
-        #                 - default
-        #       providers:
-        #         - name: cluster-api-provider-docker
-        #         - name: cluster-api-provider-k0sproject-k0smotron
-        #         - name: projectsveltos
-        #     release:
-        #       enabled: true
-        #       providers:
-        #         - name: cluster-api-provider-k0sproject-k0smotron
-        #           template: cluster-api-provider-k0sproject-k0smotron-1-0-6
-        #         - name: cluster-api-provider-docker
-        #           template: cluster-api-provider-docker-1-0-2
-        #         - name: projectsveltos
-        #           template: projectsveltos-0-57-2
-        #     kcm:
-        #       install: false
+        # - # TODO: kubernetes cluster manager
         # - # certificate authority
         #   name: ca
         #   chartname: oci://ghcr.io/labsonline/charts/ca
         #   namespace: kcm-system
         #   order: 7
-        #   version: 1.0.0
+        #   version: 1.0.4
         #   values: |
         #     issuers:
         #       - name: self-signed-ca-issuer
@@ -367,7 +312,7 @@ spec:
         #   chartname: oci://ghcr.io/labsonline/charts/pinniped
         #   namespace: ucp
         #   order: 7
-        #   version: 1.0.0
+        #   version: 2-4-23
         #   values: |
         #     # rbac:
         #     #   - name: kcm-ns-viewer
