@@ -37,6 +37,7 @@
 tap "apple/apple", "http://github.com/apple/homebrew-apple"      # Apple's official tools
 tap "domt4/autoupdate"                                           # Auto-update tools for Homebrew
 tap "fluxcd/tap"                                                 # Flux CD GitOps tools
+tap "hashicorp/tap"                                              # HashiCorp tools
 tap "homebrew/bundle"                                            # Homebrew Bundle support
 tap "homebrew/cask"                                              # GUI applications repository
 tap "homebrew/core"                                              # Main Homebrew repository
@@ -153,7 +154,7 @@ brew "zsh-completions"              # Additional completions for Zsh
 # Media and Creative Tools
 # cask "balenaetcher"                                         # OS image flasher
 # cask "blender"                                              # 3D creation suite
-# cask "dcp-o-matic-player"                                   # Digital cinema package player
+# cask "dcp-o-matic-player"                                   # Digital cinema package player (Deprecated brew)
 # cask "ff-works"                                             # Video processing tool
 # cask "fl-studio"                                            # Digital audio workstation
 # cask "fontlab"                                              # Font editor
@@ -177,7 +178,6 @@ brew "zsh-completions"              # Additional completions for Zsh
 
 # System Utilities and Productivity
 cask "appcleaner"                                           # Application uninstaller
-cask "brewservicesmenubar"                                  # Homebrew services menu bar
 cask "caffeine"                                             # Prevent system sleep
 cask "lingon-x"                                             # Launch agent and daemon manager
 
