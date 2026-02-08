@@ -1,3 +1,19 @@
+# PATH policy: keep system dirs last, avoid duplicates
+typeset -U path
+
+# Remove existing occurrences (sequentially!)
+path=(${path:#/usr/local/bin})
+path=(${path:#/usr/bin})
+path=(${path:#/bin})
+path=(${path:#/usr/sbin})
+path=(${path:#/sbin})
+
+# Append them at the end
+path+=('/usr/local/bin' '/usr/bin' '/bin' '/usr/sbin' '/sbin')
+
+export PATH="${(j/:/)path}"
+hash -r
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -93,12 +109,10 @@ plugins=(
   z
 )
 
-source /etc/profile
+source "${ZSH}/oh-my-zsh.sh"
 
 source "${HOME}/workspace/scripts/aliases.sh" >/dev/null 2>&1 || true
 source "${HOME}/workspace/scripts/environment.sh" >/dev/null 2>&1 || true
-
-source "${ZSH}/oh-my-zsh.sh"
 
 # User configuration
 if type brew &>/dev/null; then
