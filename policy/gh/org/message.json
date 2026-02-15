@@ -1,9 +1,8 @@
 {
-  "id": 1176986,
   "name": "message",
   "target": "branch",
   "source_type": "Organization",
-  "source": "anselmes",
+  "source": "organization_name",
   "enforcement": "active",
   "conditions": {
     "repository_name": {

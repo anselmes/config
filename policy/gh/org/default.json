@@ -1,10 +1,14 @@
 {
   "name": "default",
   "target": "branch",
-  "source_type": "Repository",
-  "source": "repository_name",
-  "enforcement": "disabled",
+  "source_type": "Organization",
+  "source": "organization_name",
+  "enforcement": "active",
   "conditions": {
+    "repository_name": {
+      "exclude": [],
+      "include": ["~ALL"]
+    },
     "ref_name": {
       "exclude": [],
       "include": ["~DEFAULT_BRANCH"]
@@ -54,6 +58,11 @@
     {
       "actor_id": 5,
       "actor_type": "RepositoryRole",
+      "bypass_mode": "always"
+    },
+    {
+      "actor_id": 1,
+      "actor_type": "OrganizationAdmin",
       "bypass_mode": "always"
     }
   ]

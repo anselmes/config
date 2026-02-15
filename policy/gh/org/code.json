@@ -1,33 +1,31 @@
 {
-  "id": 1176981,
-  "name": "push",
-  "target": "push",
+  "name": "code",
+  "target": "branch",
   "source_type": "Organization",
-  "source": "anselmes",
+  "source": "organization_name",
   "enforcement": "active",
   "conditions": {
     "repository_name": {
       "exclude": [],
       "include": ["~ALL"]
+    },
+    "ref_name": {
+      "exclude": [],
+      "include": ["~DEFAULT_BRANCH"]
     }
   },
   "rules": [
     {
-      "type": "max_file_path_length",
+      "type": "workflows",
       "parameters": {
-        "max_file_path_length": 255
-      }
-    },
-    {
-      "type": "file_extension_restriction",
-      "parameters": {
-        "restricted_file_extensions": ["*.`bin`, `exe`, `app`"]
-      }
-    },
-    {
-      "type": "max_file_size",
-      "parameters": {
-        "max_file_size": 10
+        "do_not_enforce_on_create": true,
+        "workflows": [
+          {
+            "repository_id": "repository_id",
+            "path": ".github/workflows/review.yml",
+            "ref": "refs/heads/main"
+          }
+        ]
       }
     }
   ],
