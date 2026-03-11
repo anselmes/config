@@ -4,7 +4,7 @@ hostname: ubuntu
 manage_etc_hosts: true
 package_update: true
 package_upgrade: true
-timezone: America/Toronto
+timezone: UTC
 growpart:
   mode: auto
   ignore_growroot_disabled: false
