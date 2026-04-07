@@ -7,6 +7,8 @@ spec:
   hosts:
     - role: controller+worker
       noTaints: true
+      # privateAddress: 127.0.0.1
+      # privateInterface: eth0
       ssh:
         address: 127.0.0.1
         keyPath: ~/.ssh/id_ed25519
@@ -17,7 +19,16 @@ spec:
       #   - --enable-cloud-provider
       #   - --kubelet-extra-args=--cgroup-driver=systemd
       #   - --kubelet-extra-args=--cloud-provider=external
+      #   - --label=openebs.io/nodeid=$(hostname)
+      #   - --label=openstack-compute-node=enabled
+      #   - --label=openstack-control-plane=enabled
+      #   - --label=openstack-gateway=enabled
+      #   - --label=openvswitch=enabled
       # files:
+      #   - # audit policy
+      #     name: audit
+      #     src: ./config/audit-policy.yaml
+      #     dst: /var/lib/k0s/audit-policy.yaml
       #   - # containerd patch
       #     name: containerd
       #     src: ./config/containerd.toml
@@ -26,15 +37,12 @@ spec:
       #     name: crds
       #     src: ./crds
       #     dstDir: /var/lib/k0s/manifests/crds
-      # hooks:
-      #   apply:
-      #     after:
-      #       - sleep 15
-      #       - bash -c "sudo k0s kubectl label node '$(hostname)' openebs.io/nodeid='$(hostname)' --overwrite"
-      #       - bash -c "sudo k0s kubectl label node '$(hostname)' openstack-control-plane=enabled' --overwrite"
-      #       - bash -c "sudo k0s kubectl label node '$(hostname)' openstack-compute-node=enabled' --overwrite"
-      #       - bash -c "sudo k0s kubectl label node '$(hostname)' openstack-gateway=enabled' --overwrite"
-      #       - bash -c "sudo k0s kubectl label node '$(hostname)' openvswitch=enabled' --overwrite"
+      hooks:
+        apply:
+          before:
+            - echo "Preparing $(hostname) control+worker node"
+          after:
+            - echo "$(hostname) control+worker node ready"
   k0s:
-    version: v1.33.1+k0s.1
+    version: v1.35.2+k0s.0
     config: {}
