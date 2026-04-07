@@ -17,7 +17,7 @@ spec:
       # audit-log-maxsize: "100"
       # audit-log-path: /var/log/kubernetes/audit.log
       # audit-policy-files: /var/lib/k0s/audit-policy.yaml
-      kubelet-prefered-address-types: InternalIP,Hostname,ExternalIP
+      kubelet-preferred-address-types: InternalIP,Hostname,ExternalIP
   # storage:
   #   etcd:
   #     peerAddress: 127.0.0.1

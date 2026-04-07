@@ -19,11 +19,11 @@ spec:
       #   - --enable-cloud-provider
       #   - --kubelet-extra-args=--cgroup-driver=systemd
       #   - --kubelet-extra-args=--cloud-provider=external
-      #   - --label=openebs.io/nodeid=$(hostname)
-      #   - --label=openstack-compute-node=enabled
-      #   - --label=openstack-control-plane=enabled
-      #   - --label=openstack-gateway=enabled
-      #   - --label=openvswitch=enabled
+      #   - --labels=openebs.io/nodeid=$(hostname)
+      #   - --labels=openstack-compute-node=enabled
+      #   - --labels=openstack-control-plane=enabled
+      #   - --labels=openstack-gateway=enabled
+      #   - --labels=openvswitch=enabled
       # files:
       #   - # audit policy
       #     name: audit
