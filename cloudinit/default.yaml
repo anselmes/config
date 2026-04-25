@@ -1,10 +1,10 @@
 #cloud-config
-# fqdn: box.dev.local
-# hostname: box
+fqdn: ubuntu.local
+hostname: ubuntu
 manage_etc_hosts: true
 package_update: true
 package_upgrade: true
-timezone: America/Toronto
+timezone: Etc/UTC
 growpart:
   mode: auto
   ignore_growroot_disabled: false
@@ -12,39 +12,23 @@ growpart:
 users:
   - default
 ssh_authorized_keys: []
+ntp:
+  pools:
+    - 0.pool.ntp.org
+    - 1.pool.ntp.org
+    - 2.pool.ntp.org
+    - 3.pool.ntp.org
 write_files:
-  - path: /etc/environment
-    permissions: "0644"
-    owner: root
-    content: |
-      PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
-      EDITOR="vim"
   - path: /usr/lib/systemd/system/user@.service.d/delegate.conf
     permissions: "0644"
     owner: root
     content: |
       [Service]
       Delegate=cpu cpuset io memory pids
-  - path: /opt/configure.sh
-    permissions: "0755"
+  - path: /etc/environment
+    permissions: "0644"
     owner: root
     content: |
-      #!/bin/bash
-      set -eux
-
-      : "${LOCALE:="C.UTF-8"}"
-      : "${TIMEZONE:="America/Toronto"}"
-
-      # disable swap
-      swapoff -a && sed -ri '/\sswap\s/s/^#?/#/' /etc/fstab
-
-      # set locale
-      localectl set-locale LANG="${LOCALE}"
-
-      # set timezone
-      timedatectl set-ntp true
-      timedatectl set-timezone "${TIMEZONE}"
-runcmd:
-  - /opt/configure.sh
-bootcmd:
-  - stat -c %T -f /sys/fs/cgroup
+      PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+      EDITOR="vim"
+      PAGER="cat"

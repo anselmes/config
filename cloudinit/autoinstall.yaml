@@ -1,0 +1,25 @@
+#cloud-config
+autoinstall:
+  version: 1
+  locale: en_CA
+  timezone: Etc/UTC
+  updates: all
+  keyboard:
+    layout: us
+  identity:
+    hostname: eitry
+    username: ubuntu
+    password: ""
+  network: {}
+  storage:
+    layout:
+      name: zfs
+      match:
+        path: /dev/sda
+  oem:
+    install: true
+  ssh:
+    install-server: true
+    allow-pw: false
+  packages: []
+  user-data: {}
