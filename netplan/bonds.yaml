@@ -8,5 +8,7 @@ network:
       mtu: 9000
       optional: true
       parameters:
+        mode: 802.3ad
+        lacp-rate: fast
         mii-monitor-interval: 100
-        mode: balance-alb
+        transmit-hash-policy: layer3+4
