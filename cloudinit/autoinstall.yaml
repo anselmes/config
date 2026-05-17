@@ -10,16 +10,32 @@ autoinstall:
     hostname: eitry
     username: ubuntu
     password: ""
-  network: {}
+  network:
+    version: 2
+    ethernets:
+      oam:
+        set-name: oam
+        dhcp4: true
+        dhcp6: true
+        match:
+          macaddress: ""
   storage:
     layout:
       name: zfs
+      # name: lvm
+      # sizing-policy: all
+      reset-partition: 8G
       match:
         path: /dev/sda
+  kernel:
+    flavor: hwe
+  drivers:
+    install: true
   oem:
     install: true
   ssh:
     install-server: true
     allow-pw: false
   packages: []
+  late-commands: []
   user-data: {}

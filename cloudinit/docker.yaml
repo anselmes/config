@@ -1,9 +1,16 @@
 #cloud-config
 apt:
   sources:
+    # docker.list:
+    #   keyid: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+    #   source: deb https://download.docker.com/linux/ubuntu noble stable
     docker.list:
-      keyid: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
-      source: deb https://download.docker.com/linux/ubuntu noble stable
+      source: |
+        Types: deb
+        URIs: https://download.docker.com/linux/ubuntu
+        Suites: noble
+        Components: stable
+        keyid: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
 packages:
   - containerd.io
   - docker-ce
