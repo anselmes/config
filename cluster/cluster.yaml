@@ -15,7 +15,7 @@ spec:
         port: 22
         user: ubuntu
       # installFlags:
-      #   - --disable-components=metrics-server
+      #   - --disable-components=metrics-server,konnectivity-server,kube-proxy
       #   - --enable-cloud-provider
       #   - --kubelet-extra-args=--cgroup-driver=systemd
       #   - --kubelet-extra-args=--cloud-provider=external
@@ -44,5 +44,5 @@ spec:
           after:
             - echo "$(hostname) control+worker node ready"
   k0s:
-    version: v1.35.2+k0s.0
+    version: v1.35.4+k0s.0
     config: {}

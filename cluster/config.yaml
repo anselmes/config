@@ -32,7 +32,7 @@ spec:
     #   IPv6serviceCIDR: fd01::0/108
     kubeProxy:
       disabled: true
-      mode: ipvs
+      mode: nftables
       # metricsBindAddress: 127.0.0.1:10249
   featureGates:
     - name: UserNamespacesSupport
@@ -53,6 +53,10 @@ spec:
               k8sServicePort: 6443
               operator:
                 replicas: 1
+              # nodePort:
+              #   addresses: ["127.0.0.1/24", "::1/128"]
+              bpf:
+                hostLegacyRouting: true
               bgpControlPlane:
                 enabled: false
               l2:
@@ -68,16 +72,34 @@ spec:
           chartname: oci://ghcr.io/labsonline/charts/csi
           namespace: kube-system
           order: 2
-          version: 1.0.3
-          values: |
-            openebs:
-              openebs-crds:
-                volumeSnapshots:
-                  enabled: true
-              loki:
-                enabled: false
-              alloy:
-                enabled: false
+          version: 1.0.5
+          # values: |
+          #   openebs:
+          #     openebs-crds:
+          #       csi:
+          #         volumeSnapshots:
+          #           enabled: true
+          #     lvm-localpv:
+          #       lvmNode:
+          #         kubeletDir: /var/lib/k0s/kubelet/
+          #       class:
+          #         volgroup: ubuntu-vg
+          #     zfs-localpv:
+          #       zfsNode:
+          #         kubeletDir: /var/lib/k0s/kubelet/
+          #       class:
+          #         poolname: rpool
+          #     localpv-provisioner:
+          #       hostpathClass:
+          #         enabled: false
+          #       localpv:
+          #         enabled: false
+          #     engines:
+          #       local:
+          #         lvm:
+          #           enabled: true
+          #         zfs:
+          #           enabled: true
         # - # ceph operator
         #   name: ceph-operator
         #   chartname: oci://ghcr.io/labsonline/charts/csi
