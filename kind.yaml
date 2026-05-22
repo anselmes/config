@@ -41,9 +41,13 @@ networking:
   # - Cilium, Calico, Flannel, Weave Net, etc.
   disableDefaultCNI: true
 
+  # Disable kube-proxy for custom networking solutions
+  # This is necessary when using CNI plugins that manage routing themselves
+  kubeProxyMode: none
+
   # IP family configuration - using IPv4 only
   # Options: ipv4, ipv6, dual (for dual-stack)
-  ipFamily: ipv4
+  ipFamily: dual
 
 # Kubernetes feature gates to enable experimental/alpha features
 featureGates:
@@ -57,55 +61,77 @@ nodes:
   # For multi-node clusters, add additional entries with role: worker
   - role: control-plane
 
+    # Node labels for scheduling and identification
+    # This label can be used to target this node for specific workloads or CNI configurations
+    labels: {}
+      # openebs.io/nodeid: $(hostname)
+      # openstack-compute-node: enabled
+      # openstack-control-plane: enabled
+      # openstack-gateway: enabled
+      # openvswitch: enabled
+
     # Mount host directories/files into the container
-    extraMounts:
+    extraMounts: []
+      # - hostPath: ./config/audit-policy.yaml
+      #   containerPath: /etc/kubernetes/policies/audit-policy.yaml
+      #   readOnly: true
       # Mount Docker socket for Docker-in-Docker scenarios
       # This allows pods to interact with the host Docker daemon
       # WARNING: This provides privileged access to the host Docker daemon
-      - hostPath: /var/run/docker.sock
-        containerPath: /var/run/docker.sock
+      # - hostPath: /var/run/docker.sock
+      #   containerPath: /var/run/docker.sock
 
     # Port mappings from container to host
     # These allow external access to services running in the cluster
-    extraPortMappings:
+    extraPortMappings: []
       # HTTP traffic port mapping
       # Maps container port 80 to host port 80 for HTTP ingress
-      - containerPort: 80
-        hostPort: 80
-        protocol: TCP
-        listenAddress: 0.0.0.0  # Accept connections from any interface
+      # - containerPort: 80
+      #   hostPort: 80
+      #   protocol: TCP
+      #   listenAddress: 0.0.0.0  # Accept connections from any interface
 
       # HTTPS traffic port mapping
       # Maps container port 443 to host port 443 for HTTPS ingress
-      - containerPort: 443
-        hostPort: 443
-        protocol: TCP
-        listenAddress: 0.0.0.0  # Accept connections from any interface
+      # - containerPort: 443
+      #   hostPort: 443
+      #   protocol: TCP
+      #   listenAddress: 0.0.0.0  # Accept connections from any interface
 
       # Custom service port mapping
       # Maps container port 30443 to host port 30443
       # Commonly used for NodePort services or custom applications
-      - containerPort: 30443
-        hostPort: 30443
-        protocol: TCP
-        listenAddress: 0.0.0.0  # Accept connections from any interface
+      # - containerPort: 30443
+      #   hostPort: 30443
+      #   protocol: TCP
+      #   listenAddress: 0.0.0.0  # Accept connections from any interface
 
-# Additional configuration options (commented examples):
-#
-# kubeadmConfigPatches:
-#   - |
-#     kind: InitConfiguration
-#     nodeRegistration:
-#       kubeletExtraArgs:
-#         node-labels: "ingress-ready=true"
-#
-# containerdConfigPatches:
-#   - |-
-#     [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:5000"]
-#       endpoint = ["http://localhost:5000"]
-#
-# For multi-node cluster, add worker nodes:
-# - role: worker
-#   extraPortMappings:
-#     - containerPort: 30080
-#       hostPort: 30080
+    # Containerd configuration patches to customize the container runtime setup
+    # This allows us to configure containerd to pull images from a local registry mirror
+    containerdConfigPatches: []
+      # - |-
+      #   [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:5000"]
+      #     endpoint = ["http://localhost:5000"]
+
+    # Kubeadm configuration patches to customize the control plane setup
+    # This allows us to enable auditing features and mount additional volumes for audit policies and logs
+    kubeadmConfigPatches: []
+      # - |
+      #   kind: ClusterConfiguration
+      #   apiServer:
+      #       # enable auditing flags on the API server
+      #       extraArgs:
+      #         audit-log-path: /var/log/kubernetes/kube-apiserver-audit.log
+      #         audit-policy-file: /etc/kubernetes/policies/audit-policy.yaml
+      #       # mount new files / directories on the control plane
+      #       extraVolumes:
+      #         - name: audit-policies
+      #           hostPath: /etc/kubernetes/policies
+      #           mountPath: /etc/kubernetes/policies
+      #           readOnly: true
+      #           pathType: "DirectoryOrCreate"
+      #         - name: "audit-logs"
+      #           hostPath: "/var/log/kubernetes"
+      #           mountPath: "/var/log/kubernetes"
+      #           readOnly: false
+      #           pathType: DirectoryOrCreate
