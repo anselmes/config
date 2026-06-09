@@ -72,7 +72,7 @@ spec:
           chartname: oci://ghcr.io/labsonline/charts/csi
           namespace: kube-system
           order: 2
-          version: 1.0.5
+          version: 1.0.7
           # values: |
           #   openebs:
           #     openebs-crds:
@@ -83,114 +83,44 @@ spec:
           #       lvmNode:
           #         kubeletDir: /var/lib/k0s/kubelet/
           #       class:
-          #         volgroup: ubuntu-vg
-          #     zfs-localpv:
-          #       zfsNode:
-          #         kubeletDir: /var/lib/k0s/kubelet/
-          #       class:
-          #         poolname: rpool
+          #         volgroup: openebs-vg
+          #     # zfs-localpv:
+          #     #   zfsNode:
+          #     #     kubeletDir: /var/lib/k0s/kubelet/
+          #     #   class:
+          #     #     poolname: openebs
           #     localpv-provisioner:
           #       hostpathClass:
           #         enabled: false
           #       localpv:
           #         enabled: false
+          #     # mayastor:
+          #     #   crds:
+          #     #     csi:
+          #     #       volumeSnapshots:
+          #     #         className: openebs-single-replica
+          #     #         deletionPolicy: Delete
+          #     #   storageClass:
+          #     #     nameSuffix: single-replica
+          #     #     default: true
+          #     #     # parameters:
+          #     #     #   repl: 1
+          #     #     #   protocol: nvmf
+          #     #     #   encrypted: true
+          #     #   # io_engine:
+          #     #   #   target:
+          #     #   #     nvmf:
+          #     #   #       iface: rxe0
+          #     #   #       rdma:
+          #     #   #         enabled: true
           #     engines:
           #       local:
           #         lvm:
-          #           enabled: true
-          #         zfs:
-          #           enabled: true
-        # - # ceph operator
-        #   name: ceph-operator
-        #   chartname: oci://ghcr.io/labsonline/charts/csi
-        #   namespace: operators
-        #   order: 3
-        #   version: 1.0.2
-        #   values: |
-        #     openebs:
-        #       enabled: false
-        #       install: false
-        #     rook-ceph:
-        #       enabled: true
-        #       allowLoopDevices: false
-        #       csi:
-        #         enableCSIEncryption: false
-        # - # ceph cluster
-        #   name: ceph
-        #   chartname: oci://ghcr.io/labsonline/charts/csi
-        #   namespace: ceph
-        #   order: 4
-        #   version: 1.0.2
-        #   values: |
-        #     openebs:
-        #       enabled: false
-        #       install: false
-        #     rook-ceph-cluster:
-        #       enabled: true
-        #       operatorNamespace: operators
-        #       toolbox:
-        #         enabled: true
-        #       cephClusterSpec:
-        #         mon:
-        #           count: 1
-        #         mgr:
-        #           count: 2
-        #           allowMultiplePerNode: true
-        #         dashboard:
-        #           enabled: true
-        #           ssl: true
-        #         storage:
-        #           useAllNodes: true
-        #           useAllDevices: true
-        #       cephBlockPools:
-        #         - name: ceph-blockpool
-        #           spec:
-        #             failureDomain: disk
-        #             replicated:
-        #               size: 3
-        #           storageClass:
-        #             enabled: true
-        #             name: general
-        #             isDefault: true
-        #       cephFileSystems:
-        #         - name: ceph-filesystem
-        #           spec:
-        #             metadataPool:
-        #               failureDomain: disk
-        #               replicated:
-        #                 size: 3
-        #             dataPools:
-        #               - failureDomain: disk
-        #                 name: data0
-        #                 replicated:
-        #                   size: 3
-        #             metadataServer:
-        #               activeCount: 1
-        #               activeStandby: true
-        #           storageClass:
-        #             enabled: true
-        #             isDefault: false
-        #             name: file
-        #             pool: data0
-        #       cephObjectStores:
-        #         - name: ceph-objectstore
-        #           spec:
-        #             preservePoolsOnDelete: true
-        #             metadataPool:
-        #               failureDomain: disk
-        #               replicated:
-        #                 size: 3
-        #             dataPool:
-        #               failureDomain: disk
-        #               erasureCoded:
-        #                 dataChunks: 2
-        #                 codingChunks: 1
-        #             gateway:
-        #               port: 80
-        #           storageClass:
-        #             enabled: true
-        #             name: oss
-        #             parameters:
-        #               region: us-east-1
+          #           enabled: false
+          #         # zfs:
+          #         #   enabled: false
+          #       # replicated:
+          #       #   mayastor:
+          #       #     enabled: true
   telemetry:
     enabled: false
