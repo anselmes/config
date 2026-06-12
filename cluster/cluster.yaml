@@ -37,6 +37,17 @@ spec:
       #     name: crds
       #     src: ./crds
       #     dstDir: /var/lib/k0s/manifests/crds
+      #   - # cilium bgp secret
+      #     name: bgp-cred
+      #     data: |
+      #       apiVersion: v1
+      #       kind: Secret
+      #       metadata:
+      #         name: bgp-cred
+      #         namespace: kube-system
+      #       data:
+      #         password: ""
+      #     dstDir: /var/lib/k0s/manifests/secrets
       hooks:
         apply:
           before:

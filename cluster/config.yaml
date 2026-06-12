@@ -51,18 +51,64 @@ spec:
               kubeProxyReplacement: true
               # k8sServiceHost: 127.0.0.1
               k8sServicePort: 6443
+              # cni:
+              #   exclusive: false
+              # encryption:
+              #   enabled: true
+              #   type: wireguard
+              # ipv6:
+              #   enabled: true
               operator:
                 replicas: 1
+              # hubble:
+              #   relay:
+              #     enabled: true
+              #   ui:
+              #     enabled: true
               # nodePort:
-              #   addresses: ["127.0.0.1/24", "::1/128"]
-              bpf:
-                hostLegacyRouting: true
-              bgpControlPlane:
-                enabled: false
+              #   addresses:
+              #     - 127.0.0.0/8
+              #     - ::1/128
+              # bpf:
+              #   hostLegacyRouting: true
+              # bgpControlPlane:
+              #   enabled: false
               l2:
                 enabled: true
                 # interfaces:
-                #   - eth1
+                #   - eth0
+              bgp:
+                enabled: true
+                peer:
+                  addressFamilies: []
+                    # - afi: ipv4
+                    #   safi: unicast
+                    #   advertisements:
+                    #     matchLabels:
+                    #       advertise: bgp
+                    # - afi: ipv6
+                    #   safi: unicast
+                    #   advertisements:
+                    #     matchLabels:
+                    #       advertise: bgp
+                instances: []
+                  # - name: rt
+                  #   localASN: 65000
+                  #   overrides:
+                  #     enabled: true
+                  #   peers: []
+                  #     # - name: rtv4
+                  #     #   # localAddress: 127.0.0.1
+                  #     #   peerASN: 65000
+                  #     #   peerAddress: 127.0.0.1
+                  #     #   peerConfigRef:
+                  #     #     name: bgp-peer-config
+                  #     # - name: rtv6
+                  #     #   # localAddress: ::1
+                  #     #   peerASN: 65000
+                  #     #   peerAddress: ::1
+                  #     #   peerConfigRef:
+                  #     #     name: bgp-peer-config
               pool:
                 enabled: true
                 # blocks:
@@ -116,9 +162,9 @@ spec:
           #     engines:
           #       local:
           #         lvm:
-          #           enabled: false
-          #         # zfs:
-          #         #   enabled: false
+          #           enabled: true
+          #       #   zfs:
+          #       #     enabled: true
           #       # replicated:
           #       #   mayastor:
           #       #     enabled: true
