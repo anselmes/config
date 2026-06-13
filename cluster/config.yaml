@@ -11,6 +11,7 @@ spec:
     sans:
       - kubernetes.local
       - 127.0.0.1
+      - ::1
     extraArgs:
       # audit-log-maxage: "30"
       # audit-log-maxbackup: "10"
@@ -28,10 +29,10 @@ spec:
     # primaryAddressFamily: IPv4
     # dualStack:
     #   enabled: true
-    #   IPv6podCIDR: fd00::0/112
-    #   IPv6serviceCIDR: fd01::0/108
+    #   IPv6podCIDR: fd00:10:244::0/112
+    #   IPv6serviceCIDR: fd00:10:96::0/108
     kubeProxy:
-      disabled: true
+      disabled: false
       mode: nftables
       # metricsBindAddress: 127.0.0.1:10249
   featureGates:
@@ -44,7 +45,7 @@ spec:
           chartname: oci://ghcr.io/labsonline/charts/cni
           namespace: kube-system
           order: 1
-          version: 1.0.5
+          version: 1.0.7
           values: |
             cilium:
               enabled: true
@@ -80,6 +81,7 @@ spec:
               bgp:
                 enabled: true
                 peer:
+                  # authSecretRef: ""
                   addressFamilies: []
                     # - afi: ipv4
                     #   safi: unicast
