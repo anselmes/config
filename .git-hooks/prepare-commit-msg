@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# prepare-commit-msg: automatically append Signed-off-by trailer to every commit
+# Skips merge commits and commits that already contain the trailer.
+
+COMMIT_MSG_FILE="$1"
+COMMIT_SOURCE="$2"
+
+# Skip merge commits
+[[ "${COMMIT_SOURCE}" = "merge" ]] && exit 0
+
+# Build the trailer using git config identity
+NAME=$(git config user.name)
+EMAIL=$(git config user.email)
+SOB="Signed-off-by: ${NAME} <${EMAIL}>"
+
+# Skip if the trailer is already present
+grep -qF "${SOB}" "${COMMIT_MSG_FILE}" && exit 0
+
+# Append a blank line + trailer (if file doesn't already end with a blank line)
+printf '\n%s\n' "${SOB}" >> "${COMMIT_MSG_FILE}"
