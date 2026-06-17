@@ -84,7 +84,8 @@
 #   gpgsign = true
 
 # [format]
-#  # Automatically append Signed-off-by trailer to every commit message
+#  # Append Signed-off-by trailer when using git format-patch
+#  # Note: this does NOT affect git commit — use the prepare-commit-msg hook for that
 #  signOff = true
 
 # ============================================================================
@@ -93,6 +94,9 @@
 # Basic Git settings that affect repository operations
 
 [core]
+  # Global hooks directory (e.g. prepare-commit-msg for automatic Signed-off-by)
+  # hooksPath = ~/.git-hooks
+
   # Global gitignore file location
   excludesfiles = ~/.gitignore
 
