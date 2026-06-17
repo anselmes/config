@@ -83,6 +83,10 @@
 #   # Automatically sign commits with GPG (uncomment to enable)
 #   gpgsign = true
 
+# [format]
+#  # Automatically append Signed-off-by trailer to every commit message
+#  signOff = true
+
 # ============================================================================
 # CORE CONFIGURATION - Fundamental Git behavior
 # ============================================================================
