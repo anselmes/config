@@ -10,15 +10,15 @@ autoinstall:
     hostname: eitry
     username: ubuntu
     password: ""
-  network:
-    version: 2
-    ethernets:
-      oam:
-        set-name: oam
-        dhcp4: true
-        dhcp6: true
-        match:
-          macaddress: ""
+  # network:
+  #   version: 2
+  #   ethernets:
+  #     oam:
+  #       set-name: oam
+  #       dhcp4: true
+  #       dhcp6: true
+  #       match:
+  #         macaddress: ""
   storage:
     layout:
       name: zfs

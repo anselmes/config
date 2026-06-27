@@ -36,3 +36,9 @@ write_files:
       PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
       EDITOR="vim"
       PAGER="cat"
+  # - path: /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg
+  #   permissions: "0644"
+  #   owner: root
+  #   content: |
+  #     network:
+  #       config: disabled
