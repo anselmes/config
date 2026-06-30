@@ -228,7 +228,7 @@ cask "lingon-x"                                             # Launch agent and d
 # cask "tor-browser"                                          # Privacy-focused web browser
 # cask "tunnelblick"                                          # OpenVPN client
 # cask "vnc-viewer"                                           # VNC remote desktop client
-# cask "wireshark"                                            # Network protocol analyzer
+# cask "wireshark-app"                                        # Network protocol analyzer
 
 # AI and Developer Assistant Tools
 # cask "chatgpt"                                              # ChatGPT desktop client
@@ -272,18 +272,18 @@ cask "xquartz"                                              # X11 windowing syst
 
 # Professional/Creative Apps
 # mas "Classroom", id: 1358883623                 # Classroom management
-# mas "Compressor", id: 424390742                 # Video compression
-# mas "Final Cut Pro", id: 424389933              # Professional video editing
+# mas "Compressor", id: 6746516157                # Video compression
+# mas "Final Cut Pro", id: 1631624924             # Professional video editing
 # mas "GarageBand", id: 682658836                 # Music creation
 # mas "iBooks Author", id: 490152466              # E-book authoring
 # mas "iMovie", id: 408981434                     # Video editing
-# mas "Logic Pro", id: 634148309                  # Professional audio production
+# mas "Logic Pro", id: 1615087040                 # Professional audio production
 # mas "Motion", id: 6746637149                    # Motion graphics and animation
 
 # Creative and Design Tools
 # mas "MindNode", id: 1289197285                  # Mind mapping
 # mas "Night Sky", id: 475772902                  # Astronomy app
-# mas "Pixelmator Pro", id: 1289583905            # Image editing
+# mas "Pixelmator Pro", id: 6746662575            # Image editing
 # mas "VisualDesigner", id: 1193683552            # Vector graphics
 
 # Productivity and Utilities
@@ -320,9 +320,9 @@ mas "SSH Config Editor", id: 1109319285         # SSH configuration editor
 # mas "Xcode", id: 497799835                      # Apple's IDE for iOS/macOS development
 
 # Productivity Applications
-mas "Keynote", id: 409183694                    # Presentation software
-mas "Numbers", id: 409203825                    # Spreadsheet application
-mas "Pages", id: 409201541                      # Word processor
+mas "Keynote", id: 361285480                    # Presentation software
+mas "Numbers", id: 361304891                    # Spreadsheet application
+mas "Pages", id: 361309726                      # Word processor
 
 # System Monitoring and Utilities
 # mas "iStat Menus", id: 1319778037               # System monitoring
