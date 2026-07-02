@@ -80,6 +80,7 @@ tap "vmware-tanzu/pinniped"                                      # Pinniped auth
 # brew "transmission-cli"           # BitTorrent client
 
 # Virtualization Tools
+# brew "libvirt"                    # Virtualization API and toolkit
 # brew "qemu"                       # Machine emulator and virtualizer
 # brew "virt-manager"               # Virtual machine manager
 # brew "winetricks"                 # Wine helper scripts
@@ -104,6 +105,7 @@ brew "pinentry"                     # Secure PIN/passphrase entry
 # brew "softhsm"                      # Software hardware security module
 # brew "sops"                         # Secrets management tool
 # brew "trivy"                        # Vulnerability scanner
+brew "yubico-piv-tool"              # YubiKey PIV smart card management tool
 
 # Version Control and Development
 # brew "act"                          # Run GitHub Actions locally
@@ -118,10 +120,10 @@ brew "git"                          # Distributed version control system
 # brew "cloud-provider-kind"          # Cloud provider implementation for KIND
 # brew "coder"                        # Coder remote development environments CLI
 brew "container"                    # Native macOS container runtime
-brew "docker"                       # Docker CLI
 brew "docker-buildx"                # Docker extended build capabilities
 brew "docker-compose"               # Multi-container Docker applications
 brew "docker-credential-helper"     # Docker credential storage helper
+brew "docker"                       # Docker CLI
 brew "helm"                         # Kubernetes package manager
 # brew "k0sctl"                       # k0s cluster management
 # brew "kind"                         # Kubernetes in Docker
@@ -130,6 +132,7 @@ brew "krew"                         # kubectl plugin manager
 brew "kubernetes-cli"               # kubectl - Kubernetes CLI
 brew "kustomize"                    # Kubernetes configuration management
 # brew "mkectl"                       # MKE cluster management
+brew "podman"                       # Daemonless container engine
 
 # Serverless and Function Tools
 # brew "func"                         # Function development and deployment
@@ -143,6 +146,7 @@ brew "socat"                        # Multipurpose relay for bidirectional data 
 # Data Processing and Text Tools
 brew "jq"                           # JSON processor
 brew "p7zip"                        # File archiver
+brew "shellcheck"                   # Shell script static analysis tool
 brew "shfmt"                        # Shell script formatter
 brew "xz"                           # Data compression tool
 brew "yq"                           # YAML processor
@@ -169,6 +173,7 @@ brew "uv"                           # Python package and project manager
 # brew "vapor"                        # Vapor Swift web framework CLI
 
 # Cloud Storage and Authentication
+# brew "awscli"                       # Amazon Web Services command-line interface
 # brew "pinniped-cli"                 # Pinniped authentication CLI
 # brew "s3cmd"                        # Amazon S3 command-line tools
 
@@ -217,6 +222,7 @@ brew "zsh-completions"              # Additional completions for Zsh
 
 # System Utilities and Productivity
 cask "appcleaner"                                           # Application uninstaller
+cask "bartender"                                            # Menu bar icon organizer
 cask "caffeine"                                             # Prevent system sleep
 cask "daisydisk"                                            # Disk usage analyzer
 cask "lingon-x"                                             # Launch agent and daemon manager
@@ -312,7 +318,7 @@ cask "xquartz"                                              # X11 windowing syst
 # Development and System Tools
 mas "Apple Configurator", id: 1037126344        # iOS device configuration
 # mas "CommentHere", id: 1406737173               # Xcode comment-divider extension
-# mas "Comments", id: 6636494220
+# mas "Comments", id: 6636494220               # Comments Extension for Xcode
 # mas "Developer", id: 640199958                  # Apple Developer app
 # mas "HextEdit", id: 1557247094                  # Hex editor
 mas "SSH Config Editor", id: 1109319285         # SSH configuration editor
