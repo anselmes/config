@@ -27,18 +27,19 @@ spec:
       # files:
       #   - # audit policy
       #     name: audit
-      #     src: ./config/audit-policy.yaml
       #     dst: /var/lib/k0s/audit-policy.yaml
+      #     src: ./config/audit-policy.yaml
       #   - # containerd patch
       #     name: containerd
-      #     src: ./config/containerd.toml
       #     dst: /etc/k0s/containerd.d/systemd.toml
+      #     src: ./config/containerd.toml
       #   - # custom resources definitions
       #     name: crds
-      #     src: ./crds
       #     dstDir: /var/lib/k0s/manifests/crds
+      #     src: ./crds
       #   - # cilium bgp secret
       #     name: bgp-cred
+      #     dstDir: /var/lib/k0s/manifests/secrets
       #     data: |
       #       apiVersion: v1
       #       kind: Secret
@@ -47,13 +48,15 @@ spec:
       #         namespace: kube-system
       #       data:
       #         password: ""
-      #     dstDir: /var/lib/k0s/manifests/secrets
-      hooks:
-        apply:
-          before:
-            - echo "Preparing $(hostname) control+worker node"
-          after:
-            - echo "$(hostname) control+worker node ready"
+      # hooks:
+      #   apply:
+      #     before:
+      #       - echo "Preparing $(hostname) control+worker node"
+      #       - sudo mount --make-rshared /
+      #     after:
+      #       - echo "$(findmnt -o TARGET,PROPAGATION /)
+      #       - echo "$(findmnt -o TARGET,PROPAGATION /sys)
+      #       - echo "$(hostname) control+worker node ready"
   k0s:
     version: v1.35.4+k0s.0
     config: {}
