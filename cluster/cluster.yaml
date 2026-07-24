@@ -19,6 +19,7 @@ spec:
       #   - --enable-cloud-provider
       #   - --kubelet-extra-args=--cgroup-driver=systemd
       #   - --kubelet-extra-args=--cloud-provider=external
+      #   - --kubelet-extra-args=--node-ip=127.0.0.1,::1
       #   - --labels=openebs.io/nodeid=$(hostname)
       #   - --labels=openstack-compute-node=enabled
       #   - --labels=openstack-control-plane=enabled
