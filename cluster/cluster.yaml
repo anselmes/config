@@ -54,8 +54,8 @@ spec:
       #       - echo "Preparing $(hostname) control+worker node"
       #       - sudo mount --make-rshared /
       #     after:
-      #       - echo "$(findmnt -o TARGET,PROPAGATION /)
-      #       - echo "$(findmnt -o TARGET,PROPAGATION /sys)
+      #       - echo "$(findmnt -o TARGET,PROPAGATION /)"
+      #       - echo "$(findmnt -o TARGET,PROPAGATION /sys)"
       #       - echo "$(hostname) control+worker node ready"
   k0s:
     version: v1.35.4+k0s.0
