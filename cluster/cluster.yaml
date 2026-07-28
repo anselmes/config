@@ -54,6 +54,9 @@ spec:
       #     before:
       #       - echo "Preparing $(hostname) control+worker node"
       #       - sudo mount --make-rshared /
+      #       - |
+      #         sudo mkdir -p /etc/k0s/labels.d
+      #         echo "openebs.io/nodeid=$(hostname)" | sudo tee /etc/k0s/pre-labels.env
       #     after:
       #       - echo "$(findmnt -o TARGET,PROPAGATION /)"
       #       - echo "$(findmnt -o TARGET,PROPAGATION /sys)"
