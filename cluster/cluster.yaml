@@ -49,13 +49,18 @@ spec:
       #       data:
       #         password: ""
       # hooks:
+      #   install:
+      #     after:
+      #       - |
+      #         for i in $(seq 1 20); do
+      #           sudo k0s kubectl label node "$(hostname)" openebs.io/nodeid="$(hostname)" --overwrite && break
+      #           echo "node not registered yet, retrying ($i/20)..."
+      #           sleep 3
+      #         done
       #   apply:
       #     before:
       #       - echo "Preparing $(hostname) control+worker node"
       #       - sudo mount --make-rshared /
-      #       - |
-      #         sudo mkdir -p /etc/k0s/labels.d
-      #         echo "openebs.io/nodeid=$(hostname)" | sudo tee /etc/k0s/pre-labels.env
       #     after:
       #       - echo "$(findmnt -o TARGET,PROPAGATION /)"
       #       - echo "$(findmnt -o TARGET,PROPAGATION /sys)"
