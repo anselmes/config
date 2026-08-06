@@ -1,0 +1,15 @@
+{
+  "id": 2215,
+  "name": "default",
+  "target": "actions",
+  "source_type": "Repository",
+  "source": "sanselme/ai-sandbox",
+  "enforcement": "active",
+  "conditions": {},
+  "rules": [
+    {
+      "type": "require_lockfile"
+    }
+  ],
+  "bypass_actors": []
+}

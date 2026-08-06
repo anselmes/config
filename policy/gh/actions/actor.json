@@ -1,0 +1,35 @@
+{
+  "id": 2213,
+  "name": "actor",
+  "target": "actions",
+  "source_type": "Repository",
+  "source": "sanselme/ai-sandbox",
+  "enforcement": "active",
+  "conditions": {},
+  "rules": [
+    {
+      "type": "restrict_actions_actors",
+      "parameters": {
+        "allowed_actors": [
+          {
+            "id": 49699333,
+            "type": "Bot"
+          },
+          {
+            "id": 5,
+            "type": "RepositoryRole"
+          },
+          {
+            "id": 946600,
+            "type": "App"
+          },
+          {
+            "id": 1143301,
+            "type": "App"
+          }
+        ]
+      }
+    }
+  ],
+  "bypass_actors": []
+}
