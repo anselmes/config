@@ -1,9 +1,8 @@
 {
-  "id": 2213,
   "name": "actor",
   "target": "actions",
   "source_type": "Repository",
-  "source": "sanselme/ai-sandbox",
+  "source": "repository_name",
   "enforcement": "active",
   "conditions": {},
   "rules": [
@@ -12,12 +11,12 @@
       "parameters": {
         "allowed_actors": [
           {
-            "id": 49699333,
-            "type": "Bot"
-          },
-          {
             "id": 5,
             "type": "RepositoryRole"
+          },
+          {
+            "id": 49699333,
+            "type": "Bot"
           },
           {
             "id": 946600,

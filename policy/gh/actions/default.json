@@ -1,9 +1,8 @@
 {
-  "id": 2215,
   "name": "default",
   "target": "actions",
   "source_type": "Repository",
-  "source": "sanselme/ai-sandbox",
+  "source": "repository_name",
   "enforcement": "active",
   "conditions": {},
   "rules": [

@@ -1,10 +1,14 @@
 {
   "name": "default",
   "target": "branch",
-  "source_type": "Organization",
-  "source": "organization_name",
+  "source_type": "Enterprise",
+  "source": "enterprise_name",
   "enforcement": "active",
   "conditions": {
+    "organization_name": {
+      "exclude": [],
+      "include": ["~ALL"]
+    },
     "repository_name": {
       "exclude": [],
       "include": ["~ALL"]
@@ -36,7 +40,7 @@
         "require_last_push_approval": false,
         "required_review_thread_resolution": true,
         "automatic_copilot_code_review_enabled": false,
-        "allowed_merge_methods": ["merge"]
+        "allowed_merge_methods": ["squash"]
       }
     },
     {
@@ -51,9 +55,9 @@
   ],
   "bypass_actors": [
     {
-      "actor_id": 2,
-      "actor_type": "RepositoryRole",
-      "bypass_mode": "pull_request"
+      "actor_id": null,
+      "actor_type": "OrganizationAdmin",
+      "bypass_mode": "always"
     },
     {
       "actor_id": 5,
@@ -61,9 +65,9 @@
       "bypass_mode": "always"
     },
     {
-      "actor_id": 1,
-      "actor_type": "OrganizationAdmin",
-      "bypass_mode": "always"
+      "actor_id": 2,
+      "actor_type": "RepositoryRole",
+      "bypass_mode": "pull_request"
     }
   ]
 }

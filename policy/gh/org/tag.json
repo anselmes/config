@@ -1,18 +1,27 @@
 {
   "name": "tag",
   "target": "tag",
-  "source_type": "Organization",
-  "source": "organization_name",
+  "source_type": "Enterprise",
+  "source": "enterprise_name",
   "enforcement": "active",
   "conditions": {
-    "repository_name": {
+    "organization_name": {
       "exclude": [],
-      "include": ["~ALL"],
-      "protected": true
+      "include": ["~ALL"]
     },
     "ref_name": {
       "exclude": [],
       "include": ["~ALL"]
+    },
+    "repository_property": {
+      "exclude": [
+        {
+          "name": "fork",
+          "source": "system",
+          "property_values": ["true"]
+        }
+      ],
+      "include": []
     }
   },
   "rules": [
@@ -40,13 +49,13 @@
   ],
   "bypass_actors": [
     {
-      "actor_id": 5,
-      "actor_type": "RepositoryRole",
+      "actor_id": null,
+      "actor_type": "OrganizationAdmin",
       "bypass_mode": "always"
     },
     {
-      "actor_id": 1,
-      "actor_type": "OrganizationAdmin",
+      "actor_id": 5,
+      "actor_type": "RepositoryRole",
       "bypass_mode": "always"
     }
   ]

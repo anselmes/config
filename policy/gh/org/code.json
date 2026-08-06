@@ -1,10 +1,14 @@
 {
   "name": "code",
   "target": "branch",
-  "source_type": "Organization",
-  "source": "organization_name",
+  "source_type": "Enterprise",
+  "source": "enterprise_name",
   "enforcement": "active",
   "conditions": {
+    "organization_name": {
+      "exclude": [],
+      "include": ["~ALL"]
+    },
     "repository_name": {
       "exclude": [],
       "include": ["~ALL"]
@@ -23,21 +27,27 @@
           {
             "repository_id": "repository_id",
             "path": ".github/workflows/review.yml",
-            "ref": "refs/heads/main"
+            "sha": ""
           }
         ]
+      }
+    },
+    {
+      "type": "code_quality",
+      "parameters": {
+        "severity": "errors"
       }
     }
   ],
   "bypass_actors": [
     {
-      "actor_id": 5,
-      "actor_type": "RepositoryRole",
+      "actor_id": null,
+      "actor_type": "OrganizationAdmin",
       "bypass_mode": "always"
     },
     {
-      "actor_id": 1,
-      "actor_type": "OrganizationAdmin",
+      "actor_id": 5,
+      "actor_type": "RepositoryRole",
       "bypass_mode": "always"
     }
   ]

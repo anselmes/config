@@ -1,36 +1,24 @@
 {
   "name": "copilot",
   "target": "branch",
-  "source_type": "Organization",
-  "source": "organization_name",
+  "source_type": "Enterprise",
+  "source": "enterprise_name",
   "enforcement": "active",
   "conditions": {
-    "ref_name": {
+    "organization_name": {
       "exclude": [],
       "include": ["~ALL"]
     },
     "repository_name": {
       "exclude": [],
       "include": ["~ALL"]
+    },
+    "ref_name": {
+      "exclude": [],
+      "include": ["~ALL"]
     }
   },
   "rules": [
-    {
-      "type": "copilot_code_review_analysis_tools",
-      "parameters": {
-        "tools": [
-          {
-            "name": "CodeQL"
-          },
-          {
-            "name": "ESLint"
-          },
-          {
-            "name": "PMD"
-          }
-        ]
-      }
-    },
     {
       "type": "copilot_code_review",
       "parameters": {
@@ -41,13 +29,13 @@
   ],
   "bypass_actors": [
     {
-      "actor_id": 5,
-      "actor_type": "RepositoryRole",
+      "actor_id": null,
+      "actor_type": "OrganizationAdmin",
       "bypass_mode": "always"
     },
     {
-      "actor_id": 1,
-      "actor_type": "OrganizationAdmin",
+      "actor_id": 5,
+      "actor_type": "RepositoryRole",
       "bypass_mode": "always"
     }
   ]
