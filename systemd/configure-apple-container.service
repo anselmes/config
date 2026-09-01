@@ -1,0 +1,13 @@
+[Unit]
+Description=Configure dnsmasq and kube-apiserver for local dev cluster
+After=network-online.target
+Wants=network-online.target
+EnvironmentFile=-/etc/default/configure
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/configure.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
