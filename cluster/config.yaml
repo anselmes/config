@@ -45,7 +45,7 @@ spec:
           chartname: oci://ghcr.io/labsonline/charts/cni
           namespace: kube-system
           order: 1
-          version: 1.0.7
+          version: 1.0.10
           values: |
             cilium:
               enabled: true
@@ -120,7 +120,7 @@ spec:
           chartname: oci://ghcr.io/labsonline/charts/csi
           namespace: kube-system
           order: 2
-          version: 1.0.7
+          version: 1.0.8
           # values: |
           #   openebs:
           #     openebs-crds:
